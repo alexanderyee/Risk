@@ -1,8 +1,8 @@
-package game;
+package model;
 
 import java.util.ArrayList;
 
-public class Controller {
+public class Game {
 
 	//MEMBER VARIABLES
 	//logic variables
@@ -18,7 +18,7 @@ public class Controller {
 	private int currentPID;
 	
 	//CONSTRUCTOR
-	public Controller(int numBots, int numHumans) {
+	public Game(int numBots, int numHumans) {
 		initializeMemberVariables(numBots, numHumans);
 		initializePlayers(numBots, numHumans);
 		setupGame();
