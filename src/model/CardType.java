@@ -1,5 +1,5 @@
 package model;
 
 public enum CardType {
-	HORSE, CANNON, SOLDIER
+	CALVARY, ARTILLERY, INFANTRY
 }
