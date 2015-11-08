@@ -4,66 +4,66 @@ import java.util.ArrayList;
 
 public class RiskResources {
 
-	//MEMBER VARIABLES
+	// MEMBER VARIABLES
 	ArrayList<Territory> allTerritories;
 	ArrayList<Card> allCards;
-	
-	//CONSTRUCTOR
+
+	// CONSTRUCTOR
 	public RiskResources() {
-		//setAllTerritories();
+		setAllTerritories();
 		setAllCards();
 	}
-// Alex: Sorry, I'll fix setting adjacent terrories later.
-	/**
+	
+
 	private void setAllTerritories() {
 		//initialize territories
-		Territory na1 = new Territory(Continent.NAMERICA, "Alaska");
-		Territory na2 = new Territory(Continent.NAMERICA, "NW Territory");
-		Territory na3 = new Territory(Continent.NAMERICA, "Greenland");
-		Territory na4 = new Territory(Continent.NAMERICA, "Alberta");
-		Territory na5 = new Territory(Continent.NAMERICA, "Ontario");
-		Territory na6 = new Territory(Continent.NAMERICA, "Quebec");
-		Territory na7 = new Territory(Continent.NAMERICA, "Western US");
-		Territory na8 = new Territory(Continent.NAMERICA, "Eastern US");
-		Territory na9 = new Territory(Continent.NAMERICA, "Cent. America");
+		Territory na1 = new Territory(Continent.NAMERICA, Countries.ALASKA);
+		Territory na2 = new Territory(Continent.NAMERICA, Countries.NW_TERRITORY);
+		Territory na3 = new Territory(Continent.NAMERICA, Countries.GREENLAND);
+		Territory na4 = new Territory(Continent.NAMERICA, Countries.ALBERTA);
+		Territory na5 = new Territory(Continent.NAMERICA, Countries.ONTARIO);
+		Territory na6 = new Territory(Continent.NAMERICA, Countries.QUEBEC);
+		Territory na7 = new Territory(Continent.NAMERICA, Countries.WESTERN_US);
+		Territory na8 = new Territory(Continent.NAMERICA, Countries.EASTERN_US);
+		Territory na9 = new Territory(Continent.NAMERICA, Countries.CENT_AMERICA);
 		
-		Territory sa1 = new Territory(Continent.SAMERICA, "Venezuela");
-		Territory sa2 = new Territory(Continent.SAMERICA, "Peru");
-		Territory sa3 = new Territory(Continent.SAMERICA, "Brazil");
-		Territory sa4 = new Territory(Continent.SAMERICA, "Argentina");
+		Territory sa1 = new Territory(Continent.SAMERICA, Countries.VENENZUELA);
+		Territory sa2 = new Territory(Continent.SAMERICA, Countries.PERU);
+		Territory sa3 = new Territory(Continent.SAMERICA, Countries.BRAZIL);
+		Territory sa4 = new Territory(Continent.SAMERICA, Countries.ARGENTINA);
 		
-		Territory eu1 = new Territory(Continent.EUROPE, "Iceland");
-		Territory eu2 = new Territory(Continent.EUROPE, "Scandinavia");
-		Territory eu3 = new Territory(Continent.EUROPE, "Ukraine");
-		Territory eu4 = new Territory(Continent.EUROPE, "Great Britain");
-		Territory eu5 = new Territory(Continent.EUROPE, "N. Europe");
-		Territory eu6 = new Territory(Continent.EUROPE, "W. Europe");
-		Territory eu7 = new Territory(Continent.EUROPE, "S. Europe");
+		Territory eu1 = new Territory(Continent.EUROPE,Countries. ICELAND);
+		Territory eu2 = new Territory(Continent.EUROPE, Countries.SCANDINAVIA);
+		Territory eu3 = new Territory(Continent.EUROPE, Countries.UKRAINE);
+		Territory eu4 = new Territory(Continent.EUROPE, Countries.GREAT_BRITAIN);
+		Territory eu5 = new Territory(Continent.EUROPE, Countries.N_EUROPE);
+		Territory eu6 = new Territory(Continent.EUROPE, Countries.W_EUROPE);
+		Territory eu7 = new Territory(Continent.EUROPE, Countries.S_EUROPE);
 		
-		Territory af1 = new Territory(Continent.AFRICA, "N. Africa");
-		Territory af2 = new Territory(Continent.AFRICA, "Egypt");
-		Territory af3 = new Territory(Continent.AFRICA, "E. Africa");
-		Territory af4 = new Territory(Continent.AFRICA, "Congo");
-		Territory af5 = new Territory(Continent.AFRICA, "S. Africa");
-		Territory af6 = new Territory(Continent.AFRICA, "Madagascar");
+		Territory af1 = new Territory(Continent.AFRICA, Countries.N_AFRICA);
+		Territory af2 = new Territory(Continent.AFRICA, Countries.EGYPT);
+		Territory af3 = new Territory(Continent.AFRICA, Countries.E_AFRICA);
+		Territory af4 = new Territory(Continent.AFRICA, Countries.CONGO);
+		Territory af5 = new Territory(Continent.AFRICA, Countries.S_AFRICA);
+		Territory af6 = new Territory(Continent.AFRICA, Countries.MADAGASCAR);
 		
-		Territory as1 = new Territory(Continent.ASIA, "Siberia");
-		Territory as2 = new Territory(Continent.ASIA, "Yakutsk");
-		Territory as3 = new Territory(Continent.ASIA, "Kamchatka");
-		Territory as4 = new Territory(Continent.ASIA, "Ural");
-		Territory as5 = new Territory(Continent.ASIA, "Irkutsk");
-		Territory as6 = new Territory(Continent.ASIA, "Afghanistan");
-		Territory as7 = new Territory(Continent.ASIA, "Mongolia");
-		Territory as8 = new Territory(Continent.ASIA, "Japan");
-		Territory as9 = new Territory(Continent.ASIA, "China");
-		Territory as10 = new Territory(Continent.ASIA, "Middle East");
-		Territory as11 = new Territory(Continent.ASIA, "India");
-		Territory as12 = new Territory(Continent.ASIA, "Siam");
+		Territory as1 = new Territory(Continent.ASIA, Countries.SIBERIA);
+		Territory as2 = new Territory(Continent.ASIA, Countries.YAKUTSK);
+		Territory as3 = new Territory(Continent.ASIA, Countries.KAMCHATKA);
+		Territory as4 = new Territory(Continent.ASIA, Countries.URAL);
+		Territory as5 = new Territory(Continent.ASIA, Countries.IRKUTSK);
+		Territory as6 = new Territory(Continent.ASIA, Countries.AFGHANISTAN);
+		Territory as7 = new Territory(Continent.ASIA, Countries.MONGOLIA);
+		Territory as8 = new Territory(Continent.ASIA, Countries.JAPAN);
+		Territory as9 = new Territory(Continent.ASIA, Countries.CHINA);
+		Territory as10 = new Territory(Continent.ASIA, Countries.MIDDLE_EAST);
+		Territory as11 = new Territory(Continent.ASIA, Countries.INDIA);
+		Territory as12 = new Territory(Continent.ASIA, Countries.SIAM);
 		
-		Territory ar1 = new Territory(Continent.AUSTRALIA, "Indonesia");
-		Territory ar2 = new Territory(Continent.AUSTRALIA, "New Guinea");
-		Territory ar3 = new Territory(Continent.AUSTRALIA, "W. Australia");
-		Territory ar4 = new Territory(Continent.AUSTRALIA, "E. Australia");
+		Territory ar1 = new Territory(Continent.AUSTRALIA, Countries.INDONESIA);
+		Territory ar2 = new Territory(Continent.AUSTRALIA, Countries.NEW_GUINEA);
+		Territory ar3 = new Territory(Continent.AUSTRALIA,Countries.W_AUSTRALIA);
+		Territory ar4 = new Territory(Continent.AUSTRALIA,Countries.E_AUSTRALIA);
 		
 		//initialize adjecents for each territory
 		Territory[] na1Adj = {na2, na4, as3};
@@ -209,9 +209,9 @@ public class RiskResources {
 		allTerritories.add(ar3);
 		allTerritories.add(ar4);
 	}
-	**/
+
 	private void setAllCards() {
-		
+
 	}
-	
+
 }
