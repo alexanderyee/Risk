@@ -123,6 +123,8 @@ public class RiskResources {
 		na5.setAdj(na5Adj);
 		na6.setAdj(na6Adj);
 		na7.setAdj(na7Adj);
+		na8.setAdj(na8Adj);
+		na9.setAdj(na9Adj);
 		
 		sa1.setAdj(sa1Adj);
 		sa2.setAdj(sa2Adj);

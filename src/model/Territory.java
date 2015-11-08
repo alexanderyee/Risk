@@ -3,7 +3,7 @@ package model;
 import java.util.List;
 
 public class Territory {
-	// need to collaborate with player on attacking/defending
+	// need to collaborate with player on attacking/defending!!
 	// MEMBER VARIABLES
 	private int armies;
 	private Player occupier;
@@ -23,19 +23,32 @@ public class Territory {
 		occupier = null;
 	}
 
+	public void setAdj(Territory[] adjs) {
+		for (Territory t : adjs)
+			this.adj.add(t);
+		this.numAdj = adjs.length;
+	}
 	// PUBLIC METHODS
 
 	// getters
 	public int getArmies() {
-		return armies;
+		return this.armies;
 	}
 
 	public Player getOccupier() {
-		return occupier;
+		return this.occupier;
 	}
 
 	public int defDice() {
-		return defDice;
+		return this.defDice;
+	}
+
+	public List<Territory> getAdjacentTerritories() {
+		return this.adj;
+	}
+
+	public Continent getContinent() {
+		return this.cont;
 	}
 
 	// setters
@@ -43,12 +56,18 @@ public class Territory {
 		armies = a;
 	}
 
-	public void addArmy() {
-		armies++;
+	public int addArmies(int n) {
+		this.armies += n;
+		return this.armies;
 	}
 
-	public void removeArmy() {
-		armies--;
+	public int removeArmies(int n) {
+		if (this.armies - n > 0) {
+			this.armies -= n;
+			return this.armies;
+		}
+		System.out.println("Error: One army must be left on territory");
+		return this.armies;
 	}
 
 	public void changeOccupier(Player player) {
@@ -63,12 +82,6 @@ public class Territory {
 	public void lose() {
 		armies--;
 		occupier.loseAnArmy();
-	}
-
-	public void setAdj(Territory[] adjs) {
-		for (Territory t : adjs)
-			this.adj.add(t);
-		this.numAdj = adjs.length;
 	}
 
 }
