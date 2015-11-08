@@ -10,10 +10,11 @@ public class RiskResources {
 	
 	//CONSTRUCTOR
 	public RiskResources() {
-		setAllTerritories();
+		//setAllTerritories();
 		setAllCards();
 	}
-
+// Alex: Sorry, I'll fix setting adjacent terrories later.
+	/**
 	private void setAllTerritories() {
 		//initialize territories
 		Territory na1 = new Territory(Continent.NAMERICA, "Alaska");
@@ -208,7 +209,7 @@ public class RiskResources {
 		allTerritories.add(ar3);
 		allTerritories.add(ar4);
 	}
-	
+	**/
 	private void setAllCards() {
 		
 	}
