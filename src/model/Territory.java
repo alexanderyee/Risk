@@ -3,11 +3,11 @@ package model;
 import java.util.List;
 
 public class Territory {
-
+// need to collaborate with player on attacking/defending
 	// MEMBER VARIABLES
 	private int armies;
 	private Player occupier;
-	private int defDice;
+	private int defDice; 
 	private Continent cont;
 	private Color color;
 	private Countries name;
@@ -20,6 +20,9 @@ public class Territory {
 		this.name = name;
 		this.adj = adj;
 		numAdj = adj.size();
+		this.color = cont.getColor();
+		armies = 0;
+		occupier = null;
 	}
 
 	// PUBLIC METHODS
@@ -41,7 +44,15 @@ public class Territory {
 	public void setArmies(int a) {
 		armies = a;
 	}
-
+	public void addArmy() {
+		armies++;
+	}
+	public void removeArmy(){
+		armies--;
+	}
+	public void changeOccupier(Player player){
+		this.occupier = player;
+	}
 
 	// player methods
 	public void defend(int oppDice) {
