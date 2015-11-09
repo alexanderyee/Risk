@@ -7,65 +7,14 @@ import java.util.Queue;
 
 public class Deck {
 
-	// Declaring all the cards
-
+	//MEMBER VARIABLES
 	private int size;
+	private Queue<Card> CardQ = new LinkedList<Card>(); // Queue which will contain all of the cards
 
-	private static Card a1 = new Card(CardType.INFANTRY, Countries.ALASKA);
-	private static Card a2 = new Card(CardType.ARTILLERY, Countries.NW_TERRITORY);
-	private static Card a3 = new Card(CardType.CALVARY, Countries.GREENLAND);
-	private static Card a4 = new Card(CardType.INFANTRY, Countries.ALBERTA);
-	private static Card a5 = new Card(CardType.CALVARY, Countries.ONTARIO);
-	private static Card a6 = new Card(CardType.ARTILLERY, Countries.QUEBEC);
-	private static Card a7 = new Card(CardType.INFANTRY, Countries.WESTERN_US);
-	private static Card a8 = new Card(CardType.ARTILLERY, Countries.EASTERN_US);
-	private static Card a9 = new Card(CardType.CALVARY, Countries.CENT_AMERICA);
-
-	private static Card a10 = new Card(CardType.ARTILLERY, Countries.VENENZUELA);
-	private static Card a11 = new Card(CardType.CALVARY, Countries.PERU);
-	private static Card a12 = new Card(CardType.ARTILLERY, Countries.BRAZIL);
-	private static Card a13 = new Card(CardType.INFANTRY, Countries.ARGENTINA);
-
-	private static Card a14 = new Card(CardType.INFANTRY, Countries.ICELAND);
-	private static Card a15 = new Card(CardType.ARTILLERY, Countries.SCANDINAVIA);
-	private static Card a16 = new Card(CardType.ARTILLERY, Countries.UKRAINE);
-	private static Card a17 = new Card(CardType.CALVARY, Countries.GREAT_BRITAIN);
-	private static Card a18 = new Card(CardType.CALVARY, Countries.N_EUROPE);
-	private static Card a19 = new Card(CardType.INFANTRY, Countries.W_EUROPE);
-	private static Card a20 = new Card(CardType.CALVARY, Countries.S_EUROPE);
-
-	private static Card a21 = new Card(CardType.INFANTRY, Countries.N_AFRICA);
-	private static Card a22 = new Card(CardType.INFANTRY, Countries.EGYPT);
-	private static Card a23 = new Card(CardType.ARTILLERY, Countries.E_AFRICA);
-	private static Card a24 = new Card(CardType.CALVARY, Countries.CONGO);
-	private static Card a25 = new Card(CardType.ARTILLERY, Countries.S_AFRICA);
-	private static Card a26 = new Card(CardType.INFANTRY, Countries.MADAGASCAR);
-	private static Card a27 = new Card(CardType.ARTILLERY, Countries.SIBERIA);
-	private static Card a28 = new Card(CardType.CALVARY, Countries.YAKUTSK);
-	private static Card a29 = new Card(CardType.CALVARY, Countries.KAMCHATKA);
-	private static Card a30 = new Card(CardType.CALVARY, Countries.URAL);
-	private static Card a31 = new Card(CardType.INFANTRY, Countries.IRKUTSK);
-	private static Card a32 = new Card(CardType.INFANTRY, Countries.AFGHANISTAN);
-	private static Card a33 = new Card(CardType.ARTILLERY, Countries.MONGOLIA);
-	private static Card a34 = new Card(CardType.INFANTRY, Countries.JAPAN);
-	private static Card a35 = new Card(CardType.CALVARY, Countries.CHINA);
-	private static Card a36 = new Card(CardType.ARTILLERY, Countries.MIDDLE_EAST);
-	private static Card a37 = new Card(CardType.INFANTRY, Countries.INDIA);
-	private static Card a38 = new Card(CardType.ARTILLERY, Countries.SIAM);
-
-	private static Card a39 = new Card(CardType.CALVARY, Countries.INDONESIA);
-	private static Card a40 = new Card(CardType.CALVARY, Countries.NEW_GUINEA);
-	private static Card a41 = new Card(CardType.ARTILLERY, Countries.W_AUSTRALIA);
-	private static Card a42 = new Card(CardType.INFANTRY, Countries.E_AUSTRALIA);
-
-	// Queue which will contain all of the cards
-	private Queue<Card> CardQ = new LinkedList<Card>();
-
-	// Constructor which will initialize the queue with all the cards in it
+	//CONSTRUCTOR which will initialize the queue with all the cards in it
 	public Deck() {
      initializeDeck(); //Adds all the cards to the queue
-	 shuffleDeck();     //suffles the queue
-	
+	 shuffleDeck();     //shuffles the queue
 	}
 
 	public int size() {    
@@ -81,6 +30,54 @@ public class Deck {
     	Collections.shuffle((List<?>) CardQ);
     }
 	private void initializeDeck() {
+		// Declaring all the cards
+		Card a1 = new Card(CardType.INFANTRY, Countries.ALASKA);
+		Card a2 = new Card(CardType.ARTILLERY, Countries.NW_TERRITORY);
+		Card a3 = new Card(CardType.CALVARY, Countries.GREENLAND);
+		Card a4 = new Card(CardType.INFANTRY, Countries.ALBERTA);
+		Card a5 = new Card(CardType.CALVARY, Countries.ONTARIO);
+		Card a6 = new Card(CardType.ARTILLERY, Countries.QUEBEC);
+		Card a7 = new Card(CardType.INFANTRY, Countries.WESTERN_US);
+		Card a8 = new Card(CardType.ARTILLERY, Countries.EASTERN_US);
+		Card a9 = new Card(CardType.CALVARY, Countries.CENT_AMERICA);
+
+		Card a10 = new Card(CardType.ARTILLERY, Countries.VENENZUELA);
+		Card a11 = new Card(CardType.CALVARY, Countries.PERU);
+		Card a12 = new Card(CardType.ARTILLERY, Countries.BRAZIL);
+		Card a13 = new Card(CardType.INFANTRY, Countries.ARGENTINA);
+
+		Card a14 = new Card(CardType.INFANTRY, Countries.ICELAND);
+		Card a15 = new Card(CardType.ARTILLERY, Countries.SCANDINAVIA);
+		Card a16 = new Card(CardType.ARTILLERY, Countries.UKRAINE);
+		Card a17 = new Card(CardType.CALVARY, Countries.GREAT_BRITAIN);
+		Card a18 = new Card(CardType.CALVARY, Countries.N_EUROPE);
+		Card a19 = new Card(CardType.INFANTRY, Countries.W_EUROPE);
+		Card a20 = new Card(CardType.CALVARY, Countries.S_EUROPE);
+
+		Card a21 = new Card(CardType.INFANTRY, Countries.N_AFRICA);
+		Card a22 = new Card(CardType.INFANTRY, Countries.EGYPT);
+		Card a23 = new Card(CardType.ARTILLERY, Countries.E_AFRICA);
+		Card a24 = new Card(CardType.CALVARY, Countries.CONGO);
+		Card a25 = new Card(CardType.ARTILLERY, Countries.S_AFRICA);
+		Card a26 = new Card(CardType.INFANTRY, Countries.MADAGASCAR);
+		Card a27 = new Card(CardType.ARTILLERY, Countries.SIBERIA);
+		Card a28 = new Card(CardType.CALVARY, Countries.YAKUTSK);
+		Card a29 = new Card(CardType.CALVARY, Countries.KAMCHATKA);
+		Card a30 = new Card(CardType.CALVARY, Countries.URAL);
+		Card a31 = new Card(CardType.INFANTRY, Countries.IRKUTSK);
+		Card a32 = new Card(CardType.INFANTRY, Countries.AFGHANISTAN);
+		Card a33 = new Card(CardType.ARTILLERY, Countries.MONGOLIA);
+		Card a34 = new Card(CardType.INFANTRY, Countries.JAPAN);
+		Card a35 = new Card(CardType.CALVARY, Countries.CHINA);
+		Card a36 = new Card(CardType.ARTILLERY, Countries.MIDDLE_EAST);
+		Card a37 = new Card(CardType.INFANTRY, Countries.INDIA);
+		Card a38 = new Card(CardType.ARTILLERY, Countries.SIAM);
+
+		Card a39 = new Card(CardType.CALVARY, Countries.INDONESIA);
+		Card a40 = new Card(CardType.CALVARY, Countries.NEW_GUINEA);
+		Card a41 = new Card(CardType.ARTILLERY, Countries.W_AUSTRALIA);
+		Card a42 = new Card(CardType.INFANTRY, Countries.E_AUSTRALIA);
+		//Add all cards to queue
 		CardQ.add(a1);
 		CardQ.add(a2);
 		CardQ.add(a3);
@@ -124,6 +121,5 @@ public class Deck {
 		CardQ.add(a41);
 		CardQ.add(a42);
 	}
-	// getters
 
 }

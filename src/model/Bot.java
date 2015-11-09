@@ -6,8 +6,8 @@ public class Bot extends Player {
 	private int turnsTaken;
 	
 	//CONSTRUCTOR
-	public Bot(int pid, int initArmies) {
-		super(pid, initArmies);
+	public Bot(int pid, int initArmies, Board b) {
+		super(pid, initArmies, b);
 		// TODO Auto-generated constructor stub
 		turnsTaken = 0;
 	}
@@ -26,6 +26,24 @@ public class Bot extends Player {
 	//setters
 	public void tookTurn() {
 		turnsTaken++;
+	}
+
+	@Override
+	public String claim() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String placeRemaining() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected boolean decideCardExchange() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

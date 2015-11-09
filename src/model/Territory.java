@@ -83,5 +83,10 @@ public class Territory {
 		armies--;
 		occupier.loseAnArmy();
 	}
+	
+	// board methods
+	public String toString() {
+		return name.toString();
+	}
 
 }

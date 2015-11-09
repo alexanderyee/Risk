@@ -46,11 +46,11 @@ public class Game {
 		else if(numPlayers == 6)
 			initArmies = 20;
 		for(int ii = 0; ii < numBots; ii++) { //instantiate bots
-			Player p = new Bot(ii, initArmies);
+			Player p = new Bot(ii, initArmies, board);
 			players.add(p);
 		}
 		for(int jj = (numPlayers-numBots); jj < numPlayers; jj++) { //instantiate humans
-			Player p = new Human(jj, initArmies);
+			Player p = new Human(jj, initArmies, board);
 			players.add(p);
 		}
 	}
@@ -87,13 +87,21 @@ public class Game {
 
 	private void claimTerritories() {
 		for(int ii = 0; ii < 42; ii++) {
+			System.out.println(board.listUnclaimed());
 			if(currentPID > players.size())
 				currentPID = 0;
-			players.get(currentPID).claim();
+			String choice = players.get(currentPID).claim();
+			Territory t = board.getTerritory(choice);
+			giveClaimedTerritory(players.get(currentPID), t);
 			currentPID++;
 		}
 		while(players.get(currentPID).getArmies() != 0) {
-			players.get(currentPID).placeRemaining();
+			if(currentPID > players.size())
+				currentPID = 0;
+			System.out.println(board.listPlayerTerritories(players.get(currentPID)));
+			String choice = players.get(currentPID).placeRemaining();
+			players.get(currentPID).loseAnArmy();
+			board.getTerritory(choice).addArmies(1);
 			currentPID++;
 		}
 	}
@@ -122,6 +130,13 @@ public class Game {
 			cardSetValue += 3;
 		else
 			cardSetValue += 5;
+	}
+	
+	private void giveClaimedTerritory(Player p, Territory t) {
+		p.territoryObtained(t.getContinent());
+		p.loseAnArmy();
+		t.changeOccupier(p);
+		t.setArmies(1);
 	}
 	
 }

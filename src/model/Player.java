@@ -16,11 +16,12 @@ public abstract class Player {
 	private int occupiedAfrica;
 	private int occupiedEurope;
 	
-	private Deck cards;
+	protected Deck cards;
 	private Dice dice;
+	protected Board board; //I don't know about this design choice but it's a placeholder - Ben
 
 	//CONSTRUCTOR
-	public Player(int pid, int initArmies) {
+	public Player(int pid, int initArmies, Board b) {
 		playerID = pid;
 		totalArmies = initArmies;
 		occupiedNAmerica = 0;
@@ -30,6 +31,7 @@ public abstract class Player {
 		occupiedAfrica = 0;
 		occupiedEurope = 0;
 		dice = new Dice();
+		board = b;
 	}
 
 	//PUBLIC METHODS
@@ -48,21 +50,34 @@ public abstract class Player {
 	}
 	
 	//setters
-	public void territoryObtained() {
+	public void territoryObtained(Continent c) {
+		if(c == Continent.NAMERICA)
+			occupiedNAmerica++;
+		if(c == Continent.SAMERICA)
+			occupiedSAmerica++;
+		if(c == Continent.ASIA)
+			occupiedAsia++;
+		if(c == Continent.AUSTRALIA)
+				occupiedAutstralia++;
+		if(c == Continent.AFRICA)
+			occupiedAfrica++;
+		if(c == Continent.EUROPE)
+			occupiedEurope++;
 		totalTerritories++;
 	}
 	
 	public void loseAnArmy() {
 		totalArmies--;
 	}
+	
+	public void gainArmies(int n) {
+		totalArmies += n;
+	}
 
 	//controller methods
-	public void claim() {
-
-	}
-	public void placeRemaining() {
-		// TODO Place remaining armies after board has been claimed
-	}
+	abstract public String claim();
+	
+	abstract public String placeRemaining();
 
 	public int[] rollDice(int numDiceRolled) {
 		return dice.roll(numDiceRolled);
@@ -71,17 +86,20 @@ public abstract class Player {
 	public boolean deploy(int cardSetVal) {
 		boolean exchanged;
 		int armies = fromTerritories() + fromContinents();
-		if(fromCards(cardSetVal) == 0)
+		int fromCards = fromCards(cardSetVal);
+		if(fromCards == 0)
 			exchanged = false;
 		else
 			exchanged = true;
+		armies += fromCards;
 		placeDeployedArmies(armies);
 		totalArmies += armies;
 		return exchanged;
 	}
 	
 	public void drawCard() {
-		// TODO we'll have to work on this one
+		//takes a card from Game's Board's Deck to add to this Player's hand of cards
+		cards.returnCardToDeck(board.drawCard());
 	}
 
 	public void attack() {
@@ -98,12 +116,11 @@ public abstract class Player {
 		}
 	}
 
-	public void fortify() {
-		// TODO will have two implementations
-	}
+	abstract public void fortify();
 	
 	public void placeCardArmies() {
 		// TODO probably needs a parameter
+		decideCardExchange();
 	}
 
 	public int defend(int oppDice) {
@@ -143,14 +160,7 @@ public abstract class Player {
 			return 0;
 	}
 
-	private boolean decideCardExchange() {
-		// TODO Auto-generated method stub
-		if(cards.size() >= 5) {
-			//implement logic or call a method to do the actual exchange
-			return true;
-		}
-		return false;
-	}
+	abstract protected boolean decideCardExchange();
 
 	//attacking methods
 	private boolean chooseContinueAttacking() {

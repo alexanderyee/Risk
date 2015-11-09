@@ -10,11 +10,16 @@ public class Card {
 		type = t;
 	    country=c;
 	}
+	//PUBLIC METHODS
+	//getters
 	public CardType getCardType(){
 		return type;
 	}
     public Countries getCountry(){
     	return country;
+    }
+    public String toString() {
+    	return country.toString() + type.toString();
     }
 
 

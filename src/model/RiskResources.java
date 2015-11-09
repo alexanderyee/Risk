@@ -4,17 +4,21 @@ import java.util.ArrayList;
 
 public class RiskResources {
 
-	// MEMBER VARIABLES
+	//MEMBER VARIABLES
 	ArrayList<Territory> allTerritories;
-	ArrayList<Card> allCards;
 
-	// CONSTRUCTOR
+	//CONSTRUCTOR
 	public RiskResources() {
 		setAllTerritories();
-		setAllCards();
+	}	
+	
+	//PUBLIC METHODS
+	//getters
+	public ArrayList<Territory> getTerritories() {
+		return allTerritories;
 	}
 	
-
+	//constructor helper method
 	private void setAllTerritories() {
 		//initialize territories
 		Territory na1 = new Territory(Continent.NAMERICA, Countries.ALASKA);
@@ -210,10 +214,6 @@ public class RiskResources {
 		allTerritories.add(ar2);
 		allTerritories.add(ar3);
 		allTerritories.add(ar4);
-	}
-
-	private void setAllCards() {
-
 	}
 
 }
