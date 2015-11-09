@@ -10,5 +10,12 @@ public class Card {
 		type = t;
 	    country=c;
 	}
-	
+	public CardType getCardType(){
+		return type;
+	}
+    public Countries getCountry(){
+    	return country;
+    }
+
+
 }
