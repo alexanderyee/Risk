@@ -5,7 +5,13 @@ public class Bot extends Player {
 	//MEMBER VARIABLES
 	private int turnsTaken;
 	
-	//CONSTRUCTOR
+	/*
+	 *  Constructor for the bot class
+	 *  @param int player identification number
+	 *  @param int inital armies
+	 *  @param 
+	 * 
+	 */
 	public Bot(int pid, int initArmies, Board b) {
 		super(pid, initArmies, b);
 		// TODO Auto-generated constructor stub
