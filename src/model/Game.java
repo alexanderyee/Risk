@@ -1,10 +1,15 @@
 package model;
 
 import java.util.ArrayList;
+
 import java.util.Collections;
+import java.util.Comparator;
+
 import java.util.Random;
+
 import java.util.Scanner;
 
+//<<<<<<<< HEAD
 public class Game {
 
 	//MEMBER VARIABLES
@@ -14,11 +19,10 @@ public class Game {
 	private boolean gameOver;
 	private int cardSetValue; //we can delete this now, moving it to Map class
 	//game piece variables
-
 	private Map map;
-
 	//player variables
 	private int numPlayers;
+	
 	private ArrayList<Player> players;
 	private int currentPID;
 	
@@ -29,15 +33,13 @@ public class Game {
 		setupGame();
 	}
 
-	//CONSTRUCTOR HELPER METHODS
+	// CONSTRUCTOR HELPER METHODS
 	private void initializeMemberVariables(int numBots, int numHumans) {
 		turnsPlayed = 0;
 		roundsPlayed = 0;
 		gameOver = false;
 		cardSetValue = 4;
-
 		map = new Map();
-
 		this.numPlayers = numBots + numHumans;
 		players = new ArrayList<Player>();
 	}
@@ -66,8 +68,8 @@ public class Game {
 	private void setupGame() {
 		rollToGoFirst();
 		claimTerritories();
-		beginGame2(); //this is the new re-structured one
-		beginGame(); //we don't need this any more
+		//beginGame2(); //this is the new re-structured one
+		//beginGame(); //we don't need this any more
 	}
 
 	private void rollToGoFirst() {
@@ -76,24 +78,14 @@ public class Game {
 	}
 
 	private void claimTerritories() {
-		for(int ii = 0; ii < 42; ii++) {
-			System.out.println(map.listUnclaimed());
-			if(currentPID > players.size())
+		System.out.println("Randomly claiming territories.");
+		for (int ii = 0; ii < 42; ii++) {
+			if (currentPID >= players.size())
 				currentPID = 0;
-			String choice = players.get(currentPID).claim();
-			Territory t = map.getTerritory(choice);
-			giveClaimedTerritory(players.get(currentPID), t);
+			map.giveRandomTerritory(players.get(currentPID));
 			currentPID++;
 		}
-		while(players.get(currentPID).getArmies() != 0) {
-			if(currentPID >= players.size())
-				currentPID = 0;
-			System.out.println(map.listPlayerTerritories(players.get(currentPID)));
-			String choice = players.get(currentPID).placeRemaining();
-			players.get(currentPID).loseAnArmy();
-			map.getTerritory(choice).addArmies(1);
-			currentPID++;
-		}
+
 	}
 	
 	private void beginGame() {
@@ -125,29 +117,33 @@ public class Game {
 				gameOver = true;
 			else {
 				curr.fortify(); //TODO (AI-01): You'll have to change this to a dynamic value
-				currentPID++;
+        		System.out.println("Randomly claiming territories.");
+        		for (int ii = 0; ii < 42; ii++) {
+        			if (currentPID >= players.size())
+        				currentPID = 0;
+        			map.giveRandomTerritory(players.get(currentPID));
+        			currentPID++;
+        		}
 			}
 		}
 	}
 	
-	//PRIVATE METHODS
-	private void raiseCardSetValue() { //can delete this now
-		if(cardSetValue <= 10)
+	// PRIVATE METHODS
+	private void raiseCardSetValue() {
+		if (cardSetValue <= 10)
 			cardSetValue += 2;
-		else if(cardSetValue == 12)
+		else if (cardSetValue == 12)
 			cardSetValue += 3;
 		else
 			cardSetValue += 5;
 	}
-	
-	private void giveClaimedTerritory(Player p, Territory t) {
-	//	p.territoryObtained(t.getContinent());
-		p.loseAnArmy();
-		t.changeOccupier(p);
-		t.setArmies(1);
+	public String getTerritories(int k) {
+		return players.get(k - 1).getTerroritories();
 	}
-	
-	public void attack()
+    public void placeArmyInPlayerTerritory(int p, int terrNumber){
+	   players.get(p-1).addArmy(terrNumber);
+    }
+    public void attack()
     {
 
         // Asks if the player wants to attack or no
@@ -212,47 +208,54 @@ public class Game {
                             .getTerritories().get(attackingTerritoryNumber)
                             .getAdjacentTerritories()
                             .get(defendingTerritoryNumber);
+
+                    //Starts the loop to allow the attacker to continue attacking if they still have armies to attack with
+                    //or they capture the territory
+                    boolean attackResolved = false;
+                    while(!(attackResolved))
+                    {
+                        attackResolved = resolveAttack(attackingTerritory, defendingTerritory);
+                    }
                 }
+
             }
-            catch(NullPointerException e)
+            catch (NullPointerException e)
             {
-            	e.printStackTrace();
+                e.printStackTrace();
             }
         }
-        else
-        {
-        	return;
+        
+            return;
         }
-    }
-    
     public boolean resolveAttack(Territory attacking, Territory defending)
     {
-    	/*
-    	 * Needs error checking to make sure that there are at least 2 armies in
-    	 * the attacking terrioty
-    	 */
-    	
-    	Scanner k = new Scanner(System.in);
-    	
-    	Dice dice = new Dice();
-    	
-    	System.out.printf(
-    			"Player %d, decide how many dice you would like to roll?",
-    			attacking.getOccupier().getPID());
-    	int attackerRollNumber = k.nextInt();
-    	
-    	ArrayList<Integer> attackersRolls = new ArrayList<Integer>();
+        /*
+         * Needs error checking to make sure that there are at least 2 armies in the attacking territory
+         */
+
+        Scanner k = new Scanner(System.in);
+        
+        Dice dice = new Dice();
+                    
+        System.out.printf("Player %d, decide how many dice you would like to roll?", attacking.getOccupier().getPID());
+        int attackerRollNumber = k.nextInt();
+
+        
+        
+        ArrayList<Integer> attackersRolls = new ArrayList<Integer>();
         attackersRolls.addAll(dice.roll2(attackerRollNumber));
         
-        System.out.printf("Player %d, pick how many dice you would like to roll?(Player %d who is attacking %s has chosen to use %d dice)",
-        		defending.getOccupier().getPID(),
-                attacking.getOccupier().getPID(), defending.toString(), 
-                attackerRollNumber);
+        
+        
+        System.out.printf("Player %d, pick how many dice you would like to roll?(Player %d who is attacking %s has chosen to use %d dice)", defending.getOccupier().getPID()
+                , attacking.getOccupier().getPID(), defending.toString(), attackerRollNumber);
         
         int defenderRollNumber = k.nextInt();
         
-        ArrayList<Integer> defendersRolls = new ArrayList<Integer>();        
+        ArrayList<Integer> defendersRolls = new ArrayList<Integer>();
         
+        
+        //Sort and compare the rolls
         attackersRolls = dice.roll2(attackerRollNumber);
         
         defendersRolls = dice.roll2(defenderRollNumber);
