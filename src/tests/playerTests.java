@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import model.Player;
+import model.*;
 
 public class playerTests
 {
-    Player player;
+    EasyBot bot;
     @Test
     public void testPlayer()
     {
@@ -18,6 +18,16 @@ public class playerTests
     @Test
     public void testConstructorAndGettersAndSetters()
     {
-        assertTrue(false);
+        Board b = new Board();
+        bot = new EasyBot(420, 100, b, 1);
+        
+        assertEquals(bot.getArmies(), 100);
+        assertFalse(bot.getArmies() != 200);
+        
+        assertTrue(bot.getPID() == 420);
+        assertFalse(bot.getPID() == 420);
+        
+        
+        
     }
 }
