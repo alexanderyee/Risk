@@ -88,14 +88,18 @@ public class Map {
 	}
 
 	public void giveRandomTerritory(Player p) { // used when assigning territories at the start, NOTE: territories is shuffled. 
+		if(territories.size()==0){
+			return;
+		}
+		
 		Collections.shuffle(territories);
-		while (territories.get(0).getOccupier() != null)
-			Collections.shuffle(territories);
-		p.territoryObtained(territories.get(0));
+	Territory temp= territories.get(0);
+	    p.territoryObtained(temp);
 		p.loseAnArmy();
-		territories.get(0).changeOccupier(p);
-		territories.get(0).setArmies(1);
-	
+		temp.changeOccupier(p);
+		temp.setArmies(1);
+		territories.remove(0);
+		
 	}
 
 }

@@ -78,9 +78,11 @@ public abstract class Player
     	territories.add(t);
     }
     public String getTerroritories(){
+    	int count=1;
     	StringBuffer result = new StringBuffer();
         for(Territory t : territories){
-        	result.append(t.toString());
+        	result.append(count + ") "+t.toString());
+        	count++;
         	result.append("\n");
         }
     return result.toString();
