@@ -27,8 +27,6 @@ public class Map {
 		return deck.dealCard();
 	}
 	public void assignInitialTerritories(){// will choode the 
-		
-		
 	}
 	public Territory getTerritory(String name) {
 		for(Territory t : territories) {
