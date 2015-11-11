@@ -28,7 +28,9 @@ public class Map {
 	public Card drawCard() {
 		return deck.dealCard();
 	}
-	
+
+	public void assignInitialTerritories(){// will choode the 
+	}
 	public Territory getTerritory(String name) {
 		for(Territory t : territories) {
 			if(t.toString().equals(name)) {
@@ -104,7 +106,7 @@ public class Map {
 	//new method here
 	public int exchangeCards(Player p)
 	{
-		ArrayList<Card> playersHand = p.cards2; //get the players cards
+		ArrayList<Card> playersHand = p.cards2; //get the players cards create getter
 		int bonus = 0;
 		boolean willExchange = false;
 		Scanner s = new Scanner(System.in);		
