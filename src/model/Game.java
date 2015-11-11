@@ -9,24 +9,24 @@ import java.util.Random;
 
 import java.util.Scanner;
 
-//<<<<<<< HEAD
+//<<<<<<<< HEAD
 public class Game {
 
-	// MEMBER VARIABLES
-	// logic variables
+	//MEMBER VARIABLES
+	//logic variables
 	private int turnsPlayed;
 	private int roundsPlayed;
 	private boolean gameOver;
-	private int cardSetValue;
-	// game piece variables
+	private int cardSetValue; //we can delete this now, moving it to Map class
+	//game piece variables
 	private Map map;
-	// player variables
+	//player variables
 	private int numPlayers;
-
+	
 	private ArrayList<Player> players;
 	private int currentPID;
-
-	// CONSTRUCTOR
+	
+	//CONSTRUCTOR
 	public Game(int numBots, int numHumans) {
 		initializeMemberVariables(numBots, numHumans);
 		initializePlayers(numBots, numHumans);
@@ -42,34 +42,34 @@ public class Game {
 		map = new Map();
 		this.numPlayers = numBots + numHumans;
 		players = new ArrayList<Player>();
-
 	}
-
+	
 	private void initializePlayers(int numBots, int numHumans) {
 		int initArmies = 0;
-		if (numPlayers == 3)
+		if(numPlayers == 3)
 			initArmies = 35;
-		else if (numPlayers == 4)
+		else if(numPlayers == 4)
 			initArmies = 30;
-		else if (numPlayers == 5)
+		else if(numPlayers == 5)
 			initArmies = 25;
-		else if (numPlayers == 6)
+		else if(numPlayers == 6)
 			initArmies = 20;
-		for (int ii = 0; ii < numBots; ii++) { // instantiate bots
+		for(int ii = 0; ii < numBots; ii++) { //instantiate bots
 			Player p = new Bot(ii, initArmies, map);
 			players.add(p);
 		}
-		for (int jj = numBots; jj < (numPlayers - numBots); jj++) { // instantiate
-																	// humans
+		for(int jj = numBots; jj < (numPlayers-numBots); jj++) { //instantiate humans
 			Player p = new Human(jj, initArmies, map);
+
 			players.add(p);
 		}
 	}
-
+	
 	private void setupGame() {
 		rollToGoFirst();
 		claimTerritories();
-		//beginGame();
+		//beginGame2(); //this is the new re-structured one
+		//beginGame(); //we don't need this any more
 	}
 
 	private void rollToGoFirst() {
@@ -87,25 +87,47 @@ public class Game {
 		}
 
 	}
-
+	
 	private void beginGame() {
 		Player curr;
-		while (!gameOver) {
+		while(!gameOver) {
 			curr = players.get(currentPID);
-			if (curr.deploy(cardSetValue)) // if the player turned in a set of
-											// cards, raise value of card sets
+			if(curr.deploy(cardSetValue)) //if the player turned in a set of cards, raise value of card sets
 				raiseCardSetValue();
 			curr.attack();
-			if (curr.getTotalTerritories() == 42)
+			if(curr.getTotalTerritories() == 42)
 				gameOver = true;
 			else {
-				curr.fortify(); // TODO (AI-01): You'll have to change this to a
-								// dynamic value
+				curr.fortify(); //TODO (AI-01): You'll have to change this to a dynamic value
 				currentPID++;
 			}
 		}
 	}
-
+	
+	private void beginGame2()
+	{
+		Player curr;
+		while(!gameOver) {
+			curr = players.get(currentPID);
+			int bonus = curr.deploy2();
+			bonus += map.exchangeCards(curr);
+			curr.placeDeployedArmies2(bonus);
+			curr.attack();
+			if(curr.getTotalTerritories() == 42)
+				gameOver = true;
+			else {
+				curr.fortify(); //TODO (AI-01): You'll have to change this to a dynamic value
+        		System.out.println("Randomly claiming territories.");
+        		for (int ii = 0; ii < 42; ii++) {
+        			if (currentPID >= players.size())
+        				currentPID = 0;
+        			map.giveRandomTerritory(players.get(currentPID));
+        			currentPID++;
+        		}
+			}
+		}
+	}
+	
 	// PRIVATE METHODS
 	private void raiseCardSetValue() {
 		if (cardSetValue <= 10)
@@ -121,9 +143,6 @@ public class Game {
     public void placeArmyInPlayerTerritory(int p, int terrNumber){
 	   players.get(p-1).addArmy(terrNumber);
     }
-    /*
-     * Resolve attack, this needs to error check later
-     */
     public void attack()
     {
 
@@ -276,5 +295,5 @@ public class Game {
             return false;
         }
     }
-    }
-
+    
+}
