@@ -3,6 +3,7 @@ package model;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /* @author Ben Shields / Daniel Phillips (Mostly Ben)
  * @version 1.0
@@ -302,6 +303,20 @@ public abstract class Player
     {
         // TODO Auto-generated method stub
         return playerChoice;
+        
+        //for the human we can use:
+//        System.out.println("Would you like to continue attacking? Type 'y' or 'n'.");
+//        Scanner s = new Scanner(System.in);
+//        String answer = s.next().toLowerCase();
+//        if(answer.equals("y"))
+//        	return true;
+//        else if(answer.equals("n"))
+//        	return false;
+//        else {
+//        	System.out.println("Error. Try again.");
+//        	return chooseContinueAttacking(); //make it not have a parameter
+//        }
+         
     }
 
     private Territory chooseAttacker()
@@ -372,7 +387,7 @@ public abstract class Player
     }
 
     // deploy methods
-    private void placeDeployedArmies(int armies, List<Territory> toPlace)
+    private void placeDeployedArmies(int armies)
     {
         
     }
