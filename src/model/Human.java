@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Human extends Player {
 
-	public Human(int pid, int initArmies, Board b) {
+	public Human(int pid, int initArmies, Map b) {
 		super(pid, initArmies, b);
 		// TODO Auto-generated constructor stub
 	}

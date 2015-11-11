@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Territory
@@ -22,6 +23,7 @@ public class Territory
      */
     public Territory(Continent cont, Countries name)
     {
+    	adj = new ArrayList<Territory>();
         this.cont = cont;
         this.name = name;
         this.color = cont.getColor();
@@ -31,8 +33,8 @@ public class Territory
 
     public void setAdj(Territory[] adjs)
     {
-        for (Territory t : adjs)
-            this.adj.add(t);
+        for (int i = 0; i<adjs.length; i++)
+            this.adj.add(adjs[i]);
         this.numAdj = adjs.length;
     }
     // PUBLIC METHODS
