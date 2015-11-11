@@ -10,6 +10,7 @@ public class Map {
 
 	//MEMBER VARIABLES
 	private ArrayList<Territory> territories;
+	private List<Territory> unclaimedTerritories;
 	private Deck deck;
 
 	//CONSTRUCTOR
@@ -17,7 +18,7 @@ public class Map {
 		RiskResources r = new RiskResources();
 		territories = r.getTerritories(); //returns array with all territories
 		deck = new Deck();
-		
+		unclaimedTerritories = getUnclaimedTerritories();
 	}
 	
 	//PUBLIC METHODS
@@ -88,17 +89,17 @@ public class Map {
 	}
 
 	public void giveRandomTerritory(Player p) { // used when assigning territories at the start, NOTE: territories is shuffled. 
-		if(territories.size()==0){
+		if(unclaimedTerritories.size()==0){
 			return;
 		}
 		
-		Collections.shuffle(territories);
-	Territory temp= territories.get(0);
+		Collections.shuffle(unclaimedTerritories);
+	Territory temp= unclaimedTerritories.get(0);
 	    p.territoryObtained(temp);
 		p.loseAnArmy();
 		temp.changeOccupier(p);
 		temp.setArmies(1);
-		territories.remove(0);
+		unclaimedTerritories.remove(0);
 		
 	}
 
