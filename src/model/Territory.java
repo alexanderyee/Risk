@@ -64,7 +64,9 @@ public class Territory
     {
         return this.cont;
     }
-
+    public Color getColor(){
+    	return this.color;
+    }
     // setters
     public void setArmies(int a)
     {
