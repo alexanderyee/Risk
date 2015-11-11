@@ -152,8 +152,10 @@ public class Game {
 
         if (k.next() == "Y")
         {
-            // Determines the current player object
+          
+        	// Determines the current player object
             Player currentPlayer = null;
+            currentPID=players.get(0).getPID();
             for (Player i : players)
             {
                 if (i.getPID() == currentPID)
@@ -161,7 +163,7 @@ public class Game {
                     currentPlayer = i;
                 }
             }
-
+              System.out.println(currentPlayer.getTerritories());
             try
             {
 
@@ -224,7 +226,7 @@ public class Game {
                 e.printStackTrace();
             }
         }
-        
+        System.out.println("Method ended");
             return;
         }
     public boolean resolveAttack(Territory attacking, Territory defending)
