@@ -1,8 +1,12 @@
 package model;
 
 import java.util.ArrayList;
+<<<<<<< HEAD
 import java.util.Collections;
 import java.util.Comparator;
+=======
+import java.util.Random;
+>>>>>>> 10cce1a295973402e4abdb04b61fa2c2050458d7
 import java.util.Scanner;
 
 public class Game
@@ -154,6 +158,109 @@ public class Game
             cardSetValue += 5;
     }
 
+<<<<<<< HEAD
+=======
+public class Game {
+
+	//MEMBER VARIABLES
+	//logic variables
+	private int turnsPlayed;
+	private int roundsPlayed;
+	private boolean gameOver;
+	private int cardSetValue;
+	//game piece variables
+	private Map board;
+	//player variables
+	private int numPlayers;
+	private ArrayList<Player> players;
+	private int currentPID;
+	
+	//CONSTRUCTOR
+	public Game(int numBots, int numHumans) {
+		initializeMemberVariables(numBots, numHumans);
+		initializePlayers(numBots, numHumans);
+		setupGame();
+	}
+
+	//CONSTRUCTOR HELPER METHODS
+	private void initializeMemberVariables(int numBots, int numHumans) {
+		turnsPlayed = 0;
+		roundsPlayed = 0;
+		gameOver = false;
+		cardSetValue = 4;
+		board = new Map();
+		this.numPlayers = numBots + numHumans;
+		players = new ArrayList<Player>();
+	}
+	
+	private void initializePlayers(int numBots, int numHumans) {
+		int initArmies = 0;
+		if(numPlayers == 3)
+			initArmies = 35;
+		else if(numPlayers == 4)
+			initArmies = 30;
+		else if(numPlayers == 5)
+			initArmies = 25;
+		else if(numPlayers == 6)
+			initArmies = 20;
+		for(int ii = 0; ii < numBots; ii++) { //instantiate bots
+			Player p = new Bot(ii, initArmies, board);
+			players.add(p);
+		}
+		for(int jj = numBots; jj < (numPlayers-numBots); jj++) { //instantiate humans
+			Player p = new Human(jj, initArmies, board);
+			players.add(p);
+		}
+	}
+	
+	private void setupGame() {
+		rollToGoFirst();
+		claimTerritories();
+		beginGame();
+	}
+
+	private void rollToGoFirst() {
+		Random r = new Random();
+		currentPID = r.nextInt(players.size());
+	}
+
+	private void claimTerritories() {
+		System.out.println("Randomly claiming territories.");
+		for(int ii = 0; ii < 42; ii++) {
+			if(currentPID > players.size())
+				currentPID = 0;
+			board.giveRandomTerritory(players.get(currentPID));
+			currentPID++;
+		}
+		
+	}
+	
+	private void beginGame() {
+		Player curr;
+		while(!gameOver) {
+			curr = players.get(currentPID);
+			if(curr.deploy(cardSetValue)) //if the player turned in a set of cards, raise value of card sets
+				raiseCardSetValue();
+			curr.attack();
+			if(curr.getTotalTerritories() == 42)
+				gameOver = true;
+			else {
+				curr.fortify(); //TODO (AI-01): You'll have to change this to a dynamic value
+				currentPID++;
+			}
+		}
+	}
+	
+	//PRIVATE METHODS
+	private void raiseCardSetValue() {
+		if(cardSetValue <= 10)
+			cardSetValue += 2;
+		else if(cardSetValue == 12)
+			cardSetValue += 3;
+		else
+			cardSetValue += 5;
+	}
+>>>>>>> 10cce1a295973402e4abdb04b61fa2c2050458d7
     /*
      * Attack method, will ask the current PID if they want to attack, then asks
      * what territory they want to attack and then asks the player which
