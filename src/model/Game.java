@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -64,28 +65,8 @@ public class Game {
 	}
 
 	private void rollToGoFirst() {
-		int max = 0;
-		ArrayList<Player> playersRolling = players;
-		ArrayList<Player> winning = new ArrayList<Player>();
-		while(playersRolling.size() != 1) { //while there isn't one winner without ties
-			for(int ii = 0; ii < playersRolling.size(); ii++) {
-				int[] diceRoll = playersRolling.get(ii).rollDice(6); //each player will roll six dice to avoid ties as much as possible
-				int sum = 0;
-				for(int jj = 0; jj < diceRoll.length; jj++) {
-					sum += diceRoll[jj];
-				}
-				if(sum > max) {
-					max = sum;
-					winning.add(playersRolling.get(ii));
-				}
-				else if(sum == max) {
-					winning.add(playersRolling.get(ii));
-				}
-			}
-			playersRolling = winning; //everyone that rolled the max is tied and re-rolls
-			max = 0;
-		}
-		currentPID = winning.get(0).getPID();
+		Random r = new Random();
+		currentPID = r.nextInt(players.size());
 	}
 
 	private void claimTerritories() {
