@@ -74,7 +74,17 @@ public abstract class Player
         territories = new ArrayList<Territory>();
 
     }
-
+    public void addTerritory(Territory t){
+    	territories.add(t);
+    }
+    public String getTerroritories(){
+    	StringBuffer result = new StringBuffer();
+        for(Territory t : territories){
+        	result.append(t.toString());
+        	result.append("\n");
+        }
+    return result.toString();
+    }
     // PUBLIC METHODS
 
     // getters

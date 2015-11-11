@@ -1,13 +1,15 @@
 package tests;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 
 import org.junit.Test;
 
+import model.Board;
 import model.Continent;
 import model.Countries;
+import model.Human;
 import model.Territory;
 
 public class TerritoryTest {
@@ -22,6 +24,11 @@ public class TerritoryTest {
 		Territory[] na3Adj = {na2, na5, na6, eu1};
 		gland.setAdj(na3Adj);
 		assertEquals(gland.getColor(), Color.YELLOW);
+		assertEquals(gland.getArmies(), 0);
+		gland.addArmies(1);
+		gland.changeOccupier(new Human(0, 0, new Board()));
+		System.out.println(gland.toString());
+		
 	}
 	
 }

@@ -115,6 +115,7 @@ public class Territory
     }
 
     // board methods
+    @Override
     public String toString()
     {
         return name.toString();
