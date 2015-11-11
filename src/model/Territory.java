@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Territory
@@ -22,6 +23,7 @@ public class Territory
      */
     public Territory(Continent cont, Countries name)
     {
+    	adj = new ArrayList<Territory>();
         this.cont = cont;
         this.name = name;
         this.color = cont.getColor();
@@ -31,8 +33,8 @@ public class Territory
 
     public void setAdj(Territory[] adjs)
     {
-        for (Territory t : adjs)
-            this.adj.add(t);
+        for (int i = 0; i<adjs.length; i++)
+            this.adj.add(adjs[i]);
         this.numAdj = adjs.length;
     }
     // PUBLIC METHODS
@@ -62,7 +64,9 @@ public class Territory
     {
         return this.cont;
     }
-
+    public Color getColor(){
+    	return this.color;
+    }
     // setters
     public void setArmies(int a)
     {
@@ -104,6 +108,7 @@ public class Territory
     }
 
     // board methods
+    @Override
     public String toString()
     {
         return name.toString();

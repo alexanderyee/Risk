@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-public class Board {
+public class Map {
 
 	//MEMBER VARIABLES
 	private ArrayList<Territory> territories;
 	private Deck deck;
 
 	//CONSTRUCTOR
-	public Board() {
+	public Map() {
 		RiskResources r = new RiskResources();
 		territories = r.getTerritories();
 		deck = new Deck();

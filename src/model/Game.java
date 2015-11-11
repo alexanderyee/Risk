@@ -13,7 +13,7 @@ public class Game
     private boolean gameOver;
     private int cardSetValue;
     // game piece variables
-    private Board board;
+    private Map board;
     // player variables
     private int numPlayers;
     private ArrayList<Player> players;
@@ -27,34 +27,6 @@ public class Game
         setupGame();
     }
 
-    /* Attack method, will ask the current PID if they want to attack, then asks what territory
-     * they want to attack and then asks the player which territory they want to attack with
-     * 
-     */
-    public void attack()
-    {
-        System.out.printf("Player %i, would you like to attack?", currentPID);
-        Scanner k = new Scanner(System.in);
-        if (k.next() == "Y")
-        {
-            Player currentPlayer;
-            for (Player i : players)
-            {
-                if(i.getPID() == currentPID)
-                {
-                    currentPlayer = i;
-                }
-            }
-            
-            for(Territory j : )
-        }
-        else
-        {
-            return;
-        }
-
-    }
-
     // CONSTRUCTOR HELPER METHODS
     private void initializeMemberVariables(int numBots, int numHumans)
     {
@@ -62,7 +34,7 @@ public class Game
         roundsPlayed = 0;
         gameOver = false;
         cardSetValue = 4;
-        board = new Board();
+        board = new Map();
         this.numPlayers = numBots + numHumans;
         players = new ArrayList<Player>();
     }
@@ -82,11 +54,126 @@ public class Game
             Player p = new Bot(ii, initArmies, board);
             players.add(p);
         }
-        for (int jj = (numPlayers - numBots); jj < numPlayers; jj++)
+        for (int jj = numBots; jj < (numPlayers - numBots); jj++)
         { // instantiate humans
             Player p = new Human(jj, initArmies, board);
             players.add(p);
         }
+    }
+
+    /*
+     * Attack method, will ask the current PID if they want to attack, then asks
+     * what territory they want to attack and then asks the player which
+     * territory they want to attack with
+     */
+    public void attack()
+    {
+
+        // Asks if the player wants to attack or no
+        System.out.printf("Player %d, would you like to attack?", currentPID);
+        Scanner k = new Scanner(System.in);
+
+        if (k.next() == "Y")
+        {
+            // Determines the current player object
+            Player currentPlayer = null;
+            for (Player i : players)
+            {
+                if (i.getPID() == currentPID)
+                {
+                    currentPlayer = i;
+                }
+            }
+
+            try
+            {
+
+                // Prints out a list of the number of territories this player
+                // has and the territories that are adjacent to each other
+                boolean attackUnresolved = true;
+                while (attackUnresolved)
+                {
+
+                    ArrayList<Territory> tList = currentPlayer.getTerritories();
+                    ArrayList<Territory> adjList = null;
+
+                    for (int i = 0; i < currentPlayer
+                            .getTotalTerritories(); i++)
+                    {
+                        System.out.printf("(%d) Territory %s can attack: ", i,
+                                tList.get(i));
+
+                        adjList = (ArrayList<Territory>) tList.get(i)
+                                .getAdjacentTerritories();
+
+                        for (int j = 0; j < adjList.size(); j++)
+                        {
+                            System.out.printf("\t (%d) %s", j,
+                                    adjList.get(j).toString());
+                        }
+                    }
+
+                    System.out.printf(
+                            "Enter the number of the territory would like to attack with:");
+                    
+                    
+                    int attackingTerritoryNumber = k.nextInt();
+                    
+                    Territory attackingTerritory = currentPlayer
+                            .getTerritories().get(attackingTerritoryNumber);
+
+                    System.out.printf(
+                            "Enter the number of the territory that you would like to attack(0-%d):",
+                            currentPlayer.getTerritories().size());
+                    
+                    int defendingTerritoryNumber = k.nextInt();
+                    
+                    
+                    Territory defendingTerritory = currentPlayer
+                            .getTerritories().get(attackingTerritoryNumber)
+                            .getAdjacentTerritories()
+                            .get(defendingTerritoryNumber);
+
+                    
+                    
+                
+                
+                }
+
+            }
+            catch (NullPointerException e)
+            {
+                e.printStackTrace();
+            }
+        }
+        else
+        {
+            return;
+        }
+
+    }
+    
+    /*
+     *  Resolve attack, this needs to be able to 
+     */ 
+    public boolean resolveAttack(Territory attacking, Territory defending)
+    {
+
+        Scanner k = new Scanner(System.in);
+        
+        Dice dice = new Dice();
+        
+        System.out.printf("Player %d, decide how many dice you would like to roll?", attacking.getOccupier().getPID());
+        int attackerRollNumber = k.nextInt();
+        
+        int[] attackersRolls = new int[attackerRollNumber];
+        
+        System.out.println("Player %s, ", 1);
+        
+        
+        
+        
+        return false;
     }
 
     private void setupGame()
@@ -135,29 +222,6 @@ public class Game
         currentPID = winning.get(0).getPID();
     }
 
-    private void claimTerritories()
-    {
-        for (int ii = 0; ii < 42; ii++)
-        {
-            System.out.println(board.listUnclaimed());
-            if (currentPID > players.size()) currentPID = 0;
-            String choice = players.get(currentPID).claim();
-            Territory t = board.getTerritory(choice);
-            giveClaimedTerritory(players.get(currentPID), t);
-            currentPID++;
-        }
-        while (players.get(currentPID).getArmies() != 0)
-        {
-            if (currentPID > players.size()) currentPID = 0;
-            System.out.println(
-                    board.listPlayerTerritories(players.get(currentPID)));
-            String choice = players.get(currentPID).placeRemaining();
-            players.get(currentPID).loseAnArmy();
-            board.getTerritory(choice).addArmies(1);
-            currentPID++;
-        }
-    }
-
     private void beginGame()
     {
         Player curr;
@@ -168,7 +232,7 @@ public class Game
                                            // cards, raise value of card sets
                 raiseCardSetValue();
             curr.attack();
-            if (curr.getTerritories() == 42)
+            if (curr.getTerritories().size() == 42)
                 gameOver = true;
             else
             {
@@ -198,4 +262,26 @@ public class Game
         t.setArmies(1);
     }
 
+    private void claimTerritories()
+    {
+        for (int ii = 0; ii < 42; ii++)
+        {
+            System.out.println(board.listUnclaimed());
+            if (currentPID > players.size()) currentPID = 0;
+            String choice = players.get(currentPID).claim();
+            Territory t = board.getTerritory(choice);
+            giveClaimedTerritory(players.get(currentPID), t);
+            currentPID++;
+        }
+        while (players.get(currentPID).getArmies() != 0)
+        {
+            if (currentPID > players.size()) currentPID = 0;
+            System.out.println(
+                    board.listPlayerTerritories(players.get(currentPID)));
+            String choice = players.get(currentPID).placeRemaining();
+            players.get(currentPID).loseAnArmy();
+            board.getTerritory(choice).addArmies(1);
+            currentPID++;
+        }
+    }
 }

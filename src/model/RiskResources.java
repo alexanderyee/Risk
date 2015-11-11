@@ -9,6 +9,7 @@ public class RiskResources {
 
 	//CONSTRUCTOR
 	public RiskResources() {
+		allTerritories = new ArrayList<Territory>();
 		setAllTerritories();
 	}	
 	

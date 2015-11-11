@@ -12,13 +12,13 @@ public class EasyBot extends Player
     /* Represents the Easy AI bot in Risk, will choose pseudo random decisions 
      * 
      */
-    public EasyBot(int pid, int initArmies, Board b)
+    public EasyBot(int pid, int initArmies, Map b)
     {
         super(pid, initArmies, b);
         // TODO Auto-generated constructor stub
     }
 
-    public EasyBot(int pid, int initArmies, Board b, int s)
+    public EasyBot(int pid, int initArmies, Map b, int s)
     {
         super(pid, initArmies, b);
         
