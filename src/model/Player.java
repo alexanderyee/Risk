@@ -81,11 +81,19 @@ public abstract class Player
     	int count=1;
     	StringBuffer result = new StringBuffer();
         for(Territory t : territories){
-        	result.append(count + ") "+t.toString());
+        	result.append(count + ") "+t.toString()+ "----------"+t.getArmies() + " armies");
         	count++;
         	result.append("\n");
         }
+        result.append("Armies left "+this.totalArmies+"\n");
     return result.toString();
+    }
+    public void addArmy(int terrNumber){
+    	if(totalArmies<=0 ){
+    		return;
+    	}
+    	territories.get(terrNumber-1).addArmies(1);
+      this.loseAnArmy();    
     }
     // PUBLIC METHODS
 

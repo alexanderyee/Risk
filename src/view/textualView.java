@@ -18,6 +18,10 @@ public class textualView {
 	    System.out.println("Player 1 territories \n" + g.getTerritories(1));
 	    System.out.println("Player 2 territories \n" + g.getTerritories(2));
 	    System.out.println("Player 3 territories \n" + g.getTerritories(3));
+	    for(int i=1; i<=13; i++){
+	    	g.placeArmyInPlayerTerritory(1, i);
+	    }
+	    System.out.println("Player 1 territories \n" + g.getTerritories(1));
 	}
 	
 }

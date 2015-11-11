@@ -214,5 +214,10 @@ public class Game {
 	public String getTerritories(int k) {
 		return players.get(k - 1).getTerroritories();
 	}
+    public void placeArmyInPlayerTerritory(int p, int terrNumber){
+	   players.get(p-1).addArmy(terrNumber);
+    }
+
+    
 
 }
