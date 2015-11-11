@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import model.Card;
 import model.Deck;
 
 public class DeckTest {
@@ -13,6 +14,8 @@ public class DeckTest {
 		Deck d = new Deck();
 	    
 		assertEquals(42,d.size());
+		
+		
 	}
 
 }

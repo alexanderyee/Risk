@@ -150,4 +150,7 @@ public class Game {
 		t.setArmies(1);
 	}
 	
+
+
+
 }
