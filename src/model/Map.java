@@ -1,8 +1,10 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Queue;
+import java.util.Random;
 
 public class Map {
 
@@ -30,7 +32,7 @@ public class Map {
 				return t;
 			}
 		}
-		System.out.println("Territory not found by Board's method getTerritory.");
+		System.out.println("Territory not found by Map's method getTerritory.");
 		return null;
 	}
 	
@@ -39,7 +41,7 @@ public class Map {
 			if(c.toString().equals(t.toString()))
 				return t;
 		}
-		System.out.println("Error, territory not found by Board's getCountry method.");
+		System.out.println("Error, territory not found by Map's getCountry method.");
 		return null;
 	}
 	
@@ -58,6 +60,14 @@ public class Map {
 		}
 		return list;
 	}
+	public List<Territory> getUnclaimedTerritories(){
+		List<Territory> result = new ArrayList<Territory>();
+		for (Territory t: territories){
+			if (t.getOccupier() == null)
+				result.add(t);
+		}
+		return result;
+	}
 	
 	public String listPlayerTerritories(Player p) {
 		String list = "";
@@ -73,5 +83,14 @@ public class Map {
 	public void returnCard(Card c) {
 		deck.returnCardToDeck(c);
 	}
-
+	public void giveRandomTerritory(Player p) { // used when assigning territories at the start, NOTE: territories is shuffled. 
+		Collections.shuffle(territories);
+		while (territories.get(0).getOccupier() != null)
+			Collections.shuffle(territories);
+		p.territoryObtained(territories.get(0));
+		p.loseAnArmy();
+		territories.get(0).changeOccupier(p);
+		territories.get(0).setArmies(1);
+	
+	}
 }

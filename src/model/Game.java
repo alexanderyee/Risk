@@ -92,7 +92,7 @@ public class Game {
 				currentPID = 0;
 			String choice = players.get(currentPID).claim();
 			Territory t = board.getTerritory(choice);
-			giveClaimedTerritory(players.get(currentPID), t);
+			board.giveRandomTerritory(players.get(currentPID));
 			currentPID++;
 		}
 		while(players.get(currentPID).getArmies() != 0) {
@@ -132,11 +132,6 @@ public class Game {
 			cardSetValue += 5;
 	}
 	
-	private void giveClaimedTerritory(Player p, Territory t) {
-		p.territoryObtained(t.getContinent());
-		p.loseAnArmy();
-		t.changeOccupier(p);
-		t.setArmies(1);
-	}
+	
 	
 }
