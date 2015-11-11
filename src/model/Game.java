@@ -1,129 +1,159 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Scanner;
 
+public class Game
+{
 
-public class Game {
+    // MEMBER VARIABLES
+    // logic variables
+    private int turnsPlayed;
+    private int roundsPlayed;
+    private boolean gameOver;
+    private int cardSetValue;
+    // game piece variables
+    private Map board;
+    // player variables
+    private int numPlayers;
+    private ArrayList<Player> players;
+    private int currentPID;
 
-	//MEMBER VARIABLES
-	//logic variables
-	private int turnsPlayed;
-	private int roundsPlayed;
-	private boolean gameOver;
-	private int cardSetValue;
-	//game piece variables
-	private Map board;
-	//player variables
-	private int numPlayers;
-	private ArrayList<Player> players;
-	private int currentPID;
-	
-	//CONSTRUCTOR
-	public Game(int numBots, int numHumans) {
-		initializeMemberVariables(numBots, numHumans);
-		initializePlayers(numBots, numHumans);
-		setupGame();
-	}
+    // CONSTRUCTOR
+    public Game(int numBots, int numHumans)
+    {
+        initializeMemberVariables(numBots, numHumans);
+        initializePlayers(numBots, numHumans);
+        setupGame();
+    }
 
-	//CONSTRUCTOR HELPER METHODS
-	private void initializeMemberVariables(int numBots, int numHumans) {
-		turnsPlayed = 0;
-		roundsPlayed = 0;
-		gameOver = false;
-		cardSetValue = 4;
-		board = new Map();
-		this.numPlayers = numBots + numHumans;
-		players = new ArrayList<Player>();
-	}
-	
-	private void initializePlayers(int numBots, int numHumans) {
-		int initArmies = 0;
-		if(numPlayers == 3)
-			initArmies = 35;
-		else if(numPlayers == 4)
-			initArmies = 30;
-		else if(numPlayers == 5)
-			initArmies = 25;
-		else if(numPlayers == 6)
-			initArmies = 20;
-		for(int ii = 0; ii < numBots; ii++) { //instantiate bots
-			Player p = new Bot(ii, initArmies, board);
-			players.add(p);
-		}
-		for(int jj = numBots; jj < (numPlayers-numBots); jj++) { //instantiate humans
-			Player p = new Human(jj, initArmies, board);
-			players.add(p);
-		}
-	}
-	
-	private void setupGame() {
-		rollToGoFirst();
-		claimTerritories();
-		beginGame();
-	}
+    // CONSTRUCTOR HELPER METHODS
+    private void initializeMemberVariables(int numBots, int numHumans)
+    {
+        turnsPlayed = 0;
+        roundsPlayed = 0;
+        gameOver = false;
+        cardSetValue = 4;
+        board = new Map();
+        this.numPlayers = numBots + numHumans;
+        players = new ArrayList<Player>();
+    }
 
-	private void rollToGoFirst() {
-		int max = 0;
-		ArrayList<Player> playersRolling = players;
-		ArrayList<Player> winning = new ArrayList<Player>();
-		while(playersRolling.size() != 1) { //while there isn't one winner without ties
-			for(int ii = 0; ii < playersRolling.size(); ii++) {
-				int[] diceRoll = playersRolling.get(ii).rollDice(6); //each player will roll six dice to avoid ties as much as possible
-				int sum = 0;
-				for(int jj = 0; jj < diceRoll.length; jj++) {
-					sum += diceRoll[jj];
-				}
-				if(sum > max) {
-					max = sum;
-					winning.add(playersRolling.get(ii));
-				}
-				else if(sum == max) {
-					winning.add(playersRolling.get(ii));
-				}
-			}
-			playersRolling = winning; //everyone that rolled the max is tied and re-rolls
-			max = 0;
-		}
-		currentPID = winning.get(0).getPID();
-	}
+    private void initializePlayers(int numBots, int numHumans)
+    {
+        int initArmies = 0;
+        if (numPlayers == 3)
+            initArmies = 35;
+        else if (numPlayers == 4)
+            initArmies = 30;
+        else if (numPlayers == 5)
+            initArmies = 25;
+        else if (numPlayers == 6) initArmies = 20;
+        for (int ii = 0; ii < numBots; ii++)
+        { // instantiate bots
+            Player p = new Bot(ii, initArmies, board);
+            players.add(p);
+        }
+        for (int jj = numBots; jj < (numPlayers - numBots); jj++)
+        { // instantiate humans
+            Player p = new Human(jj, initArmies, board);
+            players.add(p);
+        }
+    }
 
-	private void claimTerritories() {
-		System.out.println("Randomly claiming territories.");
-		for(int ii = 0; ii < 42; ii++) {
-			if(currentPID > players.size())
-				currentPID = 0;
-			board.giveRandomTerritory(players.get(currentPID));
-			currentPID++;
-		}
-		
-	}
-	
-	private void beginGame() {
-		Player curr;
-		while(!gameOver) {
-			curr = players.get(currentPID);
-			if(curr.deploy(cardSetValue)) //if the player turned in a set of cards, raise value of card sets
-				raiseCardSetValue();
-			curr.attack();
-			if(curr.getTotalTerritories() == 42)
-				gameOver = true;
-			else {
-				curr.fortify(); //TODO (AI-01): You'll have to change this to a dynamic value
-				currentPID++;
-			}
-		}
-	}
-	
-	//PRIVATE METHODS
-	private void raiseCardSetValue() {
-		if(cardSetValue <= 10)
-			cardSetValue += 2;
-		else if(cardSetValue == 12)
-			cardSetValue += 3;
-		else
-			cardSetValue += 5;
-	}
+    private void setupGame()
+    {
+        rollToGoFirst();
+        claimTerritories();
+        beginGame();
+    }
+
+    private void rollToGoFirst()
+    {
+        int max = 0;
+        ArrayList<Player> playersRolling = players;
+        ArrayList<Player> winning = new ArrayList<Player>();
+        while (playersRolling.size() != 1)
+        { // while there isn't one winner without ties
+            for (int ii = 0; ii < playersRolling.size(); ii++)
+            {
+                int[] diceRoll = playersRolling.get(ii).rollDice(6); // each
+                                                                     // player
+                                                                     // will
+                                                                     // roll six
+                                                                     // dice to
+                                                                     // avoid
+                                                                     // ties as
+                                                                     // much as
+                                                                     // possible
+                int sum = 0;
+                for (int jj = 0; jj < diceRoll.length; jj++)
+                {
+                    sum += diceRoll[jj];
+                }
+                if (sum > max)
+                {
+                    max = sum;
+                    winning.add(playersRolling.get(ii));
+                }
+                else if (sum == max)
+                {
+                    winning.add(playersRolling.get(ii));
+                }
+            }
+            playersRolling = winning; // everyone that rolled the max is tied
+                                      // and re-rolls
+            max = 0;
+        }
+        currentPID = winning.get(0).getPID();
+    }
+
+    private void claimTerritories()
+    {
+        System.out.println("Randomly claiming territories.");
+        for (int ii = 0; ii < 42; ii++)
+        {
+            if (currentPID >= players.size()) currentPID = 0;
+            board.giveRandomTerritory(players.get(currentPID));
+            currentPID++;
+        }
+
+    }
+
+    private void beginGame()
+    {
+        Player curr;
+        while (!gameOver)
+        {
+            curr = players.get(currentPID);
+            if (curr.deploy(cardSetValue)) // if the player turned in a set of
+                                           // cards, raise value of card sets
+                raiseCardSetValue();
+            curr.attack();
+            if (curr.getTotalTerritories() == 42)
+                gameOver = true;
+            else
+            {
+                curr.fortify(); // TODO (AI-01): You'll have to change this to a
+                                // dynamic value
+                currentPID++;
+            }
+        }
+    }
+
+    // PRIVATE METHODS
+    private void raiseCardSetValue()
+    {
+        if (cardSetValue <= 10)
+            cardSetValue += 2;
+        else if (cardSetValue == 12)
+            cardSetValue += 3;
+        else
+            cardSetValue += 5;
+    }
+
     /*
      * Attack method, will ask the current PID if they want to attack, then asks
      * what territory they want to attack and then asks the player which
@@ -178,29 +208,30 @@ public class Game {
 
                     System.out.printf(
                             "Enter the number of the territory would like to attack with:");
-                    
-                    
+
                     int attackingTerritoryNumber = k.nextInt();
-                    
+
                     Territory attackingTerritory = currentPlayer
                             .getTerritories().get(attackingTerritoryNumber);
 
                     System.out.printf(
                             "Enter the number of the territory that you would like to attack(0-%d):",
                             currentPlayer.getTerritories().size());
-                    
+
                     int defendingTerritoryNumber = k.nextInt();
-                    
-                    
+
                     Territory defendingTerritory = currentPlayer
                             .getTerritories().get(attackingTerritoryNumber)
                             .getAdjacentTerritories()
                             .get(defendingTerritoryNumber);
 
-                    
-                    
-                
-                
+                    //Starts the loop to allow the attacker to continue attacking if they still have armies to attack with
+                    //or they capture the territory
+                    boolean attackResolved = false;
+                    while(!(attackResolved))
+                    {
+                        attackResolved = resolveAttack(attackingTerritory, defendingTerritory);
+                    }
                 }
 
             }
@@ -215,11 +246,10 @@ public class Game {
         }
 
     }
-    
+
     /*
-     *  Resolve attack, this needs to error check later
-     *  
-     */ 
+     * Resolve attack, this needs to error check later
+     */
     public boolean resolveAttack(Territory attacking, Territory defending)
     {
         /*
@@ -247,17 +277,45 @@ public class Game {
         
         ArrayList<Integer> defendersRolls = new ArrayList<Integer>();
         
+        
+        //Sort and compare the rolls
         attackersRolls = dice.roll2(attackerRollNumber);
         
         defendersRolls = dice.roll2(defenderRollNumber);
         
+        Collections.sort(attackersRolls);
+        Collections.sort(defendersRolls);
         
+        for(int i = 0; i < 3; i++)
+        {
+            if(attackersRolls.get(i) == (defendersRolls.get(i)) && attackersRolls.get(i).equals(0))
+            {
+                //Do nothing because both players didn't want to roll this many
+            }
+            else if(attackersRolls.get(i) == (defendersRolls.get(i)) || attackersRolls.get(i) < defendersRolls.get(i))
+            {
+                attacking.removeArmies(1);
+            }
+            else if(attackersRolls.get(i) < defendersRolls.get(i))
+            {
+                defending.removeArmies(1);
+            }
+        }
         
-        
-        
-        
-        
-        
-        return false;
+        //if the defending player loses, give the territory to the attacking player
+        //and return true, the attack has been resolved
+        if(defending.getArmies() == 0)
+        {
+            defending.changeOccupier(attacking.getOccupier());
+            return true;
+        }
+        else if(attacking.getArmies() == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 }
