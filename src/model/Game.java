@@ -11,7 +11,11 @@ public class Game {
 	private boolean gameOver;
 	private int cardSetValue;
 	//game piece variables
+
 	private Map map;
+
+	private Map board;
+
 	//player variables
 	private int numPlayers;
 	private ArrayList<Player> players;
@@ -30,7 +34,10 @@ public class Game {
 		roundsPlayed = 0;
 		gameOver = false;
 		cardSetValue = 4;
+
 		map = new Map();
+		board = new Map();
+
 		this.numPlayers = numBots + numHumans;
 		players = new ArrayList<Player>();
 	}
@@ -113,7 +120,7 @@ public class Game {
 			if(curr.deploy(cardSetValue)) //if the player turned in a set of cards, raise value of card sets
 				raiseCardSetValue();
 			curr.attack();
-			if(curr.getTerritories() == 42)
+			if(curr.getTotalTerritories() == 42)
 				gameOver = true;
 			else {
 				curr.fortify(); //TODO (AI-01): You'll have to change this to a dynamic value

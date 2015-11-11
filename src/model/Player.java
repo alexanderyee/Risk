@@ -1,6 +1,7 @@
 
 package model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -16,6 +17,7 @@ public abstract class Player
     private int playerID;
     private int totalArmies;
     private int totalTerritories;
+    private ArrayList<Territory> territories;
 
     /*
      * Variables used to determine how many countries this player controls on
@@ -33,7 +35,11 @@ public abstract class Player
      */
     protected Deck cards;
     private Dice dice;
+
     protected Map map; // I don't know about this design choice but it's a
+
+    protected Map board; // I don't know about this design choice but it's a
+
                            // placeholder - Ben
 
     /*
@@ -61,7 +67,12 @@ public abstract class Player
         occupiedAfrica = 0;
         occupiedEurope = 0;
         dice = new Dice();
+
         map = b;
+
+        board = b;
+        territories = new ArrayList<Territory>();
+
     }
 
     // PUBLIC METHODS
@@ -93,9 +104,13 @@ public abstract class Player
      * 
      * @return int representing the number of Territory objects this player controls
      */
-    public int getTerritories()
+    public int getTotalTerritories()
     {
         return totalTerritories;
+    }
+    
+    public ArrayList<Territory> getTerritories() {
+    	return territories;
     }
 
     /* increments the total number of territories that this player has in Continent c's area 
