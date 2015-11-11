@@ -103,7 +103,75 @@ public class Human extends Player
 				return false;
 	}
 	
+	@Override
+	public boolean decideCardExchange2() {
+				if(cards.size() >= 5) {
+					//implement logic or call a method to do the actual exchange
+					System.out.println("You must trade in cards this turn.");
+					System.out.println("Enter the int of the cards to trade in, one at a time.");
+					for(int i = 0; i < cards.size(); i ++) {
+						Card curr = cards.dealCard();
+						System.out.println(i + ": " + curr.toString() + "\n");
+						cards.returnCardToDeck(curr);
+					}
+					Scanner s = new Scanner(System.in);
+					int first = s.nextInt();
+					for(int i = 0; i < first-1; i ++) {
+						Card curr = cards.dealCard();
+						Territory onCard1 = map.getCountry(curr.getCountry());
+						if(onCard1 != null) {
+							onCard1.addArmies(2);
+							gainArmies(2);
+						}
+						cards.returnCardToDeck(curr);
+					}
+					map.returnCard(cards.dealCard());
+					int second = s.nextInt();
+					for(int i = 0; i < second-1; i ++) {
+						Card curr = cards.dealCard();
+						Territory onCard2 = map.getCountry(curr.getCountry());
+						if(onCard2 != null) {
+							onCard2.addArmies(2);
+							gainArmies(2);
+						}
+						cards.returnCardToDeck(curr);
+					}
+					map.returnCard(cards.dealCard());
+					int third = s.nextInt();
+					for(int i = 0; i < third-1; i ++) {
+						Card curr = cards.dealCard();
+						Territory onCard3 = map.getCountry(curr.getCountry());
+						if(onCard3 != null) {
+							onCard3.addArmies(2);
+							gainArmies(2);
+						}
+						cards.returnCardToDeck(curr);
+					}
+					map.returnCard(cards.dealCard());
+					return true;
+				}
+				return false;
+	}
 	
+	public void placeDeployedArmies2(int armies)
+	{
+		Scanner s = new Scanner(System.in);
+		int choice;
+		Territory terr;
+		for(int i = 0; i < armies; i++)
+		{
+			System.out.println("Enter the number of the territory you would like to deploy a single army to.");
+			for(int j = 0; j < territories.size(); j++)
+			{
+				System.out.println(j + ": " + territories.get(j).toString());
+			}
+			System.out.println("-----------------------");
+			choice = s.nextInt();
+			terr = territories.get(choice);
+			terr.addArmies(1);
+			loseAnArmy();
+		}
+	}
 	
 
 

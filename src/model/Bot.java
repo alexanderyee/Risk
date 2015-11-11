@@ -52,4 +52,16 @@ public class Bot extends Player {
 		return false;
 	}
 
+	@Override
+	public boolean decideCardExchange2() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void placeDeployedArmies2(int armies) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -17,7 +17,7 @@ public abstract class Player
     private int playerID;
     private int totalArmies;
     private int totalTerritories;
-    private ArrayList<Territory> territories;
+    protected ArrayList<Territory> territories; //this had to be changed
 
     /*
      * Variables used to determine how many countries this player controls on
@@ -34,12 +34,9 @@ public abstract class Player
      * Not sure about this - Danny
      */
     protected Deck cards;
+    protected ArrayList<Card> cards2;
     private Dice dice;
-
     protected Map map; // I don't know about this design choice but it's a
-
-    protected Map board; // I don't know about this design choice but it's a
-
                            // placeholder - Ben
 
     /*
@@ -67,24 +64,10 @@ public abstract class Player
         occupiedAfrica = 0;
         occupiedEurope = 0;
         dice = new Dice();
-
         map = b;
-
-        board = b;
         territories = new ArrayList<Territory>();
+    }
 
-    }
-    public void addTerritory(Territory t){
-    	territories.add(t);
-    }
-    public String getTerroritories(){
-    	StringBuffer result = new StringBuffer();
-        for(Territory t : territories){
-        	result.append(t.toString());
-        	result.append("\n");
-        }
-    return result.toString();
-    }
     // PUBLIC METHODS
 
     // getters
@@ -206,6 +189,12 @@ public abstract class Player
         totalArmies += armies;
         return exchanged;
     }
+    
+    //This method should replace depoloy by moving the card-set turn-in logic to the Map class
+    public int deploy2()
+    {
+    	return fromTerritories() + fromContinents();
+    }
 
     /* Draws a card from the Game's object Board's object Deck and adds it to the players hand
      * 
@@ -315,6 +304,7 @@ public abstract class Player
     }
 
     abstract protected boolean decideCardExchange();
+    abstract public boolean decideCardExchange2();
 
     // attacking methods
     /*
@@ -414,11 +404,12 @@ public abstract class Player
     }
 
     // deploy methods
-    private void placeDeployedArmies(int armies)
+    private void placeDeployedArmies(int armies) //delete this
     {
         
     }
-
+    
+    abstract public void placeDeployedArmies2(int armies);
 	
 
 }

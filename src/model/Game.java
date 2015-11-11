@@ -11,12 +11,10 @@ public class Game {
 	private int turnsPlayed;
 	private int roundsPlayed;
 	private boolean gameOver;
-	private int cardSetValue;
+	private int cardSetValue; //we can delete this now, moving it to Map class
 	//game piece variables
 
 	private Map map;
-
-	private Map board;
 
 	//player variables
 	private int numPlayers;
@@ -38,7 +36,6 @@ public class Game {
 		cardSetValue = 4;
 
 		map = new Map();
-		board = new Map();
 
 		this.numPlayers = numBots + numHumans;
 		players = new ArrayList<Player>();
@@ -58,11 +55,8 @@ public class Game {
 			Player p = new Bot(ii, initArmies, map);
 			players.add(p);
 		}
-
-	
-
 		for(int jj = numBots; jj < (numPlayers-numBots); jj++) { //instantiate humans
-			Player p = new Human(jj, initArmies, board);
+			Player p = new Human(jj, initArmies, map);
 
 			players.add(p);
 		}
@@ -71,7 +65,8 @@ public class Game {
 	private void setupGame() {
 		rollToGoFirst();
 		claimTerritories();
-		beginGame();
+		beginGame2(); //this is the new re-structured one
+		beginGame(); //we don't need this any more
 	}
 
 	private void rollToGoFirst() {
@@ -90,7 +85,7 @@ public class Game {
 			currentPID++;
 		}
 		while(players.get(currentPID).getArmies() != 0) {
-			if(currentPID > players.size())
+			if(currentPID >= players.size())
 				currentPID = 0;
 			System.out.println(map.listPlayerTerritories(players.get(currentPID)));
 			String choice = players.get(currentPID).placeRemaining();
@@ -116,8 +111,26 @@ public class Game {
 		}
 	}
 	
+	private void beginGame2()
+	{
+		Player curr;
+		while(!gameOver) {
+			curr = players.get(currentPID);
+			int bonus = curr.deploy2();
+			bonus += map.exchangeCards(curr);
+			curr.placeDeployedArmies2(bonus);
+			curr.attack();
+			if(curr.getTotalTerritories() == 42)
+				gameOver = true;
+			else {
+				curr.fortify(); //TODO (AI-01): You'll have to change this to a dynamic value
+				currentPID++;
+			}
+		}
+	}
+	
 	//PRIVATE METHODS
-	private void raiseCardSetValue() {
+	private void raiseCardSetValue() { //can delete this now
 		if(cardSetValue <= 10)
 			cardSetValue += 2;
 		else if(cardSetValue == 12)
