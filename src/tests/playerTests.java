@@ -18,7 +18,7 @@ public class playerTests
     @Test
     public void testConstructorAndGettersAndSetters()
     {
-        Board b = new Board();
+        Map b = new Map();
         bot = new EasyBot(420, 100, b, 1);
         
         assertEquals(bot.getArmies(), 100);
