@@ -56,8 +56,12 @@ public class Game {
 			Player p = new Bot(ii, initArmies, map);
 			players.add(p);
 		}
-		for(int jj = (numPlayers-numBots); jj < numPlayers; jj++) { //instantiate humans
-			Player p = new Human(jj, initArmies, map);
+
+		
+
+		for(int jj = numBots; jj < (numPlayers-numBots); jj++) { //instantiate humans
+			Player p = new Human(jj, initArmies, board);
+
 			players.add(p);
 		}
 	}
