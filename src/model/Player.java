@@ -129,8 +129,9 @@ public abstract class Player
      * 
      * @return void
      */
-    public void territoryObtained(Continent c)
+    public void territoryObtained(Territory t)
     {
+    	Continent c = t.getContinent();
         if (c == Continent.NAMERICA)
             occupiedNAmerica++;
         if (c == Continent.SAMERICA)
@@ -143,6 +144,7 @@ public abstract class Player
             occupiedAfrica++;
         if (c == Continent.EUROPE)
             occupiedEurope++;
+        territories.add(t);
         totalTerritories++;
     }
 
@@ -416,5 +418,7 @@ public abstract class Player
     {
         
     }
+
+	
 
 }
