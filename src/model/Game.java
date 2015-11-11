@@ -100,7 +100,7 @@ public class Game {
 	private void claimTerritories() {
 		System.out.println("Randomly claiming territories.");
 		for(int ii = 0; ii < 42; ii++) {
-<<<<<<< HEAD
+
 			System.out.println(map.listUnclaimed());
 			if(currentPID > players.size())
 				currentPID = 0;
@@ -116,11 +116,11 @@ public class Game {
 			String choice = players.get(currentPID).placeRemaining();
 			players.get(currentPID).loseAnArmy();
 			map.getTerritory(choice).addArmies(1);
-=======
+
 			if(currentPID > players.size())
 				currentPID = 0;
 			board.giveRandomTerritory(players.get(currentPID));
->>>>>>> 33a28aa7db60374e5a23cec82a097aac8075ec4f
+
 			currentPID++;
 		}
 		

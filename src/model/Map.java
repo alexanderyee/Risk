@@ -86,9 +86,7 @@ public class Map {
 	public void returnCard(Card c) {
 		deck.returnCardToDeck(c);
 	}
-<<<<<<< HEAD
-  
-=======
+
 	public void giveRandomTerritory(Player p) { // used when assigning territories at the start, NOTE: territories is shuffled. 
 		Collections.shuffle(territories);
 		while (territories.get(0).getOccupier() != null)
@@ -99,5 +97,5 @@ public class Map {
 		territories.get(0).setArmies(1);
 	
 	}
->>>>>>> 554e04a38003ae78ce5deac8e091beeaef54a1b3
+
 }
