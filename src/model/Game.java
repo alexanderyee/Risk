@@ -147,14 +147,15 @@ public class Game {
     {
 
         // Asks if the player wants to attack or no
-        System.out.printf("Player %d, would you like to attack?", currentPID);
+      
         Scanner k = new Scanner(System.in);
-
-        if (k.next() == "Y")
+        System.out.printf("Player %d, would you like to attack? \n", currentPID);
+        int y = k.nextInt();
+        if (y == 1)
         {
-          Player currentPlayer= players.get(currentPID);
+          Player currentPlayer= players.get(currentPID-1);
         	// Determines the current player object
-           System.out.println(this.getTerritories(currentPID+1));
+           System.out.println(currentPlayer.getTerritories());
             try
             {
 
