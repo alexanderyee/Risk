@@ -94,26 +94,7 @@ public class Game {
 			board.giveRandomTerritory(players.get(currentPID));
 			currentPID++;
 		}
-		//-----------------------------------------------
-//		for(int ii = 0; ii < 42; ii++) {
-//			System.out.println(board.listUnclaimed());
-//			if(currentPID > players.size())
-//				currentPID = 0;
-//			String choice = players.get(currentPID).claim();
-//			Territory t = board.getTerritory(choice);
-//			giveClaimedTerritory(players.get(currentPID), t);
-//			currentPID++;
-//		}
-//		while(players.get(currentPID).getArmies() != 0) {
-//			if(currentPID > players.size())
-//				currentPID = 0;
-//			System.out.println(board.listPlayerTerritories(players.get(currentPID)));
-//			String choice = players.get(currentPID).placeRemaining();
-//			players.get(currentPID).loseAnArmy();
-//			board.getTerritory(choice).addArmies(1);
-//			currentPID++;
-//		}
-		//-------------------------------------------------
+		
 	}
 	
 	private void beginGame() {
@@ -142,11 +123,6 @@ public class Game {
 			cardSetValue += 5;
 	}
 	
-	private void giveClaimedTerritory(Player p, Territory t) {
-		p.territoryObtained(t.getContinent());
-		p.loseAnArmy();
-		t.changeOccupier(p);
-		t.setArmies(1);
-	}
+	
 	
 }
