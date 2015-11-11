@@ -29,6 +29,11 @@ public class EasyBot extends Player
         
     }
     
+    public int getSeed()
+    {
+        return seed;
+    }
+    
     @Override
     public String claim()
     {

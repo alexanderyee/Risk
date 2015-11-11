@@ -15,7 +15,7 @@ public class Map {
 	//CONSTRUCTOR
 	public Map() {
 		RiskResources r = new RiskResources();
-		territories = r.getTerritories();
+		territories = r.getTerritories(); //returns array with all territories
 		deck = new Deck();
 		
 	}
@@ -25,7 +25,10 @@ public class Map {
 	public Card drawCard() {
 		return deck.dealCard();
 	}
-	
+	public void assignInitialTerritories(){// will choode the 
+		
+		
+	}
 	public Territory getTerritory(String name) {
 		for(Territory t : territories) {
 			if(t.toString().equals(name)) {
@@ -83,6 +86,7 @@ public class Map {
 	public void returnCard(Card c) {
 		deck.returnCardToDeck(c);
 	}
+
 	public void giveRandomTerritory(Player p) { // used when assigning territories at the start, NOTE: territories is shuffled. 
 		Collections.shuffle(territories);
 		while (territories.get(0).getOccupier() != null)
@@ -93,4 +97,5 @@ public class Map {
 		territories.get(0).setArmies(1);
 	
 	}
+
 }

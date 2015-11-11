@@ -16,9 +16,10 @@ public class Deck {
      initializeDeck(); //Adds all the cards to the queue
 	 shuffleDeck();     //shuffles the queue
 	}
-
+    
+    
 	public int size() {    
-		return size;
+		return CardQ.size();
 	}
 	public Card dealCard(){      
 		return CardQ.remove();

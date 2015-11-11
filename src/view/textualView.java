@@ -14,6 +14,8 @@ public class textualView {
 		System.out.println("Enter number of bots.");
 		int bots = s.nextInt();
 		Game letsPlay = new Game(bots, humans);
+	
+	
 	}
 	
 }

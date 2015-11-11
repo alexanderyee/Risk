@@ -35,7 +35,11 @@ public abstract class Player
      */
     protected Deck cards;
     private Dice dice;
-    protected Map board; // I don't know about this design choice but it's a
+
+    protected Map map; // I don't know about this design choice but it's a
+
+   
+
                            // placeholder - Ben
 
     /*
@@ -63,10 +67,24 @@ public abstract class Player
         occupiedAfrica = 0;
         occupiedEurope = 0;
         dice = new Dice();
-        board = b;
-        territories = new ArrayList<Territory>();
-    }
 
+        map = b;
+
+  
+        territories = new ArrayList<Territory>();
+
+    }
+    public void addTerritory(Territory t){
+    	territories.add(t);
+    }
+    public String getTerroritories(){
+    	StringBuffer result = new StringBuffer();
+        for(Territory t : territories){
+        	result.append(t.toString());
+        	result.append("\n");
+        }
+    return result.toString();
+    }
     // PUBLIC METHODS
 
     // getters
@@ -197,7 +215,7 @@ public abstract class Player
     {
         // takes a card from Game's Board's Deck to add to this Player's hand of
         // cards
-        cards.returnCardToDeck(board.drawCard());
+        cards.returnCardToDeck(map.drawCard());
     }
 
     /* ----no clue how this works----
