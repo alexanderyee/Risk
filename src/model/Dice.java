@@ -31,5 +31,5 @@ public class Dice {
 			result.add(roll());
 		return result;
 	}
-
+	
 }
