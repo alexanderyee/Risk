@@ -156,10 +156,10 @@ public abstract class Player
         return dice.roll(numDiceRolled);
     }
 
-    //~~~~~~~~~~~~~~~~~~~CHECK THIS COMMENT BEN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   
-    /*  Gives the player the amount of armies it would recieve from the end of the turn. 
+    //~~~~~~~~~~~~~~~~~~~CHECK THIS COMMENT BEN~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~   Checked, Ben
+    /*  Gives the player the amount of armies it would receive from the (end)->(beginning) of the turn. 
      *  Accounts for both cards that this player has, the amount of armies that this player would
-     *  recieve for the amount of territories, and the bonus for a control over a continent.
+     *  receive for the amount of territories, and the bonus for a control over a continent.
      * 
      *  @param int the bonus card set value that is currently being offered by the deck
      *  @return boolean 
