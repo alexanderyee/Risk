@@ -25,4 +25,11 @@ public class Dice {
 		return result;
 	}
 	
+	public ArrayList<Integer> roll2(int numDiceRolled) {
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		for(int ii = 0; ii < numDiceRolled; ii++)
+			result.add(roll());
+		return result;
+	}
+	
 }
