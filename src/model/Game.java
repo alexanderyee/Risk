@@ -152,18 +152,9 @@ public class Game {
 
         if (k.next() == "Y")
         {
-          
+          Player currentPlayer= players.get(currentPID);
         	// Determines the current player object
-            Player currentPlayer = null;
-            currentPID=players.get(0).getPID();
-            for (Player i : players)
-            {
-                if (i.getPID() == currentPID)
-                {
-                    currentPlayer = i;
-                }
-            }
-              System.out.println(currentPlayer.getTerritories());
+           System.out.println(this.getTerritories(currentPID+1));
             try
             {
 
