@@ -9,7 +9,6 @@ import java.util.Random;
 
 import java.util.Scanner;
 
-//<<<<<<<< HEAD
 public class Game {
 
 	//MEMBER VARIABLES
@@ -147,23 +146,15 @@ public class Game {
     {
 
         // Asks if the player wants to attack or no
-        System.out.printf("Player %d, would you like to attack?", currentPID);
+      
         Scanner k = new Scanner(System.in);
-
-        if (k.next() == "Y")
+        System.out.printf("Player %d, would you like to attack? \n", currentPID);
+        int y = k.nextInt();
+        if (y == 1)
         {
-          
+          Player currentPlayer= players.get(currentPID-1);
         	// Determines the current player object
-            Player currentPlayer = null;
-            currentPID=players.get(0).getPID();
-            for (Player i : players)
-            {
-                if (i.getPID() == currentPID)
-                {
-                    currentPlayer = i;
-                }
-            }
-              System.out.println(currentPlayer.getTerritories());
+           System.out.println(currentPlayer.getTerritories());
             try
             {
 

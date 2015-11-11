@@ -8,7 +8,7 @@ public class textualView {
 
 	public static void main(String [] args)
 	{
-		/*Scanner s = new Scanner(System.in);
+		/*
 		System.out.println("Enter number of humans.");
 		int humans = s.nextInt();
 		System.out.println("Enter number of bots.");
