@@ -33,7 +33,7 @@ public abstract class Player
      */
     protected Deck cards;
     private Dice dice;
-    protected Board board; // I don't know about this design choice but it's a
+    protected Map map; // I don't know about this design choice but it's a
                            // placeholder - Ben
 
     /*
@@ -50,7 +50,7 @@ public abstract class Player
      * 
      * @return void It's a constructor baka-chan!
      */
-    public Player(int pid, int initArmies, Board b)
+    public Player(int pid, int initArmies, Map b)
     {
         playerID = pid;
         totalArmies = initArmies;
@@ -61,7 +61,7 @@ public abstract class Player
         occupiedAfrica = 0;
         occupiedEurope = 0;
         dice = new Dice();
-        board = b;
+        map = b;
     }
 
     // PUBLIC METHODS
@@ -188,7 +188,7 @@ public abstract class Player
     {
         // takes a card from Game's Board's Deck to add to this Player's hand of
         // cards
-        cards.returnCardToDeck(board.drawCard());
+        cards.returnCardToDeck(map.drawCard());
     }
 
     /* ----no clue how this works----

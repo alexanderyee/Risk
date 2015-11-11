@@ -18,7 +18,7 @@ public class Deck {
 	}
 
 	public int size() {    
-		return size;
+		return CardQ.size();
 	}
 	public Card dealCard(){      
 		return CardQ.remove();

@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
-public class Board {
+public class Map {
 
 	//MEMBER VARIABLES
 	private ArrayList<Territory> territories;
 	private Deck deck;
 
 	//CONSTRUCTOR
-	public Board() {
+	public Map() {
 		RiskResources r = new RiskResources();
-		territories = r.getTerritories();
+		territories = r.getTerritories(); //returns array with all territories
 		deck = new Deck();
 		
 	}
@@ -23,7 +23,10 @@ public class Board {
 	public Card drawCard() {
 		return deck.dealCard();
 	}
-	
+	public void assignInitialTerritories(){// will choode the 
+		
+		
+	}
 	public Territory getTerritory(String name) {
 		for(Territory t : territories) {
 			if(t.toString().equals(name)) {
@@ -73,5 +76,5 @@ public class Board {
 	public void returnCard(Card c) {
 		deck.returnCardToDeck(c);
 	}
-
+  
 }

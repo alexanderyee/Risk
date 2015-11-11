@@ -11,7 +11,7 @@ public class Game {
 	private boolean gameOver;
 	private int cardSetValue;
 	//game piece variables
-	private Board board;
+	private Map map;
 	//player variables
 	private int numPlayers;
 	private ArrayList<Player> players;
@@ -30,7 +30,7 @@ public class Game {
 		roundsPlayed = 0;
 		gameOver = false;
 		cardSetValue = 4;
-		board = new Board();
+		map = new Map();
 		this.numPlayers = numBots + numHumans;
 		players = new ArrayList<Player>();
 	}
@@ -46,11 +46,11 @@ public class Game {
 		else if(numPlayers == 6)
 			initArmies = 20;
 		for(int ii = 0; ii < numBots; ii++) { //instantiate bots
-			Player p = new Bot(ii, initArmies, board);
+			Player p = new Bot(ii, initArmies, map);
 			players.add(p);
 		}
 		for(int jj = (numPlayers-numBots); jj < numPlayers; jj++) { //instantiate humans
-			Player p = new Human(jj, initArmies, board);
+			Player p = new Human(jj, initArmies, map);
 			players.add(p);
 		}
 	}
@@ -87,21 +87,21 @@ public class Game {
 
 	private void claimTerritories() {
 		for(int ii = 0; ii < 42; ii++) {
-			System.out.println(board.listUnclaimed());
+			System.out.println(map.listUnclaimed());
 			if(currentPID > players.size())
 				currentPID = 0;
 			String choice = players.get(currentPID).claim();
-			Territory t = board.getTerritory(choice);
+			Territory t = map.getTerritory(choice);
 			giveClaimedTerritory(players.get(currentPID), t);
 			currentPID++;
 		}
 		while(players.get(currentPID).getArmies() != 0) {
 			if(currentPID > players.size())
 				currentPID = 0;
-			System.out.println(board.listPlayerTerritories(players.get(currentPID)));
+			System.out.println(map.listPlayerTerritories(players.get(currentPID)));
 			String choice = players.get(currentPID).placeRemaining();
 			players.get(currentPID).loseAnArmy();
-			board.getTerritory(choice).addArmies(1);
+			map.getTerritory(choice).addArmies(1);
 			currentPID++;
 		}
 	}

@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Human extends Player {
 
-	public Human(int pid, int initArmies, Board b) {
+	public Human(int pid, int initArmies, Map b) {
 		super(pid, initArmies, b);
 		// TODO Auto-generated constructor stub
 	}
@@ -28,16 +28,16 @@ public class Human extends Player {
 	public void fortify() {
 		boolean legitChoice = false;
 		while(!legitChoice) {
-			System.out.println(board.listPlayerTerritories(this));
+			System.out.println(map.listPlayerTerritories(this));
 			System.out.println("Please choose a territory to fortify with troops.");
 			Scanner s = new Scanner(System.in);
-			Territory fortifyTo = board.getTerritory(s.next());
-			List<Territory> possible = board.getConnectedTerritories(fortifyTo);
+			Territory fortifyTo = map.getTerritory(s.next());
+			List<Territory> possible = map.getConnectedTerritories(fortifyTo);
 			System.out.println("Please choose a territory to fortify troops from.");
 			for(Territory t : possible) {
 				System.out.println(t.toString() + "\n");
 			}
-			Territory fortifyFrom = board.getTerritory(s.next());
+			Territory fortifyFrom = map.getTerritory(s.next());
 			System.out.println("Please choose a number of armies to move from " +
 								fortifyFrom.toString() + " to " + fortifyTo.toString() +
 								" that is less than " + (fortifyFrom.getArmies()-1));
@@ -63,36 +63,36 @@ public class Human extends Player {
 					int first = s.nextInt();
 					for(int i = 0; i < first-1; i ++) {
 						Card curr = cards.dealCard();
-						Territory onCard1 = board.getCountry(curr.getCountry());
+						Territory onCard1 = map.getCountry(curr.getCountry());
 						if(onCard1 != null) {
 							onCard1.addArmies(2);
 							gainArmies(2);
 						}
 						cards.returnCardToDeck(curr);
 					}
-					board.returnCard(cards.dealCard());
+					map.returnCard(cards.dealCard());
 					int second = s.nextInt();
 					for(int i = 0; i < second-1; i ++) {
 						Card curr = cards.dealCard();
-						Territory onCard2 = board.getCountry(curr.getCountry());
+						Territory onCard2 = map.getCountry(curr.getCountry());
 						if(onCard2 != null) {
 							onCard2.addArmies(2);
 							gainArmies(2);
 						}
 						cards.returnCardToDeck(curr);
 					}
-					board.returnCard(cards.dealCard());
+					map.returnCard(cards.dealCard());
 					int third = s.nextInt();
 					for(int i = 0; i < third-1; i ++) {
 						Card curr = cards.dealCard();
-						Territory onCard3 = board.getCountry(curr.getCountry());
+						Territory onCard3 = map.getCountry(curr.getCountry());
 						if(onCard3 != null) {
 							onCard3.addArmies(2);
 							gainArmies(2);
 						}
 						cards.returnCardToDeck(curr);
 					}
-					board.returnCard(cards.dealCard());
+					map.returnCard(cards.dealCard());
 					return true;
 				}
 				return false;

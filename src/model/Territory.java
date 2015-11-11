@@ -102,6 +102,13 @@ public class Territory
         armies--;
         occupier.loseAnArmy();
     }
+    public boolean isOccupied(){
+    	if(this.occupier==null){
+    		return false;
+    	}else {
+    		return true;
+    	}
+    }
 
     // board methods
     public String toString()

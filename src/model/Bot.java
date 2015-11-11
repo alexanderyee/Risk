@@ -12,7 +12,7 @@ public class Bot extends Player {
 	 *  @param 
 	 * 
 	 */
-	public Bot(int pid, int initArmies, Board b) {
+	public Bot(int pid, int initArmies, Map b) {
 		super(pid, initArmies, b);
 		// TODO Auto-generated constructor stub
 		turnsTaken = 0;
