@@ -57,7 +57,7 @@ public class Game {
 			players.add(p);
 		}
 
-		
+	
 
 		for(int jj = numBots; jj < (numPlayers-numBots); jj++) { //instantiate humans
 			Player p = new Human(jj, initArmies, board);
@@ -81,7 +81,7 @@ public class Game {
 				int[] diceRoll = playersRolling.get(ii).rollDice(6); //each player will roll six dice to avoid ties as much as possible
 				int sum = 0;
 				for(int jj = 0; jj < diceRoll.length; jj++) {
-					sum += diceRoll[jj];
+					sum += diceRoll[0];
 				}
 				if(sum > max) {
 					max = sum;
@@ -92,15 +92,12 @@ public class Game {
 				}
 			}
 			playersRolling = winning; //everyone that rolled the max is tied and re-rolls
-			max = 0;
 		}
 		currentPID = winning.get(0).getPID();
 	}
 
 	private void claimTerritories() {
-		System.out.println("Randomly claiming territories.");
 		for(int ii = 0; ii < 42; ii++) {
-
 			System.out.println(map.listUnclaimed());
 			if(currentPID > players.size())
 				currentPID = 0;
@@ -116,14 +113,8 @@ public class Game {
 			String choice = players.get(currentPID).placeRemaining();
 			players.get(currentPID).loseAnArmy();
 			map.getTerritory(choice).addArmies(1);
-
-			if(currentPID > players.size())
-				currentPID = 0;
-			board.giveRandomTerritory(players.get(currentPID));
-
 			currentPID++;
 		}
-		
 	}
 	
 	private void beginGame() {
@@ -152,6 +143,11 @@ public class Game {
 			cardSetValue += 5;
 	}
 	
-	
+	private void giveClaimedTerritory(Player p, Territory t) {
+	//	p.territoryObtained(t.getContinent());
+		p.loseAnArmy();
+		t.changeOccupier(p);
+		t.setArmies(1);
+	}
 	
 }
