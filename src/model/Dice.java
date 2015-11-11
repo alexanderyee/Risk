@@ -19,7 +19,7 @@ public class Dice {
 	}
 	
 	public int[] roll(int numDiceRolled) {
-		int[] result = new int[6];
+		int[] result = new int[numDiceRolled];
 		for(int ii = 0; ii < numDiceRolled; ii++)
 			result[ii] = roll();
 		return result;

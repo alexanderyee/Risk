@@ -70,7 +70,7 @@ public class Game {
 				int[] diceRoll = playersRolling.get(ii).rollDice(6); //each player will roll six dice to avoid ties as much as possible
 				int sum = 0;
 				for(int jj = 0; jj < diceRoll.length; jj++) {
-					sum += diceRoll[0];
+					sum += diceRoll[jj];
 				}
 				if(sum > max) {
 					max = sum;
@@ -81,29 +81,39 @@ public class Game {
 				}
 			}
 			playersRolling = winning; //everyone that rolled the max is tied and re-rolls
+			max = 0;
 		}
 		currentPID = winning.get(0).getPID();
 	}
 
 	private void claimTerritories() {
+		System.out.println("Randomly claiming territories.");
 		for(int ii = 0; ii < 42; ii++) {
-			System.out.println(board.listUnclaimed());
 			if(currentPID > players.size())
 				currentPID = 0;
-			String choice = players.get(currentPID).claim();
-			Territory t = board.getTerritory(choice);
-			giveClaimedTerritory(players.get(currentPID), t);
+			board.giveRandomTerritory(players.get(currentPID));
 			currentPID++;
 		}
-		while(players.get(currentPID).getArmies() != 0) {
-			if(currentPID > players.size())
-				currentPID = 0;
-			System.out.println(board.listPlayerTerritories(players.get(currentPID)));
-			String choice = players.get(currentPID).placeRemaining();
-			players.get(currentPID).loseAnArmy();
-			board.getTerritory(choice).addArmies(1);
-			currentPID++;
-		}
+		//-----------------------------------------------
+//		for(int ii = 0; ii < 42; ii++) {
+//			System.out.println(board.listUnclaimed());
+//			if(currentPID > players.size())
+//				currentPID = 0;
+//			String choice = players.get(currentPID).claim();
+//			Territory t = board.getTerritory(choice);
+//			giveClaimedTerritory(players.get(currentPID), t);
+//			currentPID++;
+//		}
+//		while(players.get(currentPID).getArmies() != 0) {
+//			if(currentPID > players.size())
+//				currentPID = 0;
+//			System.out.println(board.listPlayerTerritories(players.get(currentPID)));
+//			String choice = players.get(currentPID).placeRemaining();
+//			players.get(currentPID).loseAnArmy();
+//			board.getTerritory(choice).addArmies(1);
+//			currentPID++;
+//		}
+		//-------------------------------------------------
 	}
 	
 	private void beginGame() {
