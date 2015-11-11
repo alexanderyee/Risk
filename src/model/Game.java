@@ -9,7 +9,6 @@ import java.util.Random;
 
 import java.util.Scanner;
 
-//<<<<<<<< HEAD
 public class Game {
 
 	//MEMBER VARIABLES
