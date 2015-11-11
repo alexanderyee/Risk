@@ -38,7 +38,7 @@ public abstract class Player
 
     protected Map map; // I don't know about this design choice but it's a
 
-    protected Map board; // I don't know about this design choice but it's a
+   
 
                            // placeholder - Ben
 
@@ -70,7 +70,7 @@ public abstract class Player
 
         map = b;
 
-        board = b;
+  
         territories = new ArrayList<Territory>();
 
     }
