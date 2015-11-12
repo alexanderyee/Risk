@@ -50,11 +50,6 @@ public class Map {
 		return null;
 	}
 	
-	public List<Territory> getConnectedTerritories(Territory t) {
-		List<Territory> all = t.getAdjacentTerritories();
-		// TODO gotta fill this in with actual logic...
-		return all;
-	}
 	
 	public String listUnclaimed() {
 		String list = "";

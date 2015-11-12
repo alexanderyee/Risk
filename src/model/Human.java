@@ -37,7 +37,7 @@ public class Human extends Player
 			System.out.println("Please choose a territory to fortify with troops.");
 			Scanner s = new Scanner(System.in);
 			Territory fortifyTo = map.getTerritory(s.next());
-			List<Territory> possible = map.getConnectedTerritories(fortifyTo);
+			List<Territory> possible = fortifyTo.getAdjacentTerritories();
 			System.out.println("Please choose a territory to fortify troops from.");
 			for(Territory t : possible) {
 				System.out.println(t.toString() + "\n");
