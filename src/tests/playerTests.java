@@ -18,7 +18,7 @@ public class playerTests
     public void testConstructorAndGettersAndSetters()
     {
         Map b = new Map();
-        bot = new EasyBot(420, 100, b, 1);
+        bot = new EasyBot(420, 100, b);
 
         assertEquals(bot.getArmies(), 100);
         assertFalse(bot.getArmies() != 200);
