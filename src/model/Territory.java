@@ -19,8 +19,6 @@ public class Territory
     // CONSTRUCTOR
     /*
      * Constructor for the territory
-     * 
-     * 
      */
     public Territory(Countries name)
     {

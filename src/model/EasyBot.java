@@ -1,5 +1,5 @@
 /*
- * If i had a clue how to do this one, I would have 
+ * If i had a clue how to do this one, I would have
  */
 
 package model;
@@ -11,7 +11,6 @@ public class EasyBot extends Player
 
     /*
      * Represents the Easy AI bot in Risk, will choose pseudo random decisions
-     * 
      */
     public EasyBot(int pid, int initArmies, Map b)
     {

@@ -55,8 +55,7 @@ public class Game
             initArmies = 30;
         else if (numPlayers == 5)
             initArmies = 25;
-        else if (numPlayers == 6)
-            initArmies = 20;
+        else if (numPlayers == 6) initArmies = 20;
         for (int ii = 0; ii < numBots; ii++)
         { // instantiate bots
             Player p = new Bot(ii, initArmies, map);
@@ -90,8 +89,7 @@ public class Game
         System.out.println("Randomly claiming territories.");
         for (int ii = 0; ii < 42; ii++)
         {
-            if (currentPID >= players.size())
-                currentPID = 0;
+            if (currentPID >= players.size()) currentPID = 0;
             map.giveRandomTerritory(players.get(currentPID));
             currentPID++;
         }
@@ -117,8 +115,7 @@ public class Game
                 System.out.println("Randomly claiming territories.");
                 for (int ii = 0; ii < 42; ii++)
                 {
-                    if (currentPID >= players.size())
-                        currentPID = 0;
+                    if (currentPID >= players.size()) currentPID = 0;
                     map.giveRandomTerritory(players.get(currentPID));
                     currentPID++;
                 }
@@ -143,7 +140,8 @@ public class Game
         // Asks if the player wants to attack or no
 
         Scanner k = new Scanner(System.in);
-        System.out.printf("Player %d, would you like to attack? \n", currentPID);
+        System.out.printf("Player %d, would you like to attack? \n",
+                currentPID);
         int y = k.nextInt();
         if (y == 1)
         {
@@ -162,31 +160,40 @@ public class Game
                     ArrayList<Territory> tList = currentPlayer.getTerritories();
                     ArrayList<Territory> adjList = null;
 
-                    for (int i = 0; i < currentPlayer.getTotalTerritories(); i++)
+                    for (int i = 0; i < currentPlayer
+                            .getTotalTerritories(); i++)
                     {
-                        System.out.printf("(%d) Territory %s can attack: ", i, tList.get(i));
+                        System.out.printf("(%d) Territory %s can attack: ", i,
+                                tList.get(i));
 
-                        adjList = (ArrayList<Territory>) tList.get(i).getAdjacentTerritories();
+                        adjList = (ArrayList<Territory>) tList.get(i)
+                                .getAdjacentTerritories();
 
                         for (int j = 0; j < adjList.size(); j++)
                         {
-                            System.out.printf("\t (%d) %s", j, adjList.get(j).toString());
+                            System.out.printf("\t (%d) %s", j,
+                                    adjList.get(j).toString());
                         }
                     }
 
-                    System.out.printf("Enter the number of the territory would like to attack with:");
+                    System.out.printf(
+                            "Enter the number of the territory would like to attack with:");
 
                     int attackingTerritoryNumber = k.nextInt();
 
-                    Territory attackingTerritory = currentPlayer.getTerritories().get(attackingTerritoryNumber);
+                    Territory attackingTerritory = currentPlayer
+                            .getTerritories().get(attackingTerritoryNumber);
 
-                    System.out.printf("Enter the number of the territory that you would like to attack(0-%d):",
+                    System.out.printf(
+                            "Enter the number of the territory that you would like to attack(0-%d):",
                             currentPlayer.getTerritories().size());
 
                     int defendingTerritoryNumber = k.nextInt();
 
-                    Territory defendingTerritory = currentPlayer.getTerritories().get(attackingTerritoryNumber)
-                            .getAdjacentTerritories().get(defendingTerritoryNumber);
+                    Territory defendingTerritory = currentPlayer
+                            .getTerritories().get(attackingTerritoryNumber)
+                            .getAdjacentTerritories()
+                            .get(defendingTerritoryNumber);
 
                     // Starts the loop to allow the attacker to continue
                     // attacking if they still have armies to attack with
@@ -194,7 +201,8 @@ public class Game
                     boolean attackResolved = false;
                     while (!(attackResolved))
                     {
-                        attackResolved = resolveAttack(attackingTerritory, defendingTerritory);
+                        attackResolved = resolveAttack(attackingTerritory,
+                                defendingTerritory);
                     }
                 }
 
@@ -219,7 +227,9 @@ public class Game
 
         Dice dice = new Dice();
 
-        System.out.printf("Player %d, decide how many dice you would like to roll?", attacking.getOccupier().getPID());
+        System.out.printf(
+                "Player %d, decide how many dice you would like to roll?",
+                attacking.getOccupier().getPID());
         int attackerRollNumber = k.nextInt();
 
         ArrayList<Integer> attackersRolls = new ArrayList<Integer>();
@@ -227,7 +237,8 @@ public class Game
 
         System.out.printf(
                 "Player %d, pick how many dice you would like to roll?(Player %d who is attacking %s has chosen to use %d dice)",
-                defending.getOccupier().getPID(), attacking.getOccupier().getPID(), defending.toString(),
+                defending.getOccupier().getPID(),
+                attacking.getOccupier().getPID(), defending.toString(),
                 attackerRollNumber);
 
         int defenderRollNumber = k.nextInt();
@@ -244,11 +255,13 @@ public class Game
 
         for (int i = 0; i < 3; i++)
         {
-            if (attackersRolls.get(i) == (defendersRolls.get(i)) && attackersRolls.get(i).equals(0))
+            if (attackersRolls.get(i) == (defendersRolls.get(i))
+                    && attackersRolls.get(i).equals(0))
             {
                 // Do nothing because both players didn't want to roll this many
             }
-            else if (attackersRolls.get(i) == (defendersRolls.get(i)) || attackersRolls.get(i) < defendersRolls.get(i))
+            else if (attackersRolls.get(i) == (defendersRolls.get(i))
+                    || attackersRolls.get(i) < defendersRolls.get(i))
             {
                 attacking.removeArmies(1);
             }
