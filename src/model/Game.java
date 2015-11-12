@@ -160,8 +160,6 @@ public class Game
                     ArrayList<Territory> tList = currentPlayer.getTerritories();
                     ArrayList<Territory> adjList = null;
 
-
-         
                     int k1 = 0;
                     for (int i = 0; i < currentPlayer
                             .getTotalTerritories(); i++)
