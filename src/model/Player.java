@@ -89,6 +89,10 @@ public abstract class Player
     	territories.get(terrNumber-1).addArmies(1);
       this.loseAnArmy();    
     }
+   public ArrayList<Territory> getTerritoryArray(){
+	return territories;
+	   
+   }
     // PUBLIC METHODS
 
     // getters

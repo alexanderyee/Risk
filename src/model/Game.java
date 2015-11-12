@@ -155,8 +155,10 @@ public class Game {
 
                         for (int j = 0; j < adjList.size(); j++)
                         {
-                            System.out.printf("\t (%d) %s", j,
+                          if( !adjList.get(j).getOccupier().equals(currentPlayer)){
+                        	System.out.printf("\t (%d) %s", j,
                                     adjList.get(j).toString());
+                           }
                         }
                        System.out.println("\n");
                     }
@@ -169,24 +171,32 @@ public class Game {
                             .getTerritories().get(attackingTerritoryNumber);
 
                     System.out.printf(
-                            "Enter the number of the territory that you would like to attack(0-%d):",
-                            currentPlayer.getTerritories().size());
+                            "Enter the number of the territory that you would like to attack: ");
 
                     int defendingTerritoryNumber = k.nextInt();
-
+////
                     Territory defendingTerritory = currentPlayer
-                            .getTerritories().get(attackingTerritoryNumber)
+                            .getTerritoryArray().get(attackingTerritoryNumber)
                             .getAdjacentTerritories()
                             .get(defendingTerritoryNumber);
 
                     //Starts the loop to allow the attacker to continue attacking if they still have armies to attack with
                     //or they capture the territory
-                    boolean attackResolved = false;
-                    while(!(attackResolved))
-                    {
-                        attackResolved = resolveAttack(attackingTerritory, defendingTerritory);
+                   
+                //    while(!(attackResolved))
+                 //   {
+                       // System.out.println("im in here");
+                    	 resolveAttack(attackingTerritory, defendingTerritory);
+                       
+                  //  }
+                    	 System.out.println(this.getTerritories(currentPID));
+                    System.out.printf("Player %d, would you like to continue attacking? \n", currentPID);
+                    int response = k.nextInt();
+                    if(response == 0){
+                    	attackUnresolved=false;
                     }
-                }
+                    //end while loop
+                }//end first while loop
 
             }
             catch (NullPointerException e)
@@ -197,6 +207,8 @@ public class Game {
         System.out.println("Method ended");
             return;
         }
+   
+    /////////////////////Resolved attack
     public boolean resolveAttack(Territory attacking, Territory defending)
     {
         /*
@@ -207,29 +219,31 @@ public class Game {
         
         Dice dice = new Dice();
                     
-        System.out.printf("Player %d, decide how many dice you would like to roll?", attacking.getOccupier().getPID());
+        System.out.printf("Player %d, decide how many dice you would like to roll?", attacking.getOccupier().getPID()+1);
         int attackerRollNumber = k.nextInt();
 
         
         
-        ArrayList<Integer> attackersRolls = new ArrayList<Integer>();
-        attackersRolls.addAll(dice.roll2(attackerRollNumber));
+        ArrayList<Integer> attackersRolls;
+      //  attackersRolls.addAll(dice.roll2(attackerRollNumber));
         
         
         
-        System.out.printf("Player %d, pick how many dice you would like to roll?(Player %d who is attacking %s has chosen to use %d dice)", defending.getOccupier().getPID()
-                , attacking.getOccupier().getPID(), defending.toString(), attackerRollNumber);
+        System.out.printf("Player %d, pick how many dice you would like to roll?(Player %d who is attacking %s has chosen to use %d dice)", 
+        		defending.getOccupier().getPID()+1, attacking.getOccupier().getPID()+1, defending.toString(), attackerRollNumber);
         
         int defenderRollNumber = k.nextInt();
         
-        ArrayList<Integer> defendersRolls = new ArrayList<Integer>();
-        
-        
+        ArrayList<Integer> defendersRolls;
+      //  attackersRolls.addAll(dice.roll2(attackerRollNumber));
+        ///////////////////////////////
         //Sort and compare the rolls
         attackersRolls = dice.roll2(attackerRollNumber);
-        
+        attackersRolls.add(0);
+        attackersRolls.add(0);
         defendersRolls = dice.roll2(defenderRollNumber);
-        
+        defendersRolls.add(0);
+        defendersRolls.add(0);
         Collections.sort(attackersRolls);
         Collections.sort(defendersRolls);
         
