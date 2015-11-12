@@ -8,8 +8,9 @@ public class EasyBot extends Player
 {
 
     private int seed;
-    
-    /* Represents the Easy AI bot in Risk, will choose pseudo random decisions 
+
+    /*
+     * Represents the Easy AI bot in Risk, will choose pseudo random decisions
      * 
      */
     public EasyBot(int pid, int initArmies, Map b)
@@ -21,19 +22,19 @@ public class EasyBot extends Player
     public EasyBot(int pid, int initArmies, Map b, int s)
     {
         super(pid, initArmies, b);
-        
+
     }
-    
+
     public void attack()
     {
-        
+
     }
-    
+
     public int getSeed()
     {
         return seed;
     }
-    
+
     @Override
     public String claim()
     {
@@ -52,13 +53,14 @@ public class EasyBot extends Player
     public void fortify()
     {
         // TODO Auto-generated method stub
-        
+
     }
 
-	@Override
-	public void placeDeployedArmies(int armies) {
-		// TODO Auto-generated method stub
-		
-	}
+    @Override
+    public void placeDeployedArmies(int armies)
+    {
+        // TODO Auto-generated method stub
+
+    }
 
 }

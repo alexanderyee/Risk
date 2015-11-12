@@ -3,8 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
 public class Territory
 {
     // need to collaborate with player on attacking/defending!!
@@ -19,13 +17,14 @@ public class Territory
     private int numAdj;
 
     // CONSTRUCTOR
-    /* Constructor for the territory 
+    /*
+     * Constructor for the territory
      * 
      * 
      */
     public Territory(Continent cont, Countries name)
     {
-    	adj = new ArrayList<Territory>();
+        adj = new ArrayList<Territory>();
         this.cont = cont;
         this.name = name;
         this.color = cont.getColor();
@@ -35,7 +34,7 @@ public class Territory
 
     public void setAdj(Territory[] adjs)
     {
-        for (int i = 0; i<adjs.length; i++)
+        for (int i = 0; i < adjs.length; i++)
             this.adj.add(adjs[i]);
         this.numAdj = adjs.length;
     }
@@ -66,9 +65,12 @@ public class Territory
     {
         return this.cont;
     }
-    public Color getColor(){
-    	return this.color;
+
+    public Color getColor()
+    {
+        return this.color;
     }
+
     // setters
     public void setArmies(int a)
     {
@@ -108,12 +110,17 @@ public class Territory
         armies--;
         occupier.loseAnArmy();
     }
-    public boolean isOccupied(){
-    	if(this.occupier==null){
-    		return false;
-    	}else {
-    		return true;
-    	}
+
+    public boolean isOccupied()
+    {
+        if (this.occupier == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     // board methods
@@ -122,9 +129,5 @@ public class Territory
     {
         return name.toString();
     }
-
-
-
-
 
 }
