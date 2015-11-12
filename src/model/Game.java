@@ -58,7 +58,7 @@ public class Game
         else if (numPlayers == 6) initArmies = 20;
         for (int ii = 0; ii < numBots; ii++)
         { // instantiate bots
-            Player p = new Bot(ii, initArmies, map);
+            Player p = new EasyBot(ii, initArmies, map);
             players.add(p);
         }
         for (int jj = numBots; jj < (numPlayers - numBots); jj++)
@@ -168,6 +168,7 @@ public class Game
                         System.out.printf("(%d) Territory %s can attack: \n",
                                 k1, tList.get(i));
                         k1++;
+
                         adjList = (ArrayList<Territory>) tList.get(i)
                                 .getAdjacentTerritories();
 
@@ -196,14 +197,17 @@ public class Game
                             System.out.printf("\t (%d) %s", j,
                                     adjList.get(j).toString());
 
+
                         }
                         System.out.println("\n");
                     }
 
                     System.out.printf(
+
                             "Enter the number of the territory would like to attack from:");
 
                     System.out.printf(
+
                             "Enter the number of the territory would like to attack with:");
 
                     int attackingTerritoryNumber = k.nextInt();
@@ -212,12 +216,14 @@ public class Game
                             .getTerritories().get(attackingTerritoryNumber);
 
                     System.out.printf(
+
                             "Enter the number of the territory that you would like to attack: ");
 
                     int defendingTerritoryNumber = k.nextInt();
                     ////
                     Territory defendingTerritory = currentPlayer
                             .getTerritoryArray().get(attackingTerritoryNumber)
+
                             .getAdjacentTerritories()
                             .get(defendingTerritoryNumber);
 
@@ -238,7 +244,9 @@ public class Game
                     int response = k.nextInt();
                     if (response == 0)
                     {
+
                         attackUnresolved = false;
+
                     }
 
                 }
@@ -268,7 +276,9 @@ public class Game
 
         System.out.printf(
                 "Player %d, decide how many dice you would like to roll?",
+
                 attacking.getOccupier().getPID() + 1);
+
         int attackerRollNumber = k.nextInt();
 
         ArrayList<Integer> attackersRolls;
@@ -276,8 +286,10 @@ public class Game
 
         System.out.printf(
                 "Player %d, pick how many dice you would like to roll?(Player %d who is attacking %s has chosen to use %d dice)",
+
                 defending.getOccupier().getPID() + 1,
                 attacking.getOccupier().getPID() + 1, defending.toString(),
+
                 attackerRollNumber);
 
         int defenderRollNumber = k.nextInt();
