@@ -33,8 +33,7 @@ public abstract class Player
     /*
      * Not sure about this - Danny
      */
-    protected Deck cards;
-    protected ArrayList<Card> cards2;
+    protected ArrayList<Card> cards;
     private Dice dice;
     protected Map map; // I don't know about this design choice but it's a
                            // placeholder - Ben
@@ -197,23 +196,9 @@ public abstract class Player
      *  @param int the bonus card set value that is currently being offered by the deck
      *  @return boolean 
      */
-    public boolean deploy(int cardSetVal)
-    {
-        boolean exchanged;
-        int armies = fromTerritories() + fromContinents();
-        int fromCards = fromCards(cardSetVal);
-        if (fromCards == 0)
-            exchanged = false;
-        else
-            exchanged = true;
-        armies += fromCards;
-        placeDeployedArmies(armies);
-        totalArmies += armies;
-        return exchanged;
-    }
     
     //This method should replace depoloy by moving the card-set turn-in logic to the Map class
-    public int deploy2()
+    public int deploy()
     {
     	return fromTerritories() + fromContinents();
     }
@@ -226,32 +211,7 @@ public abstract class Player
     {
         // takes a card from Game's Board's Deck to add to this Player's hand of
         // cards
-        cards.returnCardToDeck(map.drawCard());
-    }
-
-    /* ----no clue how this works----
-     * We need to add a way to let the player decide to continue attacking or not i believe
-     * 
-     */
-    public void attack()
-    {
-        boolean attacking = true;
-        while (attacking)
-        {
-            /* This method needs to be set up with a GUI or something to help the player decide to continue attacking*/
-            attacking = chooseContinueAttacking(false);
-            
-            
-            Territory myTerr = chooseAttacker();
-            Territory oppTerr = chooseTarget(); // oppTerr means opponent's
-                                                // territory
-            int dice = chooseDice(myTerr, oppTerr);
-            if (executeAttack(myTerr, oppTerr, dice))
-            {
-                invade(myTerr, oppTerr);
-                drawCard();
-            }
-        }
+        cards.add(map.drawCard());
     }
 
     abstract public void fortify();
@@ -259,11 +219,6 @@ public abstract class Player
     /*
      * Unfinished
      */
-    public void placeCardArmies()
-    {
-        // TODO probably needs a parameter
-        decideCardExchange();
-    }
 
     public int defend(int oppDice)
     {
@@ -310,24 +265,6 @@ public abstract class Player
         return bonus;
     }
 
-    /* Calculates the number of armies that this player will receive from the cards that he currently has
-     * 
-     * @param the current bonus for turning in a certain order of cards, int
-     * @return int the Number of solders that this player object will recieve
-     * 
-     */
-    private int fromCards(int cardSetVal)
-    {
-        boolean exchanged = decideCardExchange();
-        if (exchanged)
-            return cardSetVal;
-        else
-            return 0;
-    }
-
-    abstract protected boolean decideCardExchange();
-    abstract public boolean decideCardExchange2();
-
     // attacking methods
     /*
      *  @author Danny
@@ -358,80 +295,10 @@ public abstract class Player
          
     }
 
-    private Territory chooseAttacker()
-    {
-        // TODO Auto-generated method stub
-        
-        
-        return null;
-    }
-
-    private Territory chooseTarget()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-    /* Unfinished I believe
-     * Intended on letting the player choose the amount of dice that the 
-     * 
-     * 
-     */
-    private int chooseDice(Territory mine, Territory opp)
-    {
-        // TODO Auto-generated method stub
-        int numDice = 0;
-        if (mine.getArmies() == 2) // TODO you'll use code like this elsewhere
-            numDice = 1;
-        opp.defend(numDice);
-        return numDice;
-    }
-
-    private boolean executeAttack(Territory mine, Territory opp, int myDice)
-    {
-        // TODO Auto-generated method stub
-        int[] myRoll = rollDice(myDice);
-        int[] oppRoll = rollDice(opp.defDice());
-        Arrays.sort(myRoll);
-        Arrays.sort(oppRoll);
-        int comparisons = Math.min(myRoll.length, oppRoll.length);
-        for (int ii = comparisons; ii >= 0; ii--)
-        {
-            if (myRoll[ii] > oppRoll[ii]) // attacker won the throw
-                opp.lose();
-            else // defender won the throw
-                mine.lose();
-        }
-        if (opp.getArmies() == 0) // return whether enemy territory's armies
-                                  // were all destroyed
-            return true;
-        else
-            return false;
-    }
-
-    private void invade(Territory mine, Territory opp)
-    {
-        // TODO Auto-generated method stub
-        if (opp.getOccupier().totalTerritories == 0)
-        { // TODO maybe move this to a territory method??
-          // Take the loser's cards
-            if (cards.size() >= 6)
-            {
-                while (cards.size() >= 4)
-                {
-                    decideCardExchange();
-                    placeCardArmies();
-                }
-            }
-        }
-    }
 
     // deploy methods
-    private void placeDeployedArmies(int armies) //delete this
-    {
-        
-    }
     
-    abstract public void placeDeployedArmies2(int armies);
+    abstract public void placeDeployedArmies(int armies);
 	
 
 }

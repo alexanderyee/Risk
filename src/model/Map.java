@@ -106,7 +106,7 @@ public class Map {
 	//new method here
 	public int exchangeCards(Player p)
 	{
-		ArrayList<Card> playersHand = p.cards2; //get the players cards create getter
+		ArrayList<Card> playersHand = p.cards; //get the players cards create getter
 		int bonus = 0;
 		boolean willExchange = false;
 		Scanner s = new Scanner(System.in);		
