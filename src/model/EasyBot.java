@@ -4,10 +4,13 @@
 
 package model;
 
+import java.util.Random;
+
 public class EasyBot extends Player
 {
 
-    private int seed;
+    private Random r;
+    private int pid;
 
     /*
      * Represents the Easy AI bot in Risk, will choose pseudo random decisions
@@ -15,32 +18,35 @@ public class EasyBot extends Player
     public EasyBot(int pid, int initArmies, Map b)
     {
         super(pid, initArmies, b);
-        // TODO Auto-generated constructor stub
+        r = new Random();
+        this.pid = pid;
     }
 
-    public EasyBot(int pid, int initArmies, Map b, int s)
+    public EasyBot(int pid, int initArmies, Map b, Random s)
     {
         super(pid, initArmies, b);
-
-    }
-
-    public int getSeed()
-    {
-        return seed;
+        this.r = s;
+        this.pid = pid;
     }
 
     @Override
     public void fortify()
     {
-        // TODO Auto-generated method stub
-
+        // implement later when human's fortify is done.
     }
 
     @Override
     public void placeDeployedArmies(int armies)
     {
-        // TODO Auto-generated method stub
+        int choice;
+        Territory terr;
 
+        for (int i = 0; i < armies; i++)
+        {
+            terr = territories.get(r.nextInt(2));
+            terr.addArmies(1);
+            loseAnArmy();
+        }
+        System.out.println("EasyBot " + this.pid + "has deployed armies");
     }
-
 }

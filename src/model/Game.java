@@ -58,7 +58,7 @@ public class Game
         else if (numPlayers == 6) initArmies = 20;
         for (int ii = 0; ii < numBots; ii++)
         { // instantiate bots
-            Player p = new Bot(ii, initArmies, map);
+            Player p = new EasyBot(ii, initArmies, map);
             players.add(p);
         }
         for (int jj = numBots; jj < (numPlayers - numBots); jj++)
@@ -198,6 +198,7 @@ public class Game
                             System.out.printf("\t (%d) %s", j,
                                     adjList.get(j).toString());
 
+
                         }
                         System.out.println("\n");
                     }
@@ -246,6 +247,7 @@ public class Game
                     {
 
                         attackUnresolved = false;
+
                     }
 
                 }
@@ -277,6 +279,7 @@ public class Game
                 "Player %d, decide how many dice you would like to roll?",
 
                 attacking.getOccupier().getPID() + 1);
+
         int attackerRollNumber = k.nextInt();
 
         ArrayList<Integer> attackersRolls;
@@ -287,6 +290,7 @@ public class Game
 
                 defending.getOccupier().getPID() + 1,
                 attacking.getOccupier().getPID() + 1, defending.toString(),
+
                 attackerRollNumber);
 
         int defenderRollNumber = k.nextInt();
