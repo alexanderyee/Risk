@@ -43,20 +43,6 @@ public class Bot extends Player
     }
 
     @Override
-    public String claim()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String placeRemaining()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public void placeDeployedArmies(int armies)
     {
         // TODO Auto-generated method stub

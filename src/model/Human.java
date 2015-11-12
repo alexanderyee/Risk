@@ -13,22 +13,6 @@ public class Human extends Player
     }
 
     @Override
-    public String claim()
-    {
-        System.out.println("Please choose an unclaimed territory.");
-        Scanner s = new Scanner(System.in);
-        return s.next();
-    }
-
-    @Override
-    public String placeRemaining()
-    {
-        System.out.println("Please reinforce one of your territories.");
-        Scanner s = new Scanner(System.in);
-        return s.next();
-    }
-
-    @Override
     public void fortify()
     {
         boolean legitChoice = false;

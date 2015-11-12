@@ -25,28 +25,9 @@ public class EasyBot extends Player
 
     }
 
-    public void attack()
-    {
-
-    }
-
     public int getSeed()
     {
         return seed;
-    }
-
-    @Override
-    public String claim()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
-    public String placeRemaining()
-    {
-        // TODO Auto-generated method stub
-        return null;
     }
 
     @Override

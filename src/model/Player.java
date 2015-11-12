@@ -187,9 +187,6 @@ public abstract class Player
     }
 
     // controller methods
-    abstract public String claim();
-
-    abstract public String placeRemaining();
 
     /*
      * rolls the dice for this player object
