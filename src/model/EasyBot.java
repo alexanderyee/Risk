@@ -8,9 +8,10 @@ import java.util.Random;
 
 public class EasyBot extends Player
 {
-    
+
     private Random r;
     private int pid;
+
     /*
      * Represents the Easy AI bot in Risk, will choose pseudo random decisions
      */
