@@ -14,7 +14,7 @@ public class MapTest {
 	@Test
 	public void test() {
 		Map map = new Map();
-		assertEquals(map.getCountry(Countries.AFGHANISTAN), new Territory(Continent.AFRICA, Countries.AFGHANISTAN));
+		assertEquals(map.getCountry(Countries.AFGHANISTAN), new Territory(Countries.AFGHANISTAN));
 	}
 
 }
