@@ -4,11 +4,17 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import model.Continent;
+import model.Countries;
+import model.Map;
+import model.Territory;
+
 public class MapTest {
 
 	@Test
 	public void test() {
-		fail("Not yet implemented");
+		Map map = new Map();
+		assertEquals(map.getCountry(Countries.AFGHANISTAN), new Territory(Continent.AFRICA, Countries.AFGHANISTAN));
 	}
 
 }
