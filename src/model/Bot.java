@@ -8,13 +8,9 @@ public class Bot extends Player
 
     /*
      * Constructor for the bot class
-     * 
      * @param int player identification number
-     * 
      * @param int inital armies
-     * 
      * @param
-     * 
      */
     public Bot(int pid, int initArmies, Map b)
     {
