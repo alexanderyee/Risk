@@ -166,13 +166,14 @@ public class Game {
 
                     ArrayList<Territory> tList = currentPlayer.getTerritories();
                     ArrayList<Territory> adjList = null;
-
+                    int k1=0;
                     for (int i = 0; i < currentPlayer
                             .getTotalTerritories(); i++)
                     {
-                        System.out.printf("(%d) Territory %s can attack: ", i,
+                      
+                    	System.out.printf("(%d) Territory %s can attack: \n", k1,
                                 tList.get(i));
-
+                                 k1++;
                         adjList = (ArrayList<Territory>) tList.get(i)
                                 .getAdjacentTerritories();
 
@@ -181,10 +182,10 @@ public class Game {
                             System.out.printf("\t (%d) %s", j,
                                     adjList.get(j).toString());
                         }
+                       System.out.println("\n");
                     }
 
-                    System.out.printf(
-                            "Enter the number of the territory would like to attack with:");
+                    System.out.printf("Enter the number of the territory would like to attack from:");
 
                     int attackingTerritoryNumber = k.nextInt();
 
