@@ -58,7 +58,7 @@ public class Game
         else if (numPlayers == 6) initArmies = 20;
         for (int ii = 0; ii < numBots; ii++)
         { // instantiate bots
-            Player p = new Bot(ii, initArmies, map);
+            Player p = new EasyBot(ii, initArmies, map);
             players.add(p);
         }
         for (int jj = numBots; jj < (numPlayers - numBots); jj++)
