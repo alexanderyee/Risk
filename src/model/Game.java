@@ -87,31 +87,15 @@ public class Game {
 
 	}
 	
-	private void beginGame() {
-		Player curr;
-		while(!gameOver) {
-			curr = players.get(currentPID);
-			if(curr.deploy(cardSetValue)) //if the player turned in a set of cards, raise value of card sets
-				raiseCardSetValue();
-			curr.attack();
-			if(curr.getTotalTerritories() == 42)
-				gameOver = true;
-			else {
-				curr.fortify(); //TODO (AI-01): You'll have to change this to a dynamic value
-				currentPID++;
-			}
-		}
-	}
-	
-	private void beginGame2()
+	private void beginGame()
 	{
 		Player curr;
 		while(!gameOver) {
 			curr = players.get(currentPID);
-			int bonus = curr.deploy2();
+			int bonus = curr.deploy();
 			bonus += map.exchangeCards(curr);
-			curr.placeDeployedArmies2(bonus);
-			curr.attack();
+			curr.placeDeployedArmies(bonus);
+			attack();
 			if(curr.getTotalTerritories() == 42)
 				gameOver = true;
 			else {
@@ -128,14 +112,6 @@ public class Game {
 	}
 	
 	// PRIVATE METHODS
-	private void raiseCardSetValue() {
-		if (cardSetValue <= 10)
-			cardSetValue += 2;
-		else if (cardSetValue == 12)
-			cardSetValue += 3;
-		else
-			cardSetValue += 5;
-	}
 	public String getTerritories(int k) {
 		return players.get(k - 1).getTerroritories();
 	}
