@@ -56,5 +56,4 @@ public class Human extends Player
             loseAnArmy();
         }
     }
-
 }

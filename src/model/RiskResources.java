@@ -176,7 +176,8 @@ public class RiskResources {
 		allTerritories.add(na5);
 		allTerritories.add(na6);
 		allTerritories.add(na7);
-
+		allTerritories.add(na8);
+		allTerritories.add(na9);
 		allTerritories.add(sa1);
 		allTerritories.add(sa2);
 		allTerritories.add(sa3);
