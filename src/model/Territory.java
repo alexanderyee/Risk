@@ -22,10 +22,10 @@ public class Territory
      * 
      * 
      */
-    public Territory(Continent cont, Countries name)
+    public Territory(Countries name)
     {
         adj = new ArrayList<Territory>();
-        this.cont = cont;
+        this.cont = name.getContinent();
         this.name = name;
         this.color = cont.getColor();
         armies = 0;
