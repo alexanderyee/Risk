@@ -138,7 +138,7 @@ public class Map
         }
         if (willExchange)
         { // do the actual exchange
-            // Still needs logic to check if they are trading in a valid set
+          // Still needs logic to check if they are trading in a valid set
             System.out.println("You must trade in cards this turn.");
             System.out.println(
                     "Enter the int of the cards to trade in, one at a time.");
