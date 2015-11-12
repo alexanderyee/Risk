@@ -55,21 +55,8 @@ public class EasyBot extends Player
         
     }
 
-    @Override
-    protected boolean decideCardExchange()
-    {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
 	@Override
-	public boolean decideCardExchange2() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public void placeDeployedArmies2(int armies) {
+	public void placeDeployedArmies(int armies) {
 		// TODO Auto-generated method stub
 		
 	}
