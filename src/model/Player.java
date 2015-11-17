@@ -76,7 +76,7 @@ public abstract class Player
         StringBuffer result = new StringBuffer();
         for (Territory t : territories)
         {
-            result.append(count + ") " + t.toString() + "----------"
+            result.append(count + ") " + t.toString() + "--"
                     + t.getArmies() + " armies");
             count++;
             result.append("\n");
@@ -220,6 +220,44 @@ public abstract class Player
         cards.add(map.drawCard());
     }
 
+    public int getHandSize(){
+        return cards.size();
+    }
+    
+    public boolean redeemCardsForArmies(ArrayList<Card> cardArr){
+        int calvary=0;
+        int artillery=0;
+        int infantry=0;
+        for(Card c: cardArr){
+            if(c.getCardType().equals(CardType.CALVARY)){
+               calvary++;
+               this.playerOwnsTerritory(c);
+            }else if(c.getCardType().equals(CardType.ARTILLERY)){
+                artillery++;
+                this.playerOwnsTerritory(c);
+            }else{
+                infantry++;
+                this.playerOwnsTerritory(c);
+            }   
+        }
+         if(calvary==3 || artillery==3 || infantry==3){
+             
+             return true;
+         }else if(calvary==1 && artillery==1 && infantry==1){
+             return true;
+         }else{
+             return false;
+         }
+    
+    }
+    public void playerOwnsTerritory(Card c){
+        for(Territory t: territories){
+            if(t.getCountry().equals(c.getCountry())){
+                 t.addArmies(2);
+            }
+        }
+    }
+    
     abstract public void fortify();
 
     /*

@@ -22,7 +22,7 @@ public class Game
     private Map map;
     // player variables
     private int numPlayers;
-
+    private int handsReedemed=0;
     private ArrayList<Player> players;
     private int currentPID;
 
@@ -331,5 +331,9 @@ public class Game
             return false;
         }
     }
+
+public Territory getTerritory(String c){
+   return map.getTerritory(c); 
+}
 
 }
