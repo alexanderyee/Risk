@@ -53,14 +53,17 @@ public class GraphicalView extends JFrame implements Observer
         int imgWidth = map.getWidth();
         int imgHeight = map.getHeight();
         this.setTitle("Risk - Team Rocket Industries");
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screensize);
         setLayout(null);
         WindowListener wl = new Save();
         mapPanel = new MapPanel();
         mapPanel.setLayout(null);
-        mapPanel.setPreferredSize(new Dimension(imgWidth, imgHeight));
+        mapPanel.setSize(new Dimension(imgWidth, imgHeight));
+        mapPanel.setLocation(0, 0);
+       
+        this.add(mapPanel);
         repaint();
     }
 
@@ -151,6 +154,9 @@ public class GraphicalView extends JFrame implements Observer
 
     private class MapPanel extends JPanel
     {
+        public MapPanel(){
+          
+        }
         @Override
         public void paintComponent(Graphics g)
         {
@@ -158,7 +164,7 @@ public class GraphicalView extends JFrame implements Observer
             Graphics2D g2 = (Graphics2D) g;
             g2.drawImage(map, 0, 0, null); // will consider lower resolutions
                                            // and scroll panes
-            
+
         }
     }
 }
