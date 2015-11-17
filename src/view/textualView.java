@@ -14,7 +14,7 @@ public class textualView
          * s.nextInt(); System.out.println("Enter number of bots."); int bots =
          * s.nextInt();
          */
-        Game g = new Game(3, 3);
+        Game g = new Game(0, 6);
 
         System.out.println("Player 1 territories \n" + g.getTerritories(1));
         System.out.println("Player 2 territories \n" + g.getTerritories(2));
