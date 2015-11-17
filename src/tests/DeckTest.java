@@ -16,7 +16,7 @@ public class DeckTest
         Deck d = new Deck();
 
         assertEquals(42, d.size());
-
+        
     }
 
 }
