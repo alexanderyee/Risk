@@ -44,7 +44,7 @@ public class GraphicalView extends JFrame implements Observer
     private JButton newGame = new JButton("newGame");
     private JTextArea gameInfo;
     private JTextField console;
-    private boolean newGameFlag=false;
+    private boolean newGameFlag = false;
     private int X, Y;
 
     public GraphicalView()
@@ -88,7 +88,7 @@ public class GraphicalView extends JFrame implements Observer
             public void actionPerformed(ActionEvent arg0)
             {
                 game = new Game(1, 3);
-                newGameFlag=true;
+                newGameFlag = true;
                 gameInfo.setText(
                         "Player 1 territories \n" + game.getTerritories(1));
                 gameInfo.append(
@@ -119,7 +119,7 @@ public class GraphicalView extends JFrame implements Observer
                     game.placeArmyInPlayerTerritory(2, i);
 
                 } // 3 bots and 1 human
-                  repaint();
+                repaint();
             }
 
         }
@@ -235,21 +235,21 @@ public class GraphicalView extends JFrame implements Observer
 
             g2.drawImage(map, 0, 0, null);
             // will consider lower resolutions
-            
-            
-           if(newGameFlag){ 
-               g2.setFont(new Font("default", Font.BOLD, 16));
-               g2.setColor(Color.RED);
-            int a1=game.getTerritory("W_AUSTRALIA").getArmies();
-            g2.drawString(String.valueOf(a1), 950,660);                             // and scroll panes
-            int a2=game.getTerritory("E_AUSTRALIA").getArmies();
-            g2.drawString(String.valueOf(a2), 1040,660);  
-            int a3=game.getTerritory("INDONESIA").getArmies();
-            g2.drawString(String.valueOf(a3), 940,540);  
-            int a4=game.getTerritory("NEW_GUINEA").getArmies();
-            g2.drawString(String.valueOf(a4), 1060,560);  
-           
-           }
+
+            if (newGameFlag)
+            {
+                g2.setFont(new Font("default", Font.BOLD, 16));
+                g2.setColor(Color.RED);
+                int a1 = game.getTerritory("W_AUSTRALIA").getArmies();
+                g2.drawString(String.valueOf(a1), 950, 660); // and scroll panes
+                int a2 = game.getTerritory("E_AUSTRALIA").getArmies();
+                g2.drawString(String.valueOf(a2), 1040, 660);
+                int a3 = game.getTerritory("INDONESIA").getArmies();
+                g2.drawString(String.valueOf(a3), 940, 540);
+                int a4 = game.getTerritory("NEW_GUINEA").getArmies();
+                g2.drawString(String.valueOf(a4), 1060, 560);
+
+            }
         }
     }
 

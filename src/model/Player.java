@@ -2,9 +2,6 @@
 package model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
 
 /*
  * @author Ben Shields / Daniel Phillips (Mostly Ben)
@@ -76,8 +73,8 @@ public abstract class Player
         StringBuffer result = new StringBuffer();
         for (Territory t : territories)
         {
-            result.append(count + ") " + t.toString() + "--"
-                    + t.getArmies() + " armies");
+            result.append(count + ") " + t.toString() + "--" + t.getArmies()
+                    + " armies");
             count++;
             result.append("\n");
         }
@@ -93,12 +90,6 @@ public abstract class Player
         }
         territories.get(terrNumber - 1).addArmies(1);
         this.loseAnArmy();
-    }
-
-    public ArrayList<Territory> getTerritoryArray()
-    {
-        return territories;
-
     }
 
     // PUBLIC METHODS
@@ -122,7 +113,7 @@ public abstract class Player
      */
     public int getPID()
     {
-        return playerID;
+        return getPlayerID();
     }
 
     /*
@@ -220,44 +211,61 @@ public abstract class Player
         cards.add(map.drawCard());
     }
 
-    public int getHandSize(){
+    public int getHandSize()
+    {
         return cards.size();
     }
-    
-    public boolean redeemCardsForArmies(ArrayList<Card> cardArr){
-        int calvary=0;
-        int artillery=0;
-        int infantry=0;
-        for(Card c: cardArr){
-            if(c.getCardType().equals(CardType.CALVARY)){
-               calvary++;
-               this.playerOwnsTerritory(c);
-            }else if(c.getCardType().equals(CardType.ARTILLERY)){
+
+    public boolean redeemCardsForArmies(ArrayList<Card> cardArr)
+    {
+        int calvary = 0;
+        int artillery = 0;
+        int infantry = 0;
+        for (Card c : cardArr)
+        {
+            if (c.getCardType().equals(CardType.CALVARY))
+            {
+                calvary++;
+                this.playerOwnsTerritory(c);
+            }
+            else if (c.getCardType().equals(CardType.ARTILLERY))
+            {
                 artillery++;
                 this.playerOwnsTerritory(c);
-            }else{
+            }
+            else
+            {
                 infantry++;
                 this.playerOwnsTerritory(c);
-            }   
+            }
         }
-         if(calvary==3 || artillery==3 || infantry==3){
-             
-             return true;
-         }else if(calvary==1 && artillery==1 && infantry==1){
-             return true;
-         }else{
-             return false;
-         }
-    
+        if (calvary == 3 || artillery == 3 || infantry == 3)
+        {
+
+            return true;
+        }
+        else if (calvary == 1 && artillery == 1 && infantry == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
     }
-    public void playerOwnsTerritory(Card c){
-        for(Territory t: territories){
-            if(t.getCountry().equals(c.getCountry())){
-                 t.addArmies(2);
+
+    public void playerOwnsTerritory(Card c)
+    {
+        for (Territory t : territories)
+        {
+            if (t.getCountry().equals(c.getCountry()))
+            {
+                t.addArmies(2);
             }
         }
     }
-    
+
     abstract public void fortify();
 
     /*
@@ -310,29 +318,27 @@ public abstract class Player
      * continue attacking or not This should be attached to a GUI module or
      * button to let the player choose if he wants to continue attacking or not
      */
-    private boolean chooseContinueAttacking(boolean playerChoice)
-    {
-        // TODO Auto-generated method stub
-        return playerChoice;
+    public abstract boolean willAttack();
 
-        // for the human we can use:
-        // System.out.println("Would you like to continue attacking? Type 'y' or
-        // 'n'.");
-        // Scanner s = new Scanner(System.in);
-        // String answer = s.next().toLowerCase();
-        // if(answer.equals("y"))
-        // return true;
-        // else if(answer.equals("n"))
-        // return false;
-        // else {
-        // System.out.println("Error. Try again.");
-        // return chooseContinueAttacking(); //make it not have a parameter
-        // }
+    public abstract int attackFrom();
 
-    }
+    public abstract int attackAt(int attackingTerritoryNumber);
+
+    public abstract boolean attackAgain();
+
+    public abstract boolean willFortify();
+
+    public abstract int attackDice();
+
+    public abstract int defenseDice(int atkPID, String defStr, int atkDice);
 
     // deploy methods
 
     abstract public void placeDeployedArmies(int armies);
+
+    public int getPlayerID()
+    {
+        return playerID;
+    }
 
 }

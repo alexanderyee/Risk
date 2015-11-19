@@ -36,10 +36,13 @@ public class Territory
             this.adj.add(adjs[i]);
         this.numAdj = adjs.length;
     }
+
     // PUBLIC METHODS
-    public Countries getCountry(){
+    public Countries getCountry()
+    {
         return this.name;
     }
+
     // getters
     public int getArmies()
     {
