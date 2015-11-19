@@ -34,7 +34,7 @@ public class EasyBot extends Player
     {
         // implement later when human's fortify is done.
     }
-
+    
     @Override
     public void placeDeployedArmies(int armies)
     {
