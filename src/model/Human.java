@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Human extends Player
 {
-
+   
     public Human(int pid, int initArmies, Map b)
     {
         super(pid, initArmies, b);
@@ -18,19 +18,25 @@ public class Human extends Player
         boolean legitChoice = false;
         while (!legitChoice)
         {
-            System.out.println(map.listPlayerTerritories(this));
+            System.out.println(this.getTerroritories());
             System.out.println(
                     "Please choose a territory to fortify with troops.");
             Scanner s = new Scanner(System.in);
-            Territory fortifyTo = map.getTerritory(s.next());
-            List<Territory> possible = fortifyTo.getAdjacentTerritories();
+            int response= s.nextInt();
+            Territory fortifyTo = this.getTerritories().get(response-1);
+            System.out.println(fortifyTo.toString());
+            List<Territory> possible = this.getTerritories();
             System.out.println(
                     "Please choose a territory to fortify troops from.");
+             int counter=1;
             for (Territory t : possible)
             {
-                System.out.println(t.toString() + "\n");
+                if(t.getOccupier().equals(this)){
+                System.out.println(counter+")"+t.toString() +"-----"+ t.getArmies()+"\n");
+                }
+                counter++;
             }
-            Territory fortifyFrom = map.getTerritory(s.next());
+            Territory fortifyFrom = possible.get(s.nextInt()-1);
             System.out.println("Please choose a number of armies to move from "
                     + fortifyFrom.toString() + " to " + fortifyTo.toString()
                     + " that is less than " + (fortifyFrom.getArmies() - 1));

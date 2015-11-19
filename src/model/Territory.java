@@ -37,7 +37,9 @@ public class Territory
         this.numAdj = adjs.length;
     }
     // PUBLIC METHODS
-
+    public Countries getCountry(){
+        return this.name;
+    }
     // getters
     public int getArmies()
     {
