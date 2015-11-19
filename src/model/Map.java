@@ -44,6 +44,9 @@ public class Map
         return null;
     }
 
+    // Returning null if the country can't be found is smart, but I don't think
+    // it needs to be there
+    // I can't figure out a way to test it -Danny
     public Territory getCountry(Countries c)
     {
         for (Territory t : territories)

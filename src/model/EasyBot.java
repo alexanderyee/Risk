@@ -1,7 +1,3 @@
-/*
- * If i had a clue how to do this one, I would have
- */
-
 package model;
 
 import java.util.ArrayList;

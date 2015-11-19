@@ -123,7 +123,7 @@ public abstract class Player
      */
     public int getTotalTerritories()
     {
-        return totalTerritories;
+        return territories.size();
     }
 
     public ArrayList<Territory> getTerritories()
