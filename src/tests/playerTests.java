@@ -21,10 +21,9 @@ public class playerTests
         bot = new EasyBot(420, 100, b);
 
         assertEquals(bot.getArmies(), 100);
-        assertFalse(bot.getArmies() != 200);
+        assertTrue(bot.getArmies() != 200);
 
         assertTrue(bot.getPID() == 420);
-        assertFalse(bot.getPID() == 420);
 
     }
 }
