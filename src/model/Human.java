@@ -127,8 +127,8 @@ public class Human extends Player
 
             for (int j = 0; j < adjList.size(); j++)
             { // if(not attacking yourself
-                if (!(adjList.get(j).getOccupier()
-                        .getPlayerID() == getPlayerID())
+                if (adjList.get(j).getOccupier()
+                        .getPlayerID() != getPlayerID()
                         && adjList.get(j).getArmies() >= 1)
                 {
                     System.out.printf("\t (%d) %s---%d armies", j,

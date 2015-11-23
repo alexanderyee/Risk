@@ -166,14 +166,15 @@ public class Game
                     Territory defendingTerritory = attackingTerritory
                             .getAdjacentTerritories()
                             .get(defendingTerritoryNumber);
-
+                    Player defendingPlayer = defendingTerritory.getOccupier();
                     // carry out the dice rolling and army losses
                     resolveAttack(attackingTerritory, defendingTerritory);
-
+                   
                       System.out.println(currentPID);
                     System.out.println("Attarckers terrys \n"
                             + this.getTerritories(currentPID));
-                    Player defendingPlayer = defendingTerritory.getOccupier();
+                  
+                    
                     System.out.println("defenders terrys \n"
                             + defendingPlayer.getTerroritories());
 
@@ -226,7 +227,7 @@ public class Game
                 defending.getArmies());
 
         ArrayList<Integer> defendersRolls;
-        int min = Math.max(attackerRollNumber, defenderRollNumber);
+        int min = Math.min(attackerRollNumber, defenderRollNumber);
         attackersRolls = dice.roll2(attackerRollNumber);
 
         defendersRolls = dice.roll2(defenderRollNumber);
@@ -245,13 +246,13 @@ public class Game
                 System.out.printf(" attacker rolled %d \ndefenders roll %d \n",
                         attackersRolls.get(i), defendersRolls.get(i));
 
-                attacking.removeArmies(1);
+                attacking.addArmies(-1);
             }
             else if (attackersRolls.get(i) > defendersRolls.get(i))
             {
                 System.out.printf(" attacker rolled %d \ndefenders roll %d \n",
                         attackersRolls.get(i), defendersRolls.get(i));
-                defending.removeArmies(1);
+                defending.addArmies(-1);
             }
         }
 
@@ -260,8 +261,14 @@ public class Game
         // and return true, the attack has been resolved
         if (defending.getArmies() == 0)
         {
+            defender.loseTerritory(defending);
             defending.changeOccupier(attacking.getOccupier());
+            
             attacker.addTerritory(defending);
+          
+            
+            
+            
             return true;
         }
         else if (attacking.getArmies() == 1)
