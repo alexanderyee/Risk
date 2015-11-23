@@ -94,6 +94,7 @@ public class Territory
 
     public void changeOccupier(Player player)
     {
+        occupier.loseTerritory(this);
         this.occupier = player;
     }
 

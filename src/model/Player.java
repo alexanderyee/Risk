@@ -72,6 +72,26 @@ public abstract class Player
     public void addTerritory(Territory t)
     {
         territories.add(t);
+        if(getClass() != Human.class)
+        {
+            if(t.getContinent() == Continent.AFRICA)
+                terrAfrica.add(t);
+            else if(t.getContinent() == Continent.ASIA)
+                terrAsia.add(t);
+            else if(t.getContinent() == Continent.AUSTRALIA)
+                terrAustr.add(t);
+            else if(t.getContinent() == Continent.EUROPE)
+                terrEuro.add(t);
+            else if(t.getContinent() == Continent.NAMERICA)
+                terrNAmer.add(t);
+            else if(t.getContinent() == Continent.SAMERICA)
+                terrSAmer.add(t);
+        }
+    }
+    
+    public void loseTerritory(Territory t)
+    {
+        territories.remove(t);
     }
 
     public String getTerroritories()

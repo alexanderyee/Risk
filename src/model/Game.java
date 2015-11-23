@@ -87,10 +87,11 @@ public class Game
         for (int ii = 0; ii < 42; ii++)
         {
 
-            if (currentPID >= players.size()) currentPID = 0;
+            currentPID = currentPID % numPlayers; //to prevent out of bounds exception
             map.giveRandomTerritory(players.get(currentPID));
 
             currentPID++;
+            currentPID = currentPID % numPlayers;
         }
 
     }
@@ -100,46 +101,36 @@ public class Game
         Player curr;
         while (!gameOver)
         {
+            currentPID = currentPID % numPlayers; //to prevent out of bounds exception
             curr = players.get(currentPID);
             int bonus = curr.deploy();
             bonus += map.exchangeCards(curr);
+            System.out.println("Player "+currentPID+" , it is your turn:\n");
             curr.placeDeployedArmies(bonus);
             attack();
             if (curr.getTotalTerritories() == 42)
                 gameOver = true;
             else
-            {
-                curr.fortify(); // TODO (AI-01): You'll have to change this to a
-                // dynamic value
-                // System.out.println("Randomly claiming territories.");
-                // for (int ii = 0; ii < 42; ii++)
-                // {
-                // if (currentPID >= players.size()) currentPID = 0;
-                // map.giveRandomTerritory(players.get(currentPID));
-                // currentPID++;
-                // }
-                // THIS SEEMS LIKE A BUG ^ IT'S FROM claimTerritories() METHOD
-            }
+                currentPID++;                
         }
-    }
+    } //TODO: check if curr fortifies here
 
     // PRIVATE METHODS
     public String getTerritories(int k) // not meant to take in an index, but a
                                         // player number
     {
-        return players.get(k - 1).getTerroritories();
+        return players.get(k).getTerroritories();
     }
 
     public void placeArmyInPlayerTerritory(int p, int terrNumber)
     {
-        players.get(p - 1).addArmy(terrNumber);
+        players.get(p).addArmy(terrNumber);
     }
 
     public void attack()
     {
 
         // Asks if the player wants to attack or no
-
         boolean choice = players.get(currentPID).willAttack();
         if (choice == true)
         {
@@ -171,14 +162,14 @@ public class Game
 
                     // carry out the dice rolling and army losses
                     resolveAttack(attackingTerritory, defendingTerritory);
-
+                    
                     System.out.println("Attarckers terrys \n"
                             + this.getTerritories(currentPID));
                     Player defendingPlayer = defendingTerritory.getOccupier();
                     System.out.println("defenders terrys \n"
                             + defendingPlayer.getTerroritories());
 
-                    if (currentPlayer.attackAgain())
+                    if (!currentPlayer.attackAgain())
                     {
                         attackUnresolved = false;
                         if (currentPlayer.willFortify())
@@ -217,7 +208,7 @@ public class Game
         ArrayList<Integer> attackersRolls;
         // attackersRolls.addAll(dice.roll2(attackerRollNumber));
 
-        int atkPID = attacking.getOccupier().getPID() + 1;
+        int atkPID = attacking.getOccupier().getPID();
         String defStr = defending.toString();
         int atkDice = attackerRollNumber;
 
@@ -260,6 +251,7 @@ public class Game
         if (defending.getArmies() == 0)
         {
             defending.changeOccupier(attacking.getOccupier());
+            attacker.addTerritory(defending);
             return true;
         }
         else if (attacking.getArmies() == 1)
