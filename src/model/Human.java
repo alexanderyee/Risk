@@ -21,15 +21,15 @@ public class Human extends Player
         {
             System.out.println(this.getTerroritories());
             System.out.println(
-                    "Please choose a territory to fortify with troops.");
+                    "Please choose a territory to fortify troops from.");
             Scanner s = new Scanner(System.in);
             int response = s.nextInt();
 
-            Territory fortifyTo = this.getTerritories().get(response - 1);
-            System.out.println(fortifyTo.toString());
-            List<Territory> possible = this.getTerritories();
+            Territory fortifyFrom = this.getTerritories().get(response - 1);
+            System.out.println(fortifyFrom.toString());
+            List<Territory> possible = fortifyFrom.getAdjacentTerritories();
             System.out.println(
-                    "Please choose a territory to fortify troops from.");
+                    "Please choose a territory to fortify with troops.");
             int counter = 1;
             for (Territory t : possible)
             {
@@ -40,7 +40,7 @@ public class Human extends Player
                 }
                 counter++;
             }
-            Territory fortifyFrom = possible.get(s.nextInt() - 1);
+            Territory fortifyTo = possible.get(s.nextInt() - 1);
             System.out.println("Please choose a number of armies to move from "
                     + fortifyFrom.toString() + " to " + fortifyTo.toString()
                     + " that is less than " + (fortifyFrom.getArmies() - 1));
@@ -185,7 +185,7 @@ public class Human extends Player
         }
     }
 
-    public int attackDice()
+    public int attackDice(int armies)
     {
         System.out.printf(
                 "Player %d, decide how many dice you would like to roll?",
@@ -196,7 +196,7 @@ public class Human extends Player
         return num;
     }
 
-    public int defenseDice(int atkPID, String defStr, int atkDice)
+    public int defenseDice(int atkPID, String defStr, int atkDice, int armies)
     {
         System.out.printf(
                 "Player %d, pick how many dice you would like to roll?",
@@ -207,6 +207,52 @@ public class Human extends Player
         int num = s.nextInt();
         s.close();
         return num;
+    }
+
+    @Override
+    public boolean willTradeCards()
+    {
+        Scanner s = new Scanner(System.in);
+        System.out
+                .println("Would you like to trade in a card set? 'y' or 'n'.");
+        String answer = s.next();
+        if (answer.toLowerCase().equals("y"))
+            return true;
+        else
+            return false;
+    }
+
+    public ArrayList<Integer> cardSetChoices()
+    {
+        ArrayList<Integer> choices = new ArrayList<Integer>(3);
+        int matches = 0;
+        for (int i = 0; i < cards.size(); i++) // for each card in hand
+        {
+            choices.add(i);
+            for (int j = 0; j < cards.size(); j++) // compare the other cards to
+                                                   // i
+            {
+                if (i != j && cards.get(i).getCardType() == cards.get(j)
+                        .getCardType())
+                { // find 3 matches
+                    matches++;
+                    choices.add(j);
+                }
+            }
+            if (matches == 3)
+                return choices;
+            else if (matches == 0) // or find 3 cards of 3 kinds
+            {
+                for (int j = 0; j < cards.size(); j++)
+                {
+                    if (i != j && cards.get(i).getCardType() != cards.get(j)
+                            .getCardType())
+                        choices.add(j);
+                }
+                return choices;
+            }
+        }
+        return choices;
     }
 
 }

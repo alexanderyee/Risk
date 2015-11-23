@@ -13,7 +13,7 @@ public class Map
     private List<Territory> unclaimedTerritories;
     private Deck deck;
     private int cardSetValue; // this was added here by Ben, moved from Game
-                              // class
+    // class
 
     // CONSTRUCTOR
     public Map()
@@ -122,10 +122,9 @@ public class Map
     public int exchangeCards(Player p)
     {
         ArrayList<Card> playersHand = p.cards; // get the players cards create
-                                               // getter
+        // getter
         int bonus = 0;
         boolean willExchange = false;
-        Scanner s = new Scanner(System.in);
         if (playersHand.size() >= 5)
         { // check if they HAVE TO exchange cards
             System.out.println(
@@ -134,10 +133,7 @@ public class Map
         }
         else if (playersHand.size() >= 3)
         { // check if they would like to
-            System.out.println(
-                    "Would you like to trade in a card set? 'y' or 'n'.");
-            String answer = s.next();
-            if (answer.toLowerCase().equals("y")) willExchange = true;
+            willExchange = p.willTradeCards();
         }
         if (willExchange)
         { // do the actual exchange
@@ -145,12 +141,8 @@ public class Map
             System.out.println("You must trade in cards this turn.");
             System.out.println(
                     "Enter the int of the cards to trade in, one at a time.");
-            for (int i = 0; i < playersHand.size(); i++)
-            {
-                Card curr = playersHand.get(i);
-                System.out.println(i + ": " + curr.toString() + "\n");
-            }
-            int first = s.nextInt();
+            ArrayList<Integer> choices = p.cardSetChoices();
+            int first = choices.get(0);
             Card curr = playersHand.remove(first);
             Territory onCard1 = getCountry(curr.getCountry());
             if (onCard1 != null)
@@ -159,7 +151,8 @@ public class Map
                 p.gainArmies(2);
             }
             deck.returnCardToDeck(curr);
-            int second = s.nextInt();
+            int second = choices.get(1) - 1; // -1 because we've already removed
+                                             // a card
             curr = playersHand.remove(second);
             Territory onCard2 = getCountry(curr.getCountry());
             if (onCard2 != null)
@@ -168,7 +161,8 @@ public class Map
                 p.gainArmies(2);
             }
             deck.returnCardToDeck(curr);
-            int third = s.nextInt();
+            int third = choices.get(2) - 2; // -2 because we've already removed
+                                            // 2 cards
             curr = playersHand.remove(third);
             Territory onCard3 = getCountry(curr.getCountry());
             if (onCard3 != null)

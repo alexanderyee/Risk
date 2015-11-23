@@ -54,11 +54,6 @@ public class Territory
         return this.occupier;
     }
 
-    public int defDice()
-    {
-        return this.defDice;
-    }
-
     public List<Territory> getAdjacentTerritories()
     {
         return this.adj;
@@ -100,12 +95,6 @@ public class Territory
     public void changeOccupier(Player player)
     {
         this.occupier = player;
-    }
-
-    // player methods
-    public void defend(int oppDice)
-    {
-        defDice = occupier.defend(oppDice);
     }
 
     public void lose()

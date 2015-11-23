@@ -207,7 +207,7 @@ public class Game
         Player attacker = attacking.getOccupier();
         Player defender = defending.getOccupier();
 
-        int attackerRollNumber = attacker.attackDice();
+        int attackerRollNumber = attacker.attackDice(attacking.getArmies());
         if (attackerRollNumber > attacking.getArmies() - 1)
         {
             System.out.printf("you can roll at most %d please try again \n\n",
@@ -221,7 +221,8 @@ public class Game
         String defStr = defending.toString();
         int atkDice = attackerRollNumber;
 
-        int defenderRollNumber = defender.defenseDice(atkPID, defStr, atkDice);
+        int defenderRollNumber = defender.defenseDice(atkPID, defStr, atkDice,
+                defending.getArmies());
 
         ArrayList<Integer> defendersRolls;
         int min = Math.max(attackerRollNumber, defenderRollNumber);

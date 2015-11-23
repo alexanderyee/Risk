@@ -249,31 +249,36 @@ public class GameTest
         cardTestList.add(new Card(CardType.ARTILLERY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.ARTILLERY, Countries.ALASKA));
 
-        assertTrue(bot.redeemCardsForArmies(cardTestList));
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) > 0);
         cardTestList.removeAll(cardTestList);
 
         cardTestList.add(new Card(CardType.CALVARY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.CALVARY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.CALVARY, Countries.ALASKA));
 
-        assertTrue(bot.redeemCardsForArmies(cardTestList));
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) > 0);
         cardTestList.removeAll(cardTestList);
 
         cardTestList.add(new Card(CardType.INFANTRY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.INFANTRY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.INFANTRY, Countries.ALASKA));
 
-        assertTrue(bot.redeemCardsForArmies(cardTestList));
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) > 0);
         cardTestList.removeAll(cardTestList);
 
         cardTestList.add(new Card(CardType.CALVARY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.ARTILLERY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.INFANTRY, Countries.ALASKA));
 
-        assertTrue(bot.redeemCardsForArmies(cardTestList));
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) > 0);
         cardTestList.removeAll(cardTestList);
 
-        assertFalse(bot.redeemCardsForArmies(cardTestList));
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) == 0);
 
     }
 

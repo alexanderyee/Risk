@@ -28,6 +28,13 @@ public abstract class Player
     private int occupiedAfrica;
     private int occupiedEurope;
 
+    protected ArrayList<Territory> terrNAmer = new ArrayList<Territory>();
+    protected ArrayList<Territory> terrSAmer = new ArrayList<Territory>();
+    protected ArrayList<Territory> terrAfrica = new ArrayList<Territory>();
+    protected ArrayList<Territory> terrAustr = new ArrayList<Territory>();
+    protected ArrayList<Territory> terrAsia = new ArrayList<Territory>();
+    protected ArrayList<Territory> terrEuro = new ArrayList<Territory>();
+
     /*
      * Not sure about this - Danny
      */
@@ -140,14 +147,34 @@ public abstract class Player
     public void territoryObtained(Territory t)
     {
         Continent c = t.getContinent();
-        if (c == Continent.NAMERICA) occupiedNAmerica++;
-        if (c == Continent.SAMERICA) occupiedSAmerica++;
-        if (c == Continent.ASIA) occupiedAsia++;
-        if (c == Continent.AUSTRALIA) occupiedAutstralia++;
-        if (c == Continent.AFRICA) occupiedAfrica++;
-        if (c == Continent.EUROPE) occupiedEurope++;
+        if (c == Continent.NAMERICA)
+            occupiedNAmerica++;
+        else if (c == Continent.SAMERICA)
+            occupiedSAmerica++;
+        else if (c == Continent.ASIA)
+            occupiedAsia++;
+        else if (c == Continent.AUSTRALIA)
+            occupiedAutstralia++;
+        else if (c == Continent.AFRICA)
+            occupiedAfrica++;
+        else if (c == Continent.EUROPE) occupiedEurope++;
         territories.add(t);
         totalTerritories++;
+
+        if (this.getClass() == HardCpu.class)
+        {
+            if (c == Continent.NAMERICA)
+                terrNAmer.add(t);
+            else if (c == Continent.SAMERICA)
+                terrSAmer.add(t);
+            else if (c == Continent.ASIA)
+                terrAsia.add(t);
+            else if (c == Continent.AUSTRALIA)
+                terrAustr.add(t);
+            else if (c == Continent.AFRICA)
+                terrAfrica.add(t);
+            else if (c == Continent.EUROPE) terrEuro.add(t);
+        }
     }
 
     /*
@@ -211,49 +238,19 @@ public abstract class Player
         cards.add(map.drawCard());
     }
 
+    public void setCards(ArrayList<Card> newHand)
+    {
+        cards = newHand;
+    }
+
     public int getHandSize()
     {
         return cards.size();
     }
 
-    public boolean redeemCardsForArmies(ArrayList<Card> cardArr)
-    {
-        int calvary = 0;
-        int artillery = 0;
-        int infantry = 0;
-        for (Card c : cardArr)
-        {
-            if (c.getCardType().equals(CardType.CALVARY))
-            {
-                calvary++;
-                this.playerOwnsTerritory(c);
-            }
-            else if (c.getCardType().equals(CardType.ARTILLERY))
-            {
-                artillery++;
-                this.playerOwnsTerritory(c);
-            }
-            else
-            {
-                infantry++;
-                this.playerOwnsTerritory(c);
-            }
-        }
-        if (calvary == 3 || artillery == 3 || infantry == 3)
-        {
+    abstract public boolean willTradeCards();
 
-            return true;
-        }
-        else if (calvary == 1 && artillery == 1 && infantry == 1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-
-    }
+    abstract public ArrayList<Integer> cardSetChoices();
 
     public void playerOwnsTerritory(Card c)
     {
@@ -267,16 +264,6 @@ public abstract class Player
     }
 
     abstract public void fortify();
-
-    /*
-     * Unfinished
-     */
-
-    public int defend(int oppDice)
-    {
-        // TODO Auto-generated method stub
-        return 1 | 2;
-    }
 
     // PRIVATE METHODS
 
@@ -328,9 +315,10 @@ public abstract class Player
 
     public abstract boolean willFortify();
 
-    public abstract int attackDice();
+    public abstract int attackDice(int armies);
 
-    public abstract int defenseDice(int atkPID, String defStr, int atkDice);
+    public abstract int defenseDice(int atkPID, String defStr, int atkDice,
+            int armies);
 
     // deploy methods
 

@@ -25,7 +25,7 @@ public class HumanTests
     @Test
     public void fortifyTest()
     {
-        fail("We haven't written this method really, only when Ben was high.");
+        fail("we just have to test this");
     }
 
     @Test
