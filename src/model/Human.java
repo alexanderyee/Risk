@@ -45,7 +45,8 @@ public class Human extends Player
                     + fortifyFrom.toString() + " to " + fortifyTo.toString()
                     + " that is less than " + (fortifyFrom.getArmies() - 1));
             int move = s.nextInt();
-            //s.close();
+
+           // s.close();
             fortifyFrom.addArmies(move * -1); // TODO this is some sketchy code
             fortifyTo.addArmies(move);
         }
@@ -56,28 +57,35 @@ public class Human extends Player
         Scanner s = new Scanner(System.in);
         int choice;
         Territory terr;
-        int armies2 = armies;
+        int armies2=armies;
         for (int i = 0; i < armies; i++)
         {
+           
+            
             System.out.println(
                     "Enter the number of the territory you would like to deploy a single army to.");
-            System.out.println("You have " + armies2 + " armies left.");
+
+            System.out.println("You have " + armies2 + " armies left");
             for (int j = 0; j < territories.size(); j++)
             {
                 System.out.println(j + ": " + territories.get(j).toString());
             }
             System.out.println("-----------------------");
             choice = s.nextInt();
-            armies2--;
-            //s.close();
+
+        armies2--;
+         //   this.addArmy(choice);
+            //  s.close();
             terr = territories.get(choice);
             terr.addArmies(1);
             loseAnArmy();
         }
+   
         for (int j = 0; j < territories.size(); j++)
         {
             System.out.println(j + ": " + territories.get(j).toString());
         }
+    
     }
 
     // By changing game methods to be scanner-less, bots can better return
@@ -88,7 +96,7 @@ public class Human extends Player
                 + ", would you like to attack? 'y' or 'n'");
         Scanner s = new Scanner(System.in);
         String answer = s.next().toLowerCase();
-        //s.close();
+
         if (answer.equals("y"))
             return true;
         else if (answer.equals("n"))
@@ -103,10 +111,11 @@ public class Human extends Player
         ArrayList<Territory> adjList = null;
         int terrNumber = 0;
         ArrayList<Integer> validChoices = new ArrayList<Integer>();
+        
         ArrayList<Territory> tList = getTerritories();
         for (int i = 0; i < getTotalTerritories(); i++)
         {
-            // System.out.printf(i);
+            // System.out.println(getPID());
             System.out.printf(
                     "(%d) Territory %s has %d armies and can attack: \n",
                     terrNumber, tList.get(i), tList.get(i).getArmies());
@@ -131,19 +140,23 @@ public class Human extends Player
             }
             System.out.printf("\n");
         }
-
+        
         Scanner s = new Scanner(System.in);
         int choice = -999;
         while (!validChoices.contains(choice)
                 || tList.get(choice).getArmies() < 2)
         {
-            System.out.printf(
-                    "Enter the number of the territory would like to attack from:");
             System.out.println(
                     "Be sure to choose a territory with at least 2 armies.");
+            System.out.printf(
+                    "Enter the number of the territory would like to attack from:");
             choice = s.nextInt();
+          
+           System.out.printf(tList.get(choice).getCountry().toString());
+            
+           
         }
-        //s.close();
+       // s.close();
         return choice;
     }
 
@@ -153,17 +166,17 @@ public class Human extends Player
                 "Enter the number of the enemy territory would like to attack:");
         Scanner s = new Scanner(System.in);
         int num = s.nextInt();
-        //s.close();
+      //  s.close();
         return num;
     }
 
     public boolean attackAgain()
     {
-        System.out.printf("Player %d, would you like to continue attacking? 'y' or 'n'\n",
+        System.out.printf("Player %d, would you like to continue attacking y or n? \n",
                 (getPlayerID()));
         Scanner s = new Scanner(System.in);
         String choice = s.next().toLowerCase();
-        //s.close();
+       // s.close();
         if (choice.equals("y"))
             return true;
         else if (choice.equals("n"))
@@ -177,10 +190,10 @@ public class Human extends Player
 
     public boolean willFortify()
     {
-        System.out.println("Would you like to fortify? ");
+        System.out.println("Would you like to fortify y or n? ");
         Scanner s = new Scanner(System.in);
         String choice = s.next().toLowerCase();
-        //s.close();
+       // s.close();
         if (choice.equals("y"))
             return true;
         else if (choice.equals("n"))
@@ -199,7 +212,7 @@ public class Human extends Player
                 getPlayerID());
         Scanner s = new Scanner(System.in);
         int num = s.nextInt();
-        //s.close();
+       // s.close();
         return num;
     }
 
@@ -212,7 +225,7 @@ public class Human extends Player
                 + " has chosen to use " + atkDice + " dice)");
         Scanner s = new Scanner(System.in);
         int num = s.nextInt();
-        //s.close();
+       // s.close();
         return num;
     }
 

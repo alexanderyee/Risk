@@ -71,15 +71,16 @@ public class Game
     {
         rollToGoFirst();
         claimTerritories();
-        beginGame();
+      //  beginGame();
     }
 
     private void rollToGoFirst()
     {
         Random r = new Random();
         currentPID = r.nextInt(players.size()); // so this number is 0 to
-                                                // (size-1)
-    }
+                                                        // (size-1)
+
+ }
 
     private void claimTerritories()
     {
@@ -91,27 +92,30 @@ public class Game
             map.giveRandomTerritory(players.get(currentPID));
 
             currentPID++;
-            currentPID = currentPID % numPlayers;
+
+            currentPID=currentPID%numPlayers;
         }
 
     }
 
-    private void beginGame()
+    public void beginGame()
     {
         Player curr;
         while (!gameOver)
         {
-            currentPID = currentPID % numPlayers; //to prevent out of bounds exception
+            currentPID=currentPID % numPlayers;
             curr = players.get(currentPID);
-            int bonus = curr.deploy();
-            bonus += map.exchangeCards(curr);
-            System.out.println("Player "+currentPID+" , it is your turn:\n");
+           int bonus = curr.deploy();
+          //  bonus += map.exchangeCards(curr);
+           System.out.println("Player " +currentPID + " it is your turn: \n");
             curr.placeDeployedArmies(bonus);
             attack();
             if (curr.getTotalTerritories() == 42)
                 gameOver = true;
             else
-                currentPID++;                
+            {
+              currentPID++;
+            }
         }
     } //TODO: check if curr fortifies here
 
@@ -131,7 +135,10 @@ public class Game
     {
 
         // Asks if the player wants to attack or no
+
+            
         boolean choice = players.get(currentPID).willAttack();
+        
         if (choice == true)
         {
             Player currentPlayer = players.get(currentPID); // don't use
@@ -150,7 +157,7 @@ public class Game
                 while (attackUnresolved)
                 {
                     // get the two territory choices involved in the battle
-                    int attackingTerritoryNumber = currentPlayer.attackFrom();
+                    int attackingTerritoryNumber = currentPlayer.attackFrom(); 
                     Territory attackingTerritory = currentPlayer
                             .getTerritories().get(attackingTerritoryNumber);
 
@@ -162,7 +169,8 @@ public class Game
 
                     // carry out the dice rolling and army losses
                     resolveAttack(attackingTerritory, defendingTerritory);
-                    
+
+                      System.out.println(currentPID);
                     System.out.println("Attarckers terrys \n"
                             + this.getTerritories(currentPID));
                     Player defendingPlayer = defendingTerritory.getOccupier();
@@ -176,6 +184,8 @@ public class Game
                             currentPlayer.fortify();
                     }
                 } // end while
+               
+            
             } // end try
             catch (NullPointerException e)
             {

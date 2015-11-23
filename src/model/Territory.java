@@ -120,7 +120,7 @@ public class Territory
     @Override
     public String toString()
     {
-        return name.toString();
+        return name.toString() + "number of armies is: " + armies;
     }
 
 }
