@@ -47,14 +47,14 @@ public class GraphicalView extends JFrame implements Observer
     private JTextField console;
     private boolean newGameFlag = false;
     private int X, Y;
-    private final int imgWidth = 1600 * 3 / 4;
-    private final int imgHeight = 1062 * 3 / 4;
+    private final int imgWidth = 1215;
+    private final int imgHeight = 858;
 
     public GraphicalView()
     {
         try
         {
-            map = ImageIO.read(new File("./images/map.jpg"));
+            map = ImageIO.read(new File("./images/riskMap2.png"));
 
         }
         catch (IOException e)
