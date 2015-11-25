@@ -44,12 +44,13 @@ public class GraphicalView extends JFrame implements Observer
     private MapPanel mapPanel;
     private JButton addArmy = new JButton("addArmy");
     private JButton newGame = new JButton("newGame");
+    private JButton attack = new JButton("Attack");
     private JTextArea gameInfo;
     private JTextField console;
     private boolean newGameFlag = false;
     private int X, Y;
-    private final int imgWidth = (int)(756*1.5);
-    private final int imgHeight = (int) (554*1.5);
+    private final int imgWidth = (int) (756 * 1.5);
+    private final int imgHeight = (int) (554 * 1.5);
 
     public GraphicalView()
     {
@@ -82,9 +83,24 @@ public class GraphicalView extends JFrame implements Observer
         console.setSize(new Dimension(screensize.width - imgWidth, 30));
         console.setLocation(imgWidth, imgHeight);
         console.addActionListener(new ConsoleListener());
+        attack.setSize(new Dimension(100, 30));
+        attack.setLocation(imgWidth - 200, imgHeight);
+        attack.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+               game.attack();
+               repaint();
+               gameInfo.setText(gameInfo.getText() + "\n Attack updated");
+            }
+            
+        });
+    
         newGame.setLocation(imgWidth - 100, imgHeight);
         newGame.setSize(new Dimension(100, 30));
         newGame.addActionListener(new ActionListener()
+        
         {
 
             @Override
@@ -92,36 +108,37 @@ public class GraphicalView extends JFrame implements Observer
             {
                 game = new Game(1, 3);
                 newGameFlag = true;
-                gameInfo.setText(
-                        "Player 1 territories \n" + game.getTerritories(1));
-                gameInfo.append(
-                        "Player 2 territories \n" + game.getTerritories(2));
-                gameInfo.append(
-                        "Player 3 territories \n" + game.getTerritories(3));
-                gameInfo.append(
-                        "Player 4 territories \n" + game.getTerritories(4));
 
-                for (int i = 1; i <= 7; i++)
+                for (int i = 1; i <= 12; i++)
+                {
+                    game.placeArmyInPlayerTerritory(0, i);
+                    game.placeArmyInPlayerTerritory(0, i);
+                }
+                for (int i = 1; i <= 12; i++)
                 {
                     game.placeArmyInPlayerTerritory(1, i);
-
-                }
-                for (int i = 1; i <= 7; i++)
-                {
                     game.placeArmyInPlayerTerritory(1, i);
-
                 }
 
-                for (int i = 1; i <= 7; i++)
+                for (int i = 1; i <= 12; i++)
                 {
+                    game.placeArmyInPlayerTerritory(2, i);
                     game.placeArmyInPlayerTerritory(2, i);
 
                 }
-                for (int i = 1; i <= 7; i++)
+                for (int i = 1; i <= 12; i++)
                 {
-                    game.placeArmyInPlayerTerritory(2, i);
-
+                    game.placeArmyInPlayerTerritory(3, i);
+                    game.placeArmyInPlayerTerritory(3, i);
                 } // 3 bots and 1 human
+                gameInfo.setText(
+                        "Player 1 territories \n" + game.getTerritories(0));
+                gameInfo.append(
+                        "Player 2 territories \n" + game.getTerritories(1));
+                gameInfo.append(
+                        "Player 3 territories \n" + game.getTerritories(2));
+                gameInfo.append(
+                        "Player 4 territories \n" + game.getTerritories(3));
                 repaint();
             }
 
@@ -134,6 +151,7 @@ public class GraphicalView extends JFrame implements Observer
         this.add(mapPanel);
         this.add(gameInfo);
         this.add(console);
+        this.add(attack);
         repaint();
     }
 
@@ -238,13 +256,13 @@ public class GraphicalView extends JFrame implements Observer
 
             g2.drawImage(map, 0, 0, null);
             // will consider lower resolutions
-            for (int i = 0; i < imgWidth; i += 50)
+            for (int i = 0; i < imgWidth; i += 30)
             {
                 g2.setColor(Color.PINK);
                 g2.drawLine(0, i, imgWidth, i);
                 g2.drawString(String.valueOf(i), 0, i);
             }
-            for (int i = 0; i < imgWidth; i += 50)
+            for (int i = 0; i < imgWidth; i += 30)
             {
                 g2.drawLine(i, 0, i, imgHeight);
                 g2.drawString(String.valueOf(i), i, 10);
@@ -264,10 +282,13 @@ public class GraphicalView extends JFrame implements Observer
                  * game.getTerritory("NEW_GUINEA").getArmies();
                  * g2.drawString(String.valueOf(a4), 1060, 560);
                  */
-                for (Player player: game.getPlayers()){
+                for (Player player : game.getPlayers())
+                {
                     g2.setColor(player.getColor());
-                    for (Territory t: player.getTerritories()){
-                        g2.drawString(String.valueOf(t.getArmies()), t.getPointX(), t.getPointY());
+                    for (Territory t : player.getTerritories())
+                    {
+                        g2.drawString(String.valueOf(t.getArmies()),
+                                t.getPointX(), t.getPointY());
                     }
                 }
             }
