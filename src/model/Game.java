@@ -28,7 +28,7 @@ public class Game
         initializePlayers(numBots, numHumans);
         setupGame();
     }
-
+    
     // CONSTRUCTOR HELPER METHODS
     private void initializeMemberVariables(int numBots, int numHumans)
     {
@@ -284,6 +284,9 @@ public class Game
     public Territory getTerritory(String c)
     {
         return map.getTerritory(c);
+    }
+    public ArrayList<Player> getPlayers(){
+        return this.players;
     }
 
 }
