@@ -43,7 +43,7 @@ public class RiskResources
 
         Territory eu1 = new Territory(Countries.ICELAND, 500, 170);
         Territory eu2 = new Territory(Countries.SCANDINAVIA, 560, 205);
-        Territory eu3 = new Territory(Countries.UKRAINE, 690, 270);
+        Territory eu3 = new Territory(Countries.UKRAINE, 685, 270);
         Territory eu4 = new Territory(Countries.GREAT_BRITAIN, 440, 270);
         Territory eu5 = new Territory(Countries.N_EUROPE, 570, 290);
         Territory eu6 = new Territory(Countries.W_EUROPE, 510, 360);
@@ -56,18 +56,18 @@ public class RiskResources
         Territory af5 = new Territory(Countries.S_AFRICA, 630, 720);
         Territory af6 = new Territory(Countries.MADAGASCAR, 750, 720);
 
-        Territory as1 = new Territory(Countries.SIBERIA, 840, 200);
-        Territory as2 = new Territory(Countries.YAKUTSK, 930, 150);
-        Territory as3 = new Territory(Countries.KAMCHATKA, 1020, 150);
-        Territory as4 = new Territory(Countries.URAL, 790, 240);
-        Territory as5 = new Territory(Countries.IRKUTSK, 920, 250);
-        Territory as6 = new Territory(Countries.AFGHANISTAN, 760, 350);
-        Territory as7 = new Territory(Countries.MONGOLIA, 920, 320);
+        Territory as1 = new Territory(Countries.SIBERIA, 850, 205);
+        Territory as2 = new Territory(Countries.YAKUTSK, 930, 160);
+        Territory as3 = new Territory(Countries.KAMCHATKA, 1000, 165);
+        Territory as4 = new Territory(Countries.URAL, 795, 260);
+        Territory as5 = new Territory(Countries.IRKUTSK, 920, 265);
+        Territory as6 = new Territory(Countries.AFGHANISTAN, 770, 360);
+        Territory as7 = new Territory(Countries.MONGOLIA, 925, 335);
         Territory as8 = new Territory(Countries.JAPAN, 1070, 300);
-        Territory as9 = new Territory(Countries.CHINA, 900, 400);
-        Territory as10 = new Territory(Countries.MIDDLE_EAST, 690, 450);
-        Territory as11 = new Territory(Countries.INDIA, 840, 450);
-        Territory as12 = new Territory(Countries.SIAM, 930, 510);
+        Territory as9 = new Territory(Countries.CHINA, 910, 410);
+        Territory as10 = new Territory(Countries.MIDDLE_EAST, 700, 460);
+        Territory as11 = new Territory(Countries.INDIA, 830, 460);
+        Territory as12 = new Territory(Countries.SIAM, 935, 495);
 
         Territory ar1 = new Territory(Countries.INDONESIA, 870, 600);
         Territory ar2 = new Territory(Countries.NEW_GUINEA, 1050, 555);

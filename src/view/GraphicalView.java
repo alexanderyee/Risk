@@ -256,6 +256,7 @@ public class GraphicalView extends JFrame implements Observer
 
             g2.drawImage(map, 0, 0, null);
             // will consider lower resolutions
+            // grid for map image
             /*
             for (int i = 0; i < imgWidth; i += 30)
             {
