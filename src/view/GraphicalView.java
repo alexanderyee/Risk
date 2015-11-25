@@ -28,6 +28,7 @@ import javax.swing.JTextField;
 
 import model.Game;
 import model.Player;
+import model.Territory;
 
 public class GraphicalView extends JFrame implements Observer
 {
@@ -47,14 +48,14 @@ public class GraphicalView extends JFrame implements Observer
     private JTextField console;
     private boolean newGameFlag = false;
     private int X, Y;
-    private final int imgWidth = 1215;
-    private final int imgHeight = 858;
+    private final int imgWidth = (int)(756*1.5);
+    private final int imgHeight = (int) (554*1.5);
 
     public GraphicalView()
     {
         try
         {
-            map = ImageIO.read(new File("./images/riskMap2.png"));
+            map = ImageIO.read(new File("./images/riskMap5.png"));
 
         }
         catch (IOException e)
@@ -250,6 +251,7 @@ public class GraphicalView extends JFrame implements Observer
             }
             if (newGameFlag)
             {
+                g2.setFont(new Font("default", Font.BOLD, 16));
                 /*
                  * g2.setFont(new Font("default", Font.BOLD, 16));
                  * g2.setColor(Color.RED); int a1 =
@@ -263,7 +265,10 @@ public class GraphicalView extends JFrame implements Observer
                  * g2.drawString(String.valueOf(a4), 1060, 560);
                  */
                 for (Player player: game.getPlayers()){
-                    
+                    g2.setColor(player.getColor());
+                    for (Territory t: player.getTerritories()){
+                        g2.drawString(String.valueOf(t.getArmies()), t.getPointX(), t.getPointY());
+                    }
                 }
             }
         }

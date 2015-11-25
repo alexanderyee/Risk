@@ -27,7 +27,7 @@ public class MapTest
     {
         Map map = new Map();
         assertEquals(map.getCountry(Countries.AFGHANISTAN).toString(),
-                new Territory(Countries.AFGHANISTAN).toString());
+                new Territory(Countries.AFGHANISTAN, 0, 0).toString());
         System.out.println(map.listUnclaimed());
         assertEquals(map.getUnclaimedTerritories().size(), 42);
         Player p = new EasyBot(0, 1, map);

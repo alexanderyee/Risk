@@ -1,6 +1,7 @@
 
 package model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 /*
@@ -347,6 +348,23 @@ public abstract class Player
     public int getPlayerID()
     {
         return playerID;
+    }
+
+    public Color getColor()
+    {
+        if (this.playerID == 0)
+        return Color.RED;
+        if (this.playerID == 1)
+            return Color.BLUE;
+        if (this.playerID == 2)
+            return Color.YELLOW;
+        if (this.playerID == 3)
+            return Color.GREEN;
+        if (this.playerID == 4)
+            return new Color(51, 25, 0);
+        if (this.playerID == 5)
+            return Color.MAGENTA;
+        return Color.BLACK;
     }
 
 }
