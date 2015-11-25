@@ -256,6 +256,7 @@ public class GraphicalView extends JFrame implements Observer
 
             g2.drawImage(map, 0, 0, null);
             // will consider lower resolutions
+            /*
             for (int i = 0; i < imgWidth; i += 30)
             {
                 g2.setColor(Color.PINK);
@@ -267,21 +268,10 @@ public class GraphicalView extends JFrame implements Observer
                 g2.drawLine(i, 0, i, imgHeight);
                 g2.drawString(String.valueOf(i), i, 10);
             }
+            */
             if (newGameFlag)
             {
                 g2.setFont(new Font("default", Font.BOLD, 16));
-                /*
-                 * g2.setFont(new Font("default", Font.BOLD, 16));
-                 * g2.setColor(Color.RED); int a1 =
-                 * game.getTerritory("W_AUSTRALIA").getArmies();
-                 * g2.drawString(String.valueOf(a1), 950, 660); // and scroll
-                 * panes int a2 = game.getTerritory("E_AUSTRALIA").getArmies();
-                 * g2.drawString(String.valueOf(a2), 1040, 660); int a3 =
-                 * game.getTerritory("INDONESIA").getArmies();
-                 * g2.drawString(String.valueOf(a3), 940, 540); int a4 =
-                 * game.getTerritory("NEW_GUINEA").getArmies();
-                 * g2.drawString(String.valueOf(a4), 1060, 560);
-                 */
                 for (Player player : game.getPlayers())
                 {
                     g2.setColor(player.getColor());
