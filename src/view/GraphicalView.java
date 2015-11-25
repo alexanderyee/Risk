@@ -13,8 +13,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -72,6 +74,7 @@ public class GraphicalView extends JFrame implements Observer
         setSize(screensize);
         setLayout(null);
         WindowListener wl = new Save();
+        this.addWindowListener(wl);
         mapPanel = new MapPanel();
         mapPanel.setLayout(null);
         mapPanel.setSize(new Dimension(imgWidth, imgHeight));
@@ -173,7 +176,8 @@ public class GraphicalView extends JFrame implements Observer
                     ObjectInputStream input = new ObjectInputStream(fis);
                     game = new Game(3, 1); // need to add JOptionPane to this in
                                            // the future; for now, defaulted to
-
+                    input.close();
+                    fis.close();
                 } // End try.....
                 catch (Exception ex)
                 {
@@ -191,7 +195,25 @@ public class GraphicalView extends JFrame implements Observer
         @Override
         public void windowClosing(WindowEvent e)
         {
-            // TODO Auto-generated method stub
+            JOptionPane jop = new JOptionPane();
+            jop.setMessage("Save?");
+            int n = jop.showConfirmDialog(null, "Save?", "Save State", JOptionPane.YES_NO_CANCEL_OPTION);
+
+            if (n == jop.YES_OPTION) {
+                try {
+                    FileOutputStream fos = new FileOutputStream("RiskSave");
+                    ObjectOutputStream outFile = new ObjectOutputStream(fos);
+                    outFile.writeObject(game);
+                    outFile.close();
+                    fos.close();
+                } catch (IOException e1) {
+                    System.out.println("Save failed");
+                    e1.printStackTrace();
+                }
+                System.exit(0);
+            }
+            if (n == jop.NO_OPTION)
+                System.exit(0);
 
         }
 
@@ -245,7 +267,6 @@ public class GraphicalView extends JFrame implements Observer
     {
         public MapPanel()
         {
-
         }
 
         @Override
@@ -253,9 +274,7 @@ public class GraphicalView extends JFrame implements Observer
         {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
-
             g2.drawImage(map, 0, 0, null);
-            // will consider lower resolutions
             // grid for map image
             /*
             for (int i = 0; i < imgWidth; i += 30)

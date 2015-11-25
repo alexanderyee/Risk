@@ -2,9 +2,12 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Observable;
 import java.util.Random;
 
-public class Game
+import view.GraphicalView;
+
+public class Game extends Observable
 {
 
     // MEMBER VARIABLES
@@ -171,11 +174,11 @@ public class Game
                     resolveAttack(attackingTerritory, defendingTerritory);
                    
                       System.out.println(currentPID);
-                    System.out.println("Attarckers terrys \n"
+                    System.out.println("Attacker's territories: \n"
                             + this.getTerritories(currentPID));
                   
                     
-                    System.out.println("defenders terrys \n"
+                    System.out.println("Defenders territories: \n"
                             + defendingPlayer.getTerroritories());
 
                     if (!currentPlayer.attackAgain())
@@ -212,7 +215,7 @@ public class Game
         int attackerRollNumber = attacker.attackDice(attacking.getArmies());
         if (attackerRollNumber > attacking.getArmies() - 1)
         {
-            System.out.printf("you can roll at most %d please try again \n\n",
+            System.out.printf("You can roll at most %d please try again \n\n",
                     Math.min(attacking.getArmies() - 1, 3));
 
         }
@@ -243,14 +246,14 @@ public class Game
             if (attackersRolls.get(i) <= defendersRolls.get(i))
 
             {
-                System.out.printf(" attacker rolled %d \ndefenders roll %d \n",
+                System.out.printf(" Attacker rolled %d \nDefender's roll %d \n",
                         attackersRolls.get(i), defendersRolls.get(i));
-
+                
                 attacking.addArmies(-1);
             }
             else if (attackersRolls.get(i) > defendersRolls.get(i))
             {
-                System.out.printf(" attacker rolled %d \ndefenders roll %d \n",
+                System.out.printf(" Attacker rolled %d \nDefender's roll %d \n",
                         attackersRolls.get(i), defendersRolls.get(i));
                 defending.addArmies(-1);
             }
