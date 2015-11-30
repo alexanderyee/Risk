@@ -1,22 +1,23 @@
-
 package model;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
-public class EasyBot extends Player
+public class IntermediateBot extends Player
 {
 
     private Random r;
     private int pid;
+    private int atkFrom;
+    private int atkTo;
     private ArrayList<String> realThoughts = new ArrayList<String>();
 
     /*
-     * Represents the Easy AI bot in Risk, will choose pseudo random decisions
+     * Represents the Intermediate AI bot in Risk, will choose a single
+     * advantageous attack per turn
      */
-    public EasyBot(int pid, int initArmies, Map b)
+    public IntermediateBot(int pid, int initArmies, Map b)
     {
         super(pid, initArmies, b);
         r = new Random();
@@ -24,7 +25,7 @@ public class EasyBot extends Player
         addThoughts();
     }
 
-    public EasyBot(int pid, int initArmies, Map b, Random s)
+    public IntermediateBot(int pid, int initArmies, Map b, Random s)
     {
         super(pid, initArmies, b);
         this.r = s;
@@ -34,12 +35,12 @@ public class EasyBot extends Player
 
     private void addThoughts()
     {
-        realThoughts.add("When faced with a questi0n I pray to rngesus :^)");
+        realThoughts.add("I know how to do arithmetic");
         realThoughts.add(
-                "Just kissin the dice and rollin snake eyes for sure dude");
-        realThoughts.add("let me think about this... or not");
-        realThoughts.add("wHEN FACED WITH A QUEST1ON i PRAY TO RNGESUS ;60");
-        realThoughts.add("ihavenomoreprogrammedsayings");
+                "I am even programmed to actually consider all of my territories");
+        realThoughts.add("Are you bad at this game? or am I...");
+        realThoughts.add("just pullin");
+        realThoughts.add("I was written in assembly language");
     }
 
     @Override
@@ -54,16 +55,15 @@ public class EasyBot extends Player
                     .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
                                                                                 // a
                                                                                 // thing
-            Territory fortifyTo = getTerritories()
-                    .get(r.nextInt(getTerritories().size()));
+            Territory fortifyTo = territories
+                    .get(r.nextInt(territories.size()));
             int times = 0;
-            while (fortifyTo.getArmies() < 1 && times < getTerritories().size())
+            while (fortifyTo.getArmies() < 1 && times < territories.size())
             {
-                fortifyTo = getTerritories()
-                        .get(r.nextInt(getTerritories().size()));
+                fortifyTo = territories.get(r.nextInt(territories.size()));
                 times++;
             }
-            if (times == getTerritories().size())
+            if (times == territories.size())
             {
                 System.out.println(
                         "i give up, this one is beyond me, I choose to not fortify");
@@ -73,9 +73,7 @@ public class EasyBot extends Player
             {
                 List<Territory> possible = fortifyTo.getAdjacentTerritories();
                 System.out.println(
-                        realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                           // a
-                                                                           // thing
+                        "Let me choose a territory to fortify troops from.");
                 Territory t = possible.get(r.nextInt(possible.size()));
                 int counter = 0;
                 while (!(t.getOccupier().equals(this))
@@ -94,10 +92,6 @@ public class EasyBot extends Player
                 System.out.println("Hmm how many armies should I move from "
                         + fortifyFrom.toString() + " to " + fortifyTo.toString()
                         + ", less than " + (fortifyFrom.getArmies() - 1));
-                System.out.println(
-                        realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                           // a
-                                                                           // thing
                 int move = r.nextInt(fortifyFrom.getArmies() - 1);
                 fortifyFrom.addArmies(move * -1);
             }
@@ -115,7 +109,8 @@ public class EasyBot extends Player
             terr.addArmies(1);
             loseAnArmy();
         }
-        System.out.println("EasyBot " + this.pid + "has deployed armies");
+        System.out
+                .println("IntermediateBot " + this.pid + "has deployed armies");
     }
 
     @Override
@@ -127,93 +122,65 @@ public class EasyBot extends Player
     @Override
     public int attackFrom()
     {
-        ArrayList<Territory> adjList = null;
-        ArrayList<Integer> validChoices = new ArrayList<Integer>();
-        for (int i = 0; i < getTotalTerritories(); i++)
+        int maxDif = 0;
+        int from;
+        int at;
+        int choice = 0;
+        int choice2 = 0;
+        for (Territory t : getTerritories()) // go through my terr's
         {
-            if(territories.get(i).getArmies() > 1)
+            if (t.getArmies() > 1) // if I can attack from it
             {
-                adjList = (ArrayList<Territory>) territories.get(i)
-                        .getAdjacentTerritories();
-                for (int j = 0; j < adjList.size(); j++)
-                { // if(not attacking yourself
-                    if (!(adjList.get(j).getOccupier().getPlayerID() == getPlayerID()))
+                from = t.getArmies(); // check armies here
+                for (Territory e : t.getAdjacentTerritories()) // go through
+                // adjacents
+                {
+                    if (e.getOccupier() != this) // if it's an enemy terr
                     {
-                        validChoices.add(i);
-                        /*
-                         * we have to make sure that only territories that are adj
-                         * to enemy territories are selected as options
-                         */
+                        at = e.getArmies(); // get its armies
+                        if ((from - at) > maxDif)
+                        {
+                            maxDif = from - at;
+                            atkFrom = choice; // choose to attack where I have
+                            // greatest advantage
+                            atkTo = choice2;
+                        }
                     }
-                }   
+                    choice2++;
+                }
             }
+            choice++;
         }
-        int choice = r.nextInt(validChoices.size());
-        while (!validChoices.contains(choice)
-                || territories.get(choice).getArmies() < 2)
-        {
-            choice = r.nextInt(validChoices.size());
-        }
-        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                              // a
-                                                                              // thing
-        return choice;
+        return atkFrom;
     }
 
     @Override
     public int attackAt(int atkTerrNum)
     {
-
-        Territory from = this.getTerritories().get(atkTerrNum);
-        int choice = -1;
-        boolean keepGoing = true;
-        while (keepGoing)
-        {
-            choice = r.nextInt(from.getAdjacentTerritories().size());
-            if (from.getAdjacentTerritories().get(choice).getOccupier() != this)
-                keepGoing = false;
-        }
-        return choice;
+        return atkTo;
     }
 
     @Override
-    public boolean attackAgain() // always attacks again until it can't
+    public boolean attackAgain()
     {
-        for (Territory t : getTerritories())
-        {
-            System.out
-                    .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                                // a
-                                                                                // thing
-            if (t.getArmies() > 1) return true;
-        }
-        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                              // a
-                                                                              // thing
         return false;
     }
 
     @Override
     public boolean willFortify()
     {
-        return true;
+        return false;
     }
 
     @Override
     public int attackDice(int armies)
     {
-        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                              // a
-                                                                              // thing
         return 1;
     }
 
     @Override
     public int defenseDice(int atkPID, String defStr, int atkDice, int armies)
     {
-        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                              // a
-                                                                              // thing
         return 1;
     }
 

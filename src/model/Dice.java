@@ -14,13 +14,12 @@ public class Dice
     {
         luck = new Random();
     }
-    
+
     public Dice(int seed)
     {
         luck = new Random(seed);
     }
-    
-    
+
     // PUBLIC METHODS
     public int roll()
     {

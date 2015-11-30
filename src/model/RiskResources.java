@@ -26,53 +26,53 @@ public class RiskResources
     private void setAllTerritories()
     {
         // initialize territories
-        Territory na1 = new Territory(Countries.ALASKA);
-        Territory na2 = new Territory(Countries.NW_TERRITORY);
-        Territory na3 = new Territory(Countries.GREENLAND);
-        Territory na4 = new Territory(Countries.ALBERTA);
-        Territory na5 = new Territory(Countries.ONTARIO);
-        Territory na6 = new Territory(Countries.QUEBEC);
-        Territory na7 = new Territory(Countries.WESTERN_US);
-        Territory na8 = new Territory(Countries.EASTERN_US);
-        Territory na9 = new Territory(Countries.CENT_AMERICA);
+        Territory na1 = new Territory(Countries.ALASKA, 80, 150);
+        Territory na2 = new Territory(Countries.NW_TERRITORY, 170, 150);
+        Territory na3 = new Territory(Countries.GREENLAND, 400, 140);
+        Territory na4 = new Territory(Countries.ALBERTA, 175, 250);
+        Territory na5 = new Territory(Countries.ONTARIO, 240, 235);
+        Territory na6 = new Territory(Countries.QUEBEC, 315, 275);
+        Territory na7 = new Territory(Countries.WESTERN_US, 175, 345);
+        Territory na8 = new Territory(Countries.EASTERN_US, 275, 360);
+        Territory na9 = new Territory(Countries.CENT_AMERICA, 190, 385);
 
-        Territory sa1 = new Territory(Countries.VENENZUELA);
-        Territory sa2 = new Territory(Countries.PERU);
-        Territory sa3 = new Territory(Countries.BRAZIL);
-        Territory sa4 = new Territory(Countries.ARGENTINA);
+        Territory sa1 = new Territory(Countries.VENENZUELA, 270, 495);
+        Territory sa2 = new Territory(Countries.PERU, 300, 590);
+        Territory sa3 = new Territory(Countries.BRAZIL, 360, 560);
+        Territory sa4 = new Territory(Countries.ARGENTINA, 300, 680);
 
-        Territory eu1 = new Territory(Countries.ICELAND);
-        Territory eu2 = new Territory(Countries.SCANDINAVIA);
-        Territory eu3 = new Territory(Countries.UKRAINE);
-        Territory eu4 = new Territory(Countries.GREAT_BRITAIN);
-        Territory eu5 = new Territory(Countries.N_EUROPE);
-        Territory eu6 = new Territory(Countries.W_EUROPE);
-        Territory eu7 = new Territory(Countries.S_EUROPE);
+        Territory eu1 = new Territory(Countries.ICELAND, 500, 170);
+        Territory eu2 = new Territory(Countries.SCANDINAVIA, 560, 205);
+        Territory eu3 = new Territory(Countries.UKRAINE, 685, 270);
+        Territory eu4 = new Territory(Countries.GREAT_BRITAIN, 440, 270);
+        Territory eu5 = new Territory(Countries.N_EUROPE, 570, 290);
+        Territory eu6 = new Territory(Countries.W_EUROPE, 510, 360);
+        Territory eu7 = new Territory(Countries.S_EUROPE, 600, 390);
 
-        Territory af1 = new Territory(Countries.N_AFRICA);
-        Territory af2 = new Territory(Countries.EGYPT);
-        Territory af3 = new Territory(Countries.E_AFRICA);
-        Territory af4 = new Territory(Countries.CONGO);
-        Territory af5 = new Territory(Countries.S_AFRICA);
-        Territory af6 = new Territory(Countries.MADAGASCAR);
+        Territory af1 = new Territory(Countries.N_AFRICA, 510, 480);
+        Territory af2 = new Territory(Countries.EGYPT, 580, 480);
+        Territory af3 = new Territory(Countries.E_AFRICA, 650, 540);
+        Territory af4 = new Territory(Countries.CONGO, 630, 630);
+        Territory af5 = new Territory(Countries.S_AFRICA, 630, 720);
+        Territory af6 = new Territory(Countries.MADAGASCAR, 750, 720);
 
-        Territory as1 = new Territory(Countries.SIBERIA);
-        Territory as2 = new Territory(Countries.YAKUTSK);
-        Territory as3 = new Territory(Countries.KAMCHATKA);
-        Territory as4 = new Territory(Countries.URAL);
-        Territory as5 = new Territory(Countries.IRKUTSK);
-        Territory as6 = new Territory(Countries.AFGHANISTAN);
-        Territory as7 = new Territory(Countries.MONGOLIA);
-        Territory as8 = new Territory(Countries.JAPAN);
-        Territory as9 = new Territory(Countries.CHINA);
-        Territory as10 = new Territory(Countries.MIDDLE_EAST);
-        Territory as11 = new Territory(Countries.INDIA);
-        Territory as12 = new Territory(Countries.SIAM);
+        Territory as1 = new Territory(Countries.SIBERIA, 850, 205);
+        Territory as2 = new Territory(Countries.YAKUTSK, 930, 160);
+        Territory as3 = new Territory(Countries.KAMCHATKA, 1000, 165);
+        Territory as4 = new Territory(Countries.URAL, 795, 260);
+        Territory as5 = new Territory(Countries.IRKUTSK, 920, 265);
+        Territory as6 = new Territory(Countries.AFGHANISTAN, 770, 360);
+        Territory as7 = new Territory(Countries.MONGOLIA, 925, 335);
+        Territory as8 = new Territory(Countries.JAPAN, 1070, 300);
+        Territory as9 = new Territory(Countries.CHINA, 910, 410);
+        Territory as10 = new Territory(Countries.MIDDLE_EAST, 700, 460);
+        Territory as11 = new Territory(Countries.INDIA, 830, 460);
+        Territory as12 = new Territory(Countries.SIAM, 935, 495);
 
-        Territory ar1 = new Territory(Countries.INDONESIA);
-        Territory ar2 = new Territory(Countries.NEW_GUINEA);
-        Territory ar3 = new Territory(Countries.W_AUSTRALIA);
-        Territory ar4 = new Territory(Countries.E_AUSTRALIA);
+        Territory ar1 = new Territory(Countries.INDONESIA, 870, 600);
+        Territory ar2 = new Territory(Countries.NEW_GUINEA, 1050, 555);
+        Territory ar3 = new Territory(Countries.W_AUSTRALIA, 990, 660);
+        Territory ar4 = new Territory(Countries.E_AUSTRALIA, 1020, 660);
 
         // initialize adjecents for each territory
         Territory[] na1Adj = { na2, na4, as3 };

@@ -18,11 +18,11 @@ public class TerritoryTest
     @Test
     public void test()
     {
-        Territory gland = new Territory(Countries.GREENLAND);
-        Territory na2 = new Territory(Countries.NW_TERRITORY);
-        Territory na5 = new Territory(Countries.ONTARIO);
-        Territory na6 = new Territory(Countries.QUEBEC);
-        Territory eu1 = new Territory(Countries.ICELAND);
+        Territory gland = new Territory(Countries.GREENLAND,0,0);
+        Territory na2 = new Territory(Countries.NW_TERRITORY,0,0);
+        Territory na5 = new Territory(Countries.ONTARIO,0,0);
+        Territory na6 = new Territory(Countries.QUEBEC,0,0);
+        Territory eu1 = new Territory(Countries.ICELAND,0,0);
         Territory[] na3Adj = { na2, na5, na6, eu1 };
         gland.setAdj(na3Adj);
 

@@ -13,8 +13,10 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -27,6 +29,8 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import model.Game;
+import model.Player;
+import model.Territory;
 
 public class GraphicalView extends JFrame implements Observer
 {
@@ -42,24 +46,26 @@ public class GraphicalView extends JFrame implements Observer
     private MapPanel mapPanel;
     private JButton addArmy = new JButton("addArmy");
     private JButton newGame = new JButton("newGame");
+    private JButton attack = new JButton("Attack");
     private JTextArea gameInfo;
     private JTextField console;
-    private boolean newGameFlag=false;
+    private boolean newGameFlag = false;
     private int X, Y;
+    private final int imgWidth = (int) (756 * 1.5);
+    private final int imgHeight = (int) (554 * 1.5);
 
     public GraphicalView()
     {
         try
         {
-            map = ImageIO.read(new File("./images/map.jpg"));
+            map = ImageIO.read(new File("./images/riskMap5.png"));
 
         }
         catch (IOException e)
         {
             e.printStackTrace();
         }
-        int imgWidth = 1600 * 3 / 4;
-        int imgHeight = 1062 * 3 / 4;
+
         map = map.getScaledInstance(imgWidth, imgHeight,
                 java.awt.Image.SCALE_SMOOTH);
         this.setTitle("Risk - Team Rocket Industries");
@@ -68,6 +74,7 @@ public class GraphicalView extends JFrame implements Observer
         setSize(screensize);
         setLayout(null);
         WindowListener wl = new Save();
+        this.addWindowListener(wl);
         mapPanel = new MapPanel();
         mapPanel.setLayout(null);
         mapPanel.setSize(new Dimension(imgWidth, imgHeight));
@@ -79,47 +86,63 @@ public class GraphicalView extends JFrame implements Observer
         console.setSize(new Dimension(screensize.width - imgWidth, 30));
         console.setLocation(imgWidth, imgHeight);
         console.addActionListener(new ConsoleListener());
-        newGame.setLocation(imgWidth - 300, 0);
-        newGame.setSize(new Dimension(screensize.width - imgWidth, 30));
+        attack.setSize(new Dimension(100, 30));
+        attack.setLocation(imgWidth - 200, imgHeight);
+        attack.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+               game.attack();
+               repaint();
+               gameInfo.setText(gameInfo.getText() + "\n Attack updated");
+            }
+            
+        });
+    
+        newGame.setLocation(imgWidth - 100, imgHeight);
+        newGame.setSize(new Dimension(100, 30));
         newGame.addActionListener(new ActionListener()
+        
         {
 
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
                 game = new Game(1, 3);
-                newGameFlag=true;
-                gameInfo.setText(
-                        "Player 1 territories \n" + game.getTerritories(1));
-                gameInfo.append(
-                        "Player 2 territories \n" + game.getTerritories(2));
-                gameInfo.append(
-                        "Player 3 territories \n" + game.getTerritories(3));
-                gameInfo.append(
-                        "Player 4 territories \n" + game.getTerritories(4));
+                newGameFlag = true;
 
-                for (int i = 1; i <= 7; i++)
+                for (int i = 1; i <= 12; i++)
+                {
+                    game.placeArmyInPlayerTerritory(0, i);
+                    game.placeArmyInPlayerTerritory(0, i);
+                }
+                for (int i = 1; i <= 12; i++)
                 {
                     game.placeArmyInPlayerTerritory(1, i);
-
-                }
-                for (int i = 1; i <= 7; i++)
-                {
                     game.placeArmyInPlayerTerritory(1, i);
-
                 }
 
-                for (int i = 1; i <= 7; i++)
+                for (int i = 1; i <= 12; i++)
                 {
+                    game.placeArmyInPlayerTerritory(2, i);
                     game.placeArmyInPlayerTerritory(2, i);
 
                 }
-                for (int i = 1; i <= 7; i++)
+                for (int i = 1; i <= 12; i++)
                 {
-                    game.placeArmyInPlayerTerritory(2, i);
-
+                    game.placeArmyInPlayerTerritory(3, i);
+                    game.placeArmyInPlayerTerritory(3, i);
                 } // 3 bots and 1 human
-                  repaint();
+                gameInfo.setText(
+                        "Player 1 territories \n" + game.getTerritories(0));
+                gameInfo.append(
+                        "Player 2 territories \n" + game.getTerritories(1));
+                gameInfo.append(
+                        "Player 3 territories \n" + game.getTerritories(2));
+                gameInfo.append(
+                        "Player 4 territories \n" + game.getTerritories(3));
+                repaint();
             }
 
         }
@@ -131,6 +154,7 @@ public class GraphicalView extends JFrame implements Observer
         this.add(mapPanel);
         this.add(gameInfo);
         this.add(console);
+        this.add(attack);
         repaint();
     }
 
@@ -152,7 +176,8 @@ public class GraphicalView extends JFrame implements Observer
                     ObjectInputStream input = new ObjectInputStream(fis);
                     game = new Game(3, 1); // need to add JOptionPane to this in
                                            // the future; for now, defaulted to
-
+                    input.close();
+                    fis.close();
                 } // End try.....
                 catch (Exception ex)
                 {
@@ -170,7 +195,25 @@ public class GraphicalView extends JFrame implements Observer
         @Override
         public void windowClosing(WindowEvent e)
         {
-            // TODO Auto-generated method stub
+            JOptionPane jop = new JOptionPane();
+            jop.setMessage("Save?");
+            int n = jop.showConfirmDialog(null, "Save?", "Save State", JOptionPane.YES_NO_CANCEL_OPTION);
+
+            if (n == jop.YES_OPTION) {
+                try {
+                    FileOutputStream fos = new FileOutputStream("RiskSave");
+                    ObjectOutputStream outFile = new ObjectOutputStream(fos);
+                    outFile.writeObject(game);
+                    outFile.close();
+                    fos.close();
+                } catch (IOException e1) {
+                    System.out.println("Save failed");
+                    e1.printStackTrace();
+                }
+                System.exit(0);
+            }
+            if (n == jop.NO_OPTION)
+                System.exit(0);
 
         }
 
@@ -224,7 +267,6 @@ public class GraphicalView extends JFrame implements Observer
     {
         public MapPanel()
         {
-
         }
 
         @Override
@@ -232,24 +274,34 @@ public class GraphicalView extends JFrame implements Observer
         {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g;
-
             g2.drawImage(map, 0, 0, null);
-            // will consider lower resolutions
-            
-            
-           if(newGameFlag){ 
-               g2.setFont(new Font("default", Font.BOLD, 16));
-               g2.setColor(Color.RED);
-            int a1=game.getTerritory("W_AUSTRALIA").getArmies();
-            g2.drawString(String.valueOf(a1), 950,660);                             // and scroll panes
-            int a2=game.getTerritory("E_AUSTRALIA").getArmies();
-            g2.drawString(String.valueOf(a2), 1040,660);  
-            int a3=game.getTerritory("INDONESIA").getArmies();
-            g2.drawString(String.valueOf(a3), 940,540);  
-            int a4=game.getTerritory("NEW_GUINEA").getArmies();
-            g2.drawString(String.valueOf(a4), 1060,560);  
-           
-           }
+            // grid for map image
+            /*
+            for (int i = 0; i < imgWidth; i += 30)
+            {
+                g2.setColor(Color.PINK);
+                g2.drawLine(0, i, imgWidth, i);
+                g2.drawString(String.valueOf(i), 0, i);
+            }
+            for (int i = 0; i < imgWidth; i += 30)
+            {
+                g2.drawLine(i, 0, i, imgHeight);
+                g2.drawString(String.valueOf(i), i, 10);
+            }
+            */
+            if (newGameFlag)
+            {
+                g2.setFont(new Font("default", Font.BOLD, 16));
+                for (Player player : game.getPlayers())
+                {
+                    g2.setColor(player.getColor());
+                    for (Territory t : player.getTerritories())
+                    {
+                        g2.drawString(String.valueOf(t.getArmies()),
+                                t.getPointX(), t.getPointY());
+                    }
+                }
+            }
         }
     }
 

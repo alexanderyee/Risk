@@ -34,7 +34,7 @@ public class GameTest
         Map map = new Map();
 
         assertEquals(map.getCountry(Countries.AFGHANISTAN).toString(),
-                new Territory(Countries.AFGHANISTAN).toString());
+                new Territory(Countries.AFGHANISTAN,0,0).toString());
 
         assertEquals(map.getUnclaimedTerritories().size(), 42);
 
@@ -70,7 +70,7 @@ public class GameTest
 
         assertTrue(map.listPlayerTerritories(bot).equals(""));
 
-        bot.addTerritory(new Territory(Countries.ALASKA));
+        bot.addTerritory(new Territory(Countries.ALASKA,0,0));
         ;
         System.out.println(bot.getTerroritories());
 
@@ -215,11 +215,11 @@ public class GameTest
         assertFalse(bot.getPID() != 420);
 
         // Get Territories tests
-        assertEquals(0, bot.getTerritoryArray().size());
+        assertEquals(0, bot.getTerritories().size());
 
-        bot.addTerritory(new Territory(Countries.ALASKA));
+        bot.addTerritory(new Territory(Countries.ALASKA,0,0));
 
-        assertEquals(1, bot.getTerritoryArray().size());
+        assertEquals(1, bot.getTerritories().size());
         assertEquals("1) ALASKA--0 armies\nArmies left 100\n",
                 bot.getTerroritories());
 
@@ -233,59 +233,63 @@ public class GameTest
         assertEquals(1, bot.getTotalTerritories());
 
         ArrayList<Territory> testList = new ArrayList<Territory>();
-        testList.add(new Territory(Countries.ALASKA));
+        testList.add(new Territory(Countries.ALASKA,0,0));
         ArrayList<Territory> getList = bot.getTerritories();
-        for(int i = 0; i < getList.size(); i++)
+        for (int i = 0; i < getList.size(); i++)
         {
-            assertTrue(getList.get(i).getCountry().equals(testList.get(i).getCountry()));
+            assertTrue(getList.get(i).getCountry()
+                    .equals(testList.get(i).getCountry()));
         }
-        
+
         bot.playerOwnsTerritory(new Card(CardType.ARTILLERY, Countries.ALASKA));
-        
-        
-        //Test redeem cards
+
+        // Test redeem cards
         ArrayList<Card> cardTestList = new ArrayList<Card>();
         cardTestList.add(new Card(CardType.ARTILLERY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.ARTILLERY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.ARTILLERY, Countries.ALASKA));
-        
-        assertTrue(bot.redeemCardsForArmies(cardTestList));
+
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) > 0);
         cardTestList.removeAll(cardTestList);
-        
+
         cardTestList.add(new Card(CardType.CALVARY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.CALVARY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.CALVARY, Countries.ALASKA));
-    
-        assertTrue(bot.redeemCardsForArmies(cardTestList));
+
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) > 0);
         cardTestList.removeAll(cardTestList);
-        
+
         cardTestList.add(new Card(CardType.INFANTRY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.INFANTRY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.INFANTRY, Countries.ALASKA));
-    
-        assertTrue(bot.redeemCardsForArmies(cardTestList));
+
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) > 0);
         cardTestList.removeAll(cardTestList);
-        
+
         cardTestList.add(new Card(CardType.CALVARY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.ARTILLERY, Countries.ALASKA));
         cardTestList.add(new Card(CardType.INFANTRY, Countries.ALASKA));
-    
-        assertTrue(bot.redeemCardsForArmies(cardTestList));
+
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) > 0);
         cardTestList.removeAll(cardTestList);
-        
-        assertFalse(bot.redeemCardsForArmies(cardTestList));
-        
-        
+
+        bot.setCards(cardTestList);
+        assertTrue(b.exchangeCards(bot) == 0);
+
     }
 
     @Test
     public void testTerritory()
     {
-        Territory gland = new Territory(Countries.GREENLAND);
-        Territory na2 = new Territory(Countries.NW_TERRITORY);
-        Territory na5 = new Territory(Countries.ONTARIO);
-        Territory na6 = new Territory(Countries.QUEBEC);
-        Territory eu1 = new Territory(Countries.ICELAND);
+        Territory gland = new Territory(Countries.GREENLAND, 0, 0);
+        Territory na2 = new Territory(Countries.NW_TERRITORY, 0, 0);
+        Territory na5 = new Territory(Countries.ONTARIO, 0, 0);
+        Territory na6 = new Territory(Countries.QUEBEC, 0, 0);
+        Territory eu1 = new Territory(Countries.ICELAND, 0, 0);
         Territory[] na3Adj = { na2, na5, na6, eu1 };
 
         gland.setAdj(na3Adj);
