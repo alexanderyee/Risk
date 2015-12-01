@@ -16,6 +16,7 @@ public abstract class Player
     private int playerID;
     private int totalArmies;
     private int totalTerritories;
+    private String playerName;
     protected ArrayList<Territory> territories; // this had to be changed
 
     /*
@@ -70,26 +71,45 @@ public abstract class Player
 
     }
 
+    public void setPlayerName(String name)
+    {
+        if (name == null)
+        {
+            if (getClass() != Human.class)
+                this.playerName = "Bot" + String.valueOf(this.playerID);
+            else
+                this.playerName = "Human " + String.valueOf(this.playerID);
+        }
+        else
+        {
+            this.playerName = name;
+        }
+    }
+
+    public String getPlayerName()
+    {
+        return this.playerName;
+    }
+
     public void addTerritory(Territory t)
     {
         territories.add(t);
-        if(getClass() != Human.class)
+        if (getClass() != Human.class)
         {
-            if(t.getContinent() == Continent.AFRICA)
+            if (t.getContinent() == Continent.AFRICA)
                 terrAfrica.add(t);
-            else if(t.getContinent() == Continent.ASIA)
+            else if (t.getContinent() == Continent.ASIA)
                 terrAsia.add(t);
-            else if(t.getContinent() == Continent.AUSTRALIA)
+            else if (t.getContinent() == Continent.AUSTRALIA)
                 terrAustr.add(t);
-            else if(t.getContinent() == Continent.EUROPE)
+            else if (t.getContinent() == Continent.EUROPE)
                 terrEuro.add(t);
-            else if(t.getContinent() == Continent.NAMERICA)
+            else if (t.getContinent() == Continent.NAMERICA)
                 terrNAmer.add(t);
-            else if(t.getContinent() == Continent.SAMERICA)
-                terrSAmer.add(t);
+            else if (t.getContinent() == Continent.SAMERICA) terrSAmer.add(t);
         }
     }
-    
+
     public void loseTerritory(Territory t)
     {
         territories.remove(t);
@@ -352,18 +372,12 @@ public abstract class Player
 
     public Color getColor()
     {
-        if (this.playerID == 0)
-        return Color.RED;
-        if (this.playerID == 1)
-            return Color.BLUE;
-        if (this.playerID == 2)
-            return Color.YELLOW;
-        if (this.playerID == 3)
-            return Color.GREEN;
-        if (this.playerID == 4)
-            return new Color(51, 25, 0);
-        if (this.playerID == 5)
-            return Color.MAGENTA;
+        if (this.playerID == 0) return Color.RED;
+        if (this.playerID == 1) return Color.BLUE;
+        if (this.playerID == 2) return Color.YELLOW;
+        if (this.playerID == 3) return Color.GREEN;
+        if (this.playerID == 4) return new Color(51, 25, 0);
+        if (this.playerID == 5) return Color.MAGENTA;
         return Color.BLACK;
     }
 

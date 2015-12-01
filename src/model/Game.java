@@ -292,5 +292,7 @@ public class Game extends Observable
     public ArrayList<Player> getPlayers(){
         return this.players;
     }
-
+    public int getCurrPID(){
+        return this.currentPID;
+    }
 }
