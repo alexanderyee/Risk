@@ -127,6 +127,7 @@ public class Game extends Observable
             System.out.println("Player " + currentPID + " it is your turn: \n");
             curr.placeDeployedArmiesRand(bonus);
             attack();
+            System.out.println("PLAYER TURN CHANGED.");
             if (curr.getTotalTerritories() == 42)
                 gameOver = true;
             else
@@ -278,15 +279,19 @@ public class Game extends Observable
             defending.changeOccupier(attacking.getOccupier());
 
             attacker.addTerritory(defending);
-
+            //TODO: Call method on player to have them invade the territory!!!
+            int invadingArmies = attacker.attackInvade();
+            defending.addArmies(invadingArmies);
             return true;
         }
         else if (attacking.getArmies() == 1)
         {
+            System.out.println("The attacker failed.");
             return true;
         }
         else
         {
+            System.out.println("What does this even do? Third attack resolved branch.");
             return false;
         }
     }

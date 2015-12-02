@@ -280,4 +280,11 @@ public class Human extends Player
         return null;
     }
 
+    @Override
+    public int attackInvade()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }

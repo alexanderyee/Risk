@@ -356,6 +356,8 @@ public abstract class Player
     public abstract int attackAt(int attackingTerritoryNumber);
 
     public abstract boolean attackAgain();
+    
+    public abstract int attackInvade(); //TODO: implement in all Player sub-classes
 
     public abstract boolean willFortify();
 

@@ -11,6 +11,7 @@ public class EasyBot extends Player
     private Random r;
     private int pid;
     private ArrayList<String> realThoughts = new ArrayList<String>();
+    private ArrayList<Territory> validChoices = new ArrayList<Territory>();
 
     /*
      * Represents the Easy AI bot in Risk, will choose pseudo random decisions
@@ -121,7 +122,6 @@ public class EasyBot extends Player
     @Override
     public void placeDeployedArmiesRand(int armies)
     {
-        System.out.println("Player "+this.pid+", is about to deploy.");
         Territory terr;
         for (int i = 0; i < armies; i++)
         {
@@ -135,45 +135,37 @@ public class EasyBot extends Player
     @Override
     public boolean willAttack()
     {
-        return true;
-    }
-
-    @Override
-    public int attackFrom()
-    {
+        validChoices.removeAll(validChoices);
         ArrayList<Territory> adjList = null;
-        ArrayList<Integer> validChoices = new ArrayList<Integer>();
-        for (int i = 0; i < getTotalTerritories(); i++)
+        for(Territory terr : this.territories) //go through our territories
         {
-            if (territories.get(i).getArmies() > 1)
+            if(terr.getArmies() >= 2) //if one has at least 2 territories it can attack as long as...
             {
-                adjList = (ArrayList<Territory>) territories.get(i)
-                        .getAdjacentTerritories();
-                for (int j = 0; j < adjList.size(); j++)
+                adjList = (ArrayList<Territory>) terr.getAdjacentTerritories();
+                for (int j = 0; j < adjList.size(); j++) //make sure you have a valid enemy target from that location
                 { // if(not attacking yourself
                     if (!(adjList.get(j).getOccupier()
                             .getPlayerID() == getPlayerID()))
                     {
-                        validChoices.add(i);
-                        /*
-                         * we have to make sure that only territories that are
-                         * adj to enemy territories are selected as options
-                         */
+                        validChoices.add(terr);
                     }
                 }
             }
         }
         System.out.println("ValidChoices: \n" + validChoices);
+        boolean canAttack = !validChoices.isEmpty();
+        return canAttack;
+    }
+
+    @Override
+    public int attackFrom()
+    {
         int choice = r.nextInt(validChoices.size()); //bound must be positive
-        while (!validChoices.contains(choice)
-                || territories.get(choice).getArmies() < 2)
-        {
-            choice = r.nextInt(validChoices.size());
-        }
+        Territory from = validChoices.get(choice);
 //        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
 //                                                                              // a
 //                                                                              // thing
-        System.out.println("Player "+this.pid+" is choosing where to attack from.");
+        System.out.println("Player "+this.pid+" is attacking from "+from+".");
         return choice;
     }
 
@@ -190,7 +182,8 @@ public class EasyBot extends Player
             if (from.getAdjacentTerritories().get(choice).getOccupier() != this)
                 keepGoing = false;
         }
-        System.out.println("Player "+this.pid+" is choosing where to attack at.");
+        Territory at = from.getAdjacentTerritories().get(choice);
+        System.out.println("Player "+this.pid+" is attacking at "+at+".");
         return choice;
     }
 
@@ -216,7 +209,7 @@ public class EasyBot extends Player
     @Override
     public boolean willFortify()
     {
-        return true;
+        return false;
     }
 
     @Override
@@ -225,7 +218,6 @@ public class EasyBot extends Player
 //        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
 //                                                                              // a
 //                                                                              // thing
-        System.out.println("Player "+this.pid+" is rolling attack dice.");
         return 1;
     }
 
@@ -235,7 +227,13 @@ public class EasyBot extends Player
 //        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
 //                                                                              // a
 //                                                                              // thing
-        System.out.println("Player "+this.pid+" is rolling defense dice.");
+        return 1;
+    }
+
+    @Override
+    public int attackInvade()
+    {
+        // TODO Auto-generated method stub
         return 1;
     }
 
