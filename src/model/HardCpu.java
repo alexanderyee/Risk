@@ -493,4 +493,12 @@ public class HardCpu extends Player
         return choices;
     }
 
+
+    @Override
+    public Territory claimTerritory(List<Territory> list)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

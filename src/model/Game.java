@@ -86,6 +86,18 @@ public class Game extends Observable
 
     }
 
+    private void claimTerritoriesAlt()
+    {
+        
+        while(map.getUnclaimedTerritories().size() > 0)
+        {
+            for(Player i : players)
+            {
+                map.giveTerritory(i, i.claimTerritory(map.getUnclaimedTerritories()));
+            }
+        }
+    }
+    
     private void claimTerritories()
     {
         System.out.println("Randomly claiming territories.");

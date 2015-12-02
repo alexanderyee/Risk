@@ -3,6 +3,7 @@ package model;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  * @author Ben Shields / Daniel Phillips (Mostly Ben)
@@ -346,6 +347,8 @@ public abstract class Player
      * continue attacking or not This should be attached to a GUI module or
      * button to let the player choose if he wants to continue attacking or not
      */
+    public abstract Territory claimTerritory(List<Territory> list);
+    
     public abstract boolean willAttack();
 
     public abstract int attackFrom();
