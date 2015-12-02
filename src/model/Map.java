@@ -186,5 +186,9 @@ public class Map
         else
             cardSetValue += 5;
     }
+    public ArrayList<Territory> getTerritories(){
+        return territories;
+        
+    }
 
 }
