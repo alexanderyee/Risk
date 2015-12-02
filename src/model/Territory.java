@@ -15,7 +15,8 @@ public class Territory
     private Countries name;
     private List<Territory> adj;
     private int numAdj;
-    private int X,Y;
+    private int X, Y;
+
     // CONSTRUCTOR
     /*
      * Constructor for the territory
@@ -96,10 +97,10 @@ public class Territory
 
     public void changeOccupier(Player player)
     {
-      
+
         this.occupier = player;
-    
-       }
+
+    }
 
     public void lose()
     {
@@ -131,7 +132,9 @@ public class Territory
         // TODO Auto-generated method stub
         return this.X;
     }
-    public int getPointY(){
+
+    public int getPointY()
+    {
         return this.Y;
     }
 
