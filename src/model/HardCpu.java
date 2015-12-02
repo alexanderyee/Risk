@@ -61,7 +61,8 @@ public class HardCpu extends Player
             Territory fortifyTo = territories
                     .get(r.nextInt(territories.size()));
             int times = 0;
-            while (fortifyTo.getArmies() < 1 && times < territories.size() && !isFortified(fortifyTo))
+            while (fortifyTo.getArmies() < 1 && times < territories.size()
+                    && !isFortified(fortifyTo))
             {
                 fortifyTo = territories.get(r.nextInt(territories.size()));
                 times++;
@@ -100,15 +101,13 @@ public class HardCpu extends Player
             }
         }
     }
-    
-    
+
     private boolean isFortified(Territory t)
     {
         boolean result = true;
-        for(Territory adj : t.getAdjacentTerritories())
+        for (Territory adj : t.getAdjacentTerritories())
         {
-            if(t.getArmies() < (2 * adj.getArmies()))
-                result = false;
+            if (t.getArmies() < (2 * adj.getArmies())) result = false;
         }
         return result;
     }
@@ -117,16 +116,17 @@ public class HardCpu extends Player
     {
         ArrayList<Territory> borders = identifyBorders();
     }
-    
+
     /*
-     *  Identify borders method, determines this units "border" countries. (countries which have an enemy state near them)
+     * Identify borders method, determines this units "border" countries.
+     * (countries which have an enemy state near them)
      */
     public ArrayList<Territory> identifyBorders()
     {
         ArrayList<Territory> territoryList = super.getTerritories();
         ArrayList<Territory> adjList = new ArrayList<Territory>();
         ArrayList<Territory> borders = new ArrayList<Territory>();
-        
+
         borders.removeAll(borders);
         for (Territory i : territoryList)
         {
@@ -148,21 +148,22 @@ public class HardCpu extends Player
      */
     public void deployAlternative(int armiesToDeployWith)
     {
-        //boolean thinking = true;
+        // boolean thinking = true;
         ArrayList<Territory> borders = identifyBorders();
         HashMap<Territory, Integer> deployMap = determineThreats(borders);
 
         for (int i = 0; i < armiesToDeployWith; i++)
         {
-            Territory smallest = ((ArrayList<Territory>) deployMap.keySet()).get(0);
-            for(Territory j : deployMap.keySet())
+            Territory smallest = ((ArrayList<Territory>) deployMap.keySet())
+                    .get(0);
+            for (Territory j : deployMap.keySet())
             {
-                if(deployMap.get(j) < deployMap.get(smallest))
+                if (deployMap.get(j) < deployMap.get(smallest))
                 {
                     smallest = j;
                 }
             }
-            
+
             smallest.addArmies(1);
             deployMap.put(smallest, deployMap.get(smallest) + 1);
         }
@@ -177,7 +178,8 @@ public class HardCpu extends Player
      * b]
      * @return HashMap<Territory, Integer>
      */
-    private HashMap<Territory, Integer> determineThreats(ArrayList<Territory> borders)
+    private HashMap<Territory, Integer> determineThreats(
+            ArrayList<Territory> borders)
     {
         ArrayList<Territory> threatList = new ArrayList<Territory>();
 
@@ -198,7 +200,7 @@ public class HardCpu extends Player
 
         return deployMap;
     }
-    
+
     @Override
     public void placeDeployedArmies(int armies)
     {
@@ -206,17 +208,17 @@ public class HardCpu extends Player
 
         for (int i = 0; i < armies; i++)
         {
-            if(!terrNAmer.isEmpty() && !nAmer)
+            if (!terrNAmer.isEmpty() && !nAmer)
                 terr = terrNAmer.get(r.nextInt(terrNAmer.size()));
-            else if(!terrSAmer.isEmpty() && !sAmer)
+            else if (!terrSAmer.isEmpty() && !sAmer)
                 terr = terrSAmer.get(r.nextInt(terrSAmer.size()));
-            else if(!terrAfrica.isEmpty() && !africa)
+            else if (!terrAfrica.isEmpty() && !africa)
                 terr = terrAfrica.get(r.nextInt(terrAfrica.size()));
-            else if(!terrAustr.isEmpty() && !austr)
+            else if (!terrAustr.isEmpty() && !austr)
                 terr = terrAustr.get(r.nextInt(terrAustr.size()));
-            else if(!terrAsia.isEmpty() && !asia)
+            else if (!terrAsia.isEmpty() && !asia)
                 terr = terrAsia.get(r.nextInt(terrAsia.size()));
-            else if(!terrEuro.isEmpty() && !euro)
+            else if (!terrEuro.isEmpty() && !euro)
                 terr = terrEuro.get(r.nextInt(terrEuro.size()));
             else
                 terr = territories.get(r.nextInt(territories.size()));

@@ -147,7 +147,7 @@ public class MasterTest
         Map map = new Map();
 
         assertEquals(map.getCountry(Countries.AFGHANISTAN).toString(),
-                new Territory(Countries.AFGHANISTAN,0,0).toString());
+                new Territory(Countries.AFGHANISTAN, 0, 0).toString());
 
         assertEquals(map.getUnclaimedTerritories().size(), 42);
 
@@ -183,7 +183,7 @@ public class MasterTest
 
         assertTrue(map.listPlayerTerritories(bot).equals(""));
 
-        bot.addTerritory(new Territory(Countries.ALASKA,0,0));
+        bot.addTerritory(new Territory(Countries.ALASKA, 0, 0));
         ;
         System.out.println(bot.getTerroritories());
 
@@ -330,7 +330,7 @@ public class MasterTest
         // Get Territories tests
         assertEquals(0, bot.getTerritories().size());
 
-        bot.addTerritory(new Territory(Countries.ALASKA,0,0));
+        bot.addTerritory(new Territory(Countries.ALASKA, 0, 0));
 
         assertEquals(1, bot.getTerritories().size());
         assertEquals("1) ALASKA--0 armies\nArmies left 100\n",
@@ -346,7 +346,7 @@ public class MasterTest
         assertEquals(1, bot.getTotalTerritories());
 
         ArrayList<Territory> testList = new ArrayList<Territory>();
-        testList.add(new Territory(Countries.ALASKA,0,0));
+        testList.add(new Territory(Countries.ALASKA, 0, 0));
         ArrayList<Territory> getList = bot.getTerritories();
         for (int i = 0; i < getList.size(); i++)
         {
@@ -398,11 +398,11 @@ public class MasterTest
     @Test
     public void testTerritory()
     {
-        Territory gland = new Territory(Countries.GREENLAND,0,0);
-        Territory na2 = new Territory(Countries.NW_TERRITORY,0,0);
-        Territory na5 = new Territory(Countries.ONTARIO,0,0);
-        Territory na6 = new Territory(Countries.QUEBEC,0,0);
-        Territory eu1 = new Territory(Countries.ICELAND,0,0);
+        Territory gland = new Territory(Countries.GREENLAND, 0, 0);
+        Territory na2 = new Territory(Countries.NW_TERRITORY, 0, 0);
+        Territory na5 = new Territory(Countries.ONTARIO, 0, 0);
+        Territory na6 = new Territory(Countries.QUEBEC, 0, 0);
+        Territory eu1 = new Territory(Countries.ICELAND, 0, 0);
         Territory[] na3Adj = { na2, na5, na6, eu1 };
 
         gland.setAdj(na3Adj);
@@ -491,7 +491,7 @@ public class MasterTest
     {
         Map map = new Map();
         assertEquals(map.getCountry(Countries.AFGHANISTAN).toString(),
-                new Territory(Countries.AFGHANISTAN,0,0).toString());
+                new Territory(Countries.AFGHANISTAN, 0, 0).toString());
         System.out.println(map.listUnclaimed());
         assertEquals(map.getUnclaimedTerritories().size(), 42);
         Player p = new EasyBot(0, 1, map);
@@ -641,11 +641,11 @@ public class MasterTest
     @Test
     public void test1()
     {
-        Territory gland = new Territory(Countries.GREENLAND,0,0);
-        Territory na2 = new Territory(Countries.NW_TERRITORY,0,0);
-        Territory na5 = new Territory(Countries.ONTARIO,0,0);
-        Territory na6 = new Territory(Countries.QUEBEC,0,0);
-        Territory eu1 = new Territory(Countries.ICELAND,0,0);
+        Territory gland = new Territory(Countries.GREENLAND, 0, 0);
+        Territory na2 = new Territory(Countries.NW_TERRITORY, 0, 0);
+        Territory na5 = new Territory(Countries.ONTARIO, 0, 0);
+        Territory na6 = new Territory(Countries.QUEBEC, 0, 0);
+        Territory eu1 = new Territory(Countries.ICELAND, 0, 0);
         Territory[] na3Adj = { na2, na5, na6, eu1 };
         gland.setAdj(na3Adj);
 

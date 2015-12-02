@@ -34,7 +34,7 @@ public class GameTest
         Map map = new Map();
 
         assertEquals(map.getCountry(Countries.AFGHANISTAN).toString(),
-                new Territory(Countries.AFGHANISTAN,0,0).toString());
+                new Territory(Countries.AFGHANISTAN, 0, 0).toString());
 
         assertEquals(map.getUnclaimedTerritories().size(), 42);
 
@@ -70,7 +70,7 @@ public class GameTest
 
         assertTrue(map.listPlayerTerritories(bot).equals(""));
 
-        bot.addTerritory(new Territory(Countries.ALASKA,0,0));
+        bot.addTerritory(new Territory(Countries.ALASKA, 0, 0));
         ;
         System.out.println(bot.getTerroritories());
 
@@ -217,7 +217,7 @@ public class GameTest
         // Get Territories tests
         assertEquals(0, bot.getTerritories().size());
 
-        bot.addTerritory(new Territory(Countries.ALASKA,0,0));
+        bot.addTerritory(new Territory(Countries.ALASKA, 0, 0));
 
         assertEquals(1, bot.getTerritories().size());
         assertEquals("1) ALASKA--0 armies\nArmies left 100\n",
@@ -233,7 +233,7 @@ public class GameTest
         assertEquals(1, bot.getTotalTerritories());
 
         ArrayList<Territory> testList = new ArrayList<Territory>();
-        testList.add(new Territory(Countries.ALASKA,0,0));
+        testList.add(new Territory(Countries.ALASKA, 0, 0));
         ArrayList<Territory> getList = bot.getTerritories();
         for (int i = 0; i < getList.size(); i++)
         {

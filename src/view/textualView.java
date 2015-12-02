@@ -22,14 +22,14 @@ public class textualView
         System.out.println("Player 3 territories \n" + g.getTerritories(3));
         System.out.println("Player 4 territories \n" + g.getTerritories(4));
         System.out.println("Player 5 territories \n" + g.getTerritories(5));
-        
+
         for (int i = 1; i <= 7; i++)
         {
             g.placeArmyInPlayerTerritory(0, i);
             g.placeArmyInPlayerTerritory(0, i);
         }
         System.out.println("Player 0 territories \n" + g.getTerritories(0));
-      
+
         for (int i = 1; i <= 7; i++)
         {
             g.placeArmyInPlayerTerritory(1, i);
@@ -57,14 +57,14 @@ public class textualView
             g.placeArmyInPlayerTerritory(4, i);
         }
         System.out.println("Player 4 territories \n" + g.getTerritories(4));
-        
+
         for (int i = 1; i <= 7; i++)
         {
             g.placeArmyInPlayerTerritory(5, i);
             g.placeArmyInPlayerTerritory(5, i);
         }
         System.out.println("Player 5 territories \n" + g.getTerritories(5));
-        
+
         g.beginGame();
     }
 
