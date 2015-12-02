@@ -4,7 +4,6 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 public class EasyBot extends Player
 {
@@ -19,7 +18,7 @@ public class EasyBot extends Player
     public EasyBot(int pid, int initArmies, Map b)
     {
         super(pid, initArmies, b);
-        r = new Random();
+        r = new Random(2); //THIS IS JUST FOR TESTING Run6Bots
         this.pid = pid;
         addThoughts();
     }
@@ -50,10 +49,11 @@ public class EasyBot extends Player
         {
             System.out.println(this.getTerroritories());
 
-            System.out
-                    .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                                // a
-                                                                                // thing
+//            System.out
+//                    .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
+//                                                                                // a
+//                                                                                // thing
+            System.out.println("Player "+this.pid+", is foritfying.");
             Territory fortifyTo = getTerritories()
                     .get(r.nextInt(getTerritories().size()));
             int times = 0;
@@ -72,10 +72,10 @@ public class EasyBot extends Player
             else
             {
                 List<Territory> possible = fortifyTo.getAdjacentTerritories();
-                System.out.println(
-                        realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                           // a
-                                                                           // thing
+//                System.out.println(
+//                        realThoughts.get(r.nextInt(realThoughts.size()))); // says
+//                                                                           // a
+//                                                                           // thing
                 Territory t = possible.get(r.nextInt(possible.size()));
                 int counter = 0;
                 while (!(t.getOccupier().equals(this))
@@ -94,12 +94,13 @@ public class EasyBot extends Player
                 System.out.println("Hmm how many armies should I move from "
                         + fortifyFrom.toString() + " to " + fortifyTo.toString()
                         + ", less than " + (fortifyFrom.getArmies() - 1));
-                System.out.println(
-                        realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                           // a
-                                                                           // thing
+//                System.out.println(
+//                        realThoughts.get(r.nextInt(realThoughts.size()))); // says
+//                                                                           // a
+//                                                                           // thing
                 int move = r.nextInt(fortifyFrom.getArmies() - 1);
                 fortifyFrom.addArmies(move * -1);
+                System.out.println("Player "+this.pid+", is done foritfying.");
             }
         }
     }
@@ -107,15 +108,15 @@ public class EasyBot extends Player
     @Override
     public void placeDeployedArmiesRand(int armies)
     {
+        System.out.println("Player "+this.pid+", is about to deploy.");
         Territory terr;
-
         for (int i = 0; i < armies; i++)
         {
             terr = territories.get(r.nextInt(2));
             terr.addArmies(1);
             loseAnArmy();
         }
-        System.out.println("EasyBot " + this.pid + "has deployed armies");
+        System.out.println("EasyBot " + this.pid + " has deployed armies");
     }
 
     @Override
@@ -149,15 +150,17 @@ public class EasyBot extends Player
                 }
             }
         }
-        int choice = r.nextInt(validChoices.size());
+        System.out.println("ValidChoices: \n" + validChoices);
+        int choice = r.nextInt(validChoices.size()); //bound must be positive
         while (!validChoices.contains(choice)
                 || territories.get(choice).getArmies() < 2)
         {
             choice = r.nextInt(validChoices.size());
         }
-        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                              // a
-                                                                              // thing
+//        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
+//                                                                              // a
+//                                                                              // thing
+        System.out.println("Player "+this.pid+" is choosing where to attack from.");
         return choice;
     }
 
@@ -174,23 +177,26 @@ public class EasyBot extends Player
             if (from.getAdjacentTerritories().get(choice).getOccupier() != this)
                 keepGoing = false;
         }
+        System.out.println("Player "+this.pid+" is choosing where to attack at.");
         return choice;
     }
 
     @Override
     public boolean attackAgain() // always attacks again until it can't
     {
+        System.out.println("Player "+this.pid+" is an EasyBot and will attack until it can't.");
         for (Territory t : getTerritories())
         {
-            System.out
-                    .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                                // a
-                                                                                // thing
+//            System.out
+//                    .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
+//                                                                                // a
+//                                                                                // thing
             if (t.getArmies() > 1) return true;
         }
-        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                              // a
-                                                                              // thing
+//        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
+//                                                                              // a
+//                                                                              // thing
+        System.out.println("Player "+this.pid+" can no longer attack and is therefore done attacking.");
         return false;
     }
 
@@ -203,18 +209,20 @@ public class EasyBot extends Player
     @Override
     public int attackDice(int armies)
     {
-        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                              // a
-                                                                              // thing
+//        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
+//                                                                              // a
+//                                                                              // thing
+        System.out.println("Player "+this.pid+" is rolling attack dice.");
         return 1;
     }
 
     @Override
     public int defenseDice(int atkPID, String defStr, int atkDice, int armies)
     {
-        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                              // a
-                                                                              // thing
+//        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
+//                                                                              // a
+//                                                                              // thing
+        System.out.println("Player "+this.pid+" is rolling defense dice.");
         return 1;
     }
 
@@ -229,6 +237,7 @@ public class EasyBot extends Player
 
     public ArrayList<Integer> cardSetChoices()
     {
+        System.out.println("Player "+this.pid+" is thinking about card sets.");
         ArrayList<Integer> choices = new ArrayList<Integer>(3);
         int matches = 0;
         for (int i = 0; i < cards.size(); i++) // for each card in hand
