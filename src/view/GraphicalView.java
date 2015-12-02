@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -17,6 +18,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -35,9 +37,8 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import com.sun.media.jfxmedia.events.PlayerStateEvent.PlayerState;
-
 import model.Game;
+import model.Map;
 import model.Player;
 import model.Territory;
 
@@ -52,6 +53,7 @@ public class GraphicalView extends JFrame implements Observer
 
     private Game game;
     private Image map;
+    private Map gameMap;
     private MapPanel mapPanel;
     private JButton addArmy = new JButton("addArmy");
 
@@ -72,9 +74,15 @@ public class GraphicalView extends JFrame implements Observer
     private JFrame newGameWindow;
     private int numPlayers;
     private int numHumans;
-
+    private Territory countryFrom;
+    private Territory countryTo;
+    private HashMap<String,JButton> buttons;
     public GraphicalView()
     {
+        buttons = new HashMap<>();
+        gameMap = new Map();
+        mainMenu();
+        this.setVisible(false);
         menuBar = new JMenuBar();
         setNewGameWindow();
 
@@ -130,28 +138,376 @@ public class GraphicalView extends JFrame implements Observer
         console.setLocation(imgWidth, imgHeight);
         console.addActionListener(new ConsoleListener());
         attack.setSize(new Dimension(100, 30));
-        attack.setLocation(0, 100);
+        attack.setLocation(100, 100);
         attack.addActionListener(new ActionListener()
+        
         {
 
             @Override
             public void actionPerformed(ActionEvent e)
             {
+                
                 game.attack();
                 repaint();
                 gameInfo.append("\n Attack updated");
             }
 
         });
-
+        setMapButtons();
         this.add(addArmy);
         this.add(mapPanel);
         this.add(gameInfo);
         this.add(console);
         this.add(attack);
+        
         repaint();
     }
+    private void setMapButtons(){
+        ActionListener mal = new MapButtonListener();
+        JButton na1 = new JButton("");
+        JButton na2 = new JButton("");
+        JButton na3 = new JButton("");
+        JButton na4 = new JButton("");
+        JButton na5 = new JButton("");
+        JButton na6 = new JButton("");
+        JButton na7 = new JButton("");
+        JButton na8 = new JButton("");
+        JButton na9 = new JButton("");
 
+        JButton sa1 = new JButton("");
+        JButton sa2 = new JButton("");
+        JButton sa3 = new JButton("");
+        JButton sa4 = new JButton("");
+
+        JButton eu1 = new JButton("");
+        JButton eu2 = new JButton("");
+        JButton eu3 = new JButton("");
+        JButton eu4 = new JButton("");
+        JButton eu5 = new JButton("");
+        JButton eu6 = new JButton("");
+        JButton eu7 = new JButton("");
+
+        JButton af1 = new JButton("");
+        JButton af2 = new JButton("");
+        JButton af3 = new JButton("");
+        JButton af4 = new JButton("");
+        JButton af5 = new JButton("");
+        JButton af6 = new JButton("");
+
+        JButton as1 = new JButton("");
+        JButton as2 = new JButton("");
+        JButton as3 = new JButton("");
+        JButton as4 = new JButton("");
+        JButton as5 = new JButton("");
+        JButton as6 = new JButton("");
+        JButton as7 = new JButton("");
+        JButton as8 = new JButton("");
+        JButton as9 = new JButton("");
+        JButton as10 = new JButton("");
+        JButton as11 = new JButton("");
+        JButton as12 = new JButton("");
+
+        JButton ar1 = new JButton("");
+        JButton ar2 = new JButton("");
+        JButton ar3 = new JButton("");
+        JButton ar4 = new JButton("");
+        na1.setSize(30,30);
+        na2.setSize(30,30);
+        na3.setSize(30,30);
+        na4.setSize(30,30);
+        na5.setSize(30,30);
+        na6.setSize(30,30);
+        na7.setSize(30,30);
+        na8.setSize(30,30);
+        na9.setSize(30,30);
+
+        sa1.setSize(30,30);
+        sa2.setSize(30,30);
+        sa3.setSize(30,30);
+        sa4.setSize(30,30);
+
+        eu1.setSize(30,30);
+        eu2.setSize(30,30);
+        eu3.setSize(30,30);
+        eu4.setSize(30,30);
+        eu5.setSize(30,30);
+        eu6.setSize(30,30);
+        eu7.setSize(30,30);
+
+        af1.setSize(30,30);
+        af2.setSize(30,30);
+        af3.setSize(30,30);
+        af4.setSize(30,30);
+        af5.setSize(30,30);
+        af6.setSize(30,30);
+
+        as1.setSize(30,30);
+        as2.setSize(30,30);
+        as3.setSize(30,30);
+        as4.setSize(30,30);
+        as5.setSize(30,30);
+        as6.setSize(30,30);
+        as7.setSize(30,30);
+        as8.setSize(30,30);
+        as9.setSize(30,30);
+        as10.setSize(30,30);
+        as11.setSize(30,30);
+        as12.setSize(30,30);
+
+        ar1.setSize(30,30);
+        ar2.setSize(30,30);
+        ar3.setSize(30,30);
+        ar4.setSize(30,30);
+        
+        na1.setLocation(80, 150);
+        na2.setLocation(170,150);
+        na3.setLocation(400, 140);
+        na4.setLocation(175, 250);
+        na5.setLocation(240, 235);
+        na6.setLocation(315, 275);
+        na7.setLocation(175, 345);
+        na8.setLocation(275, 360);
+        na9.setLocation(190, 385);
+
+        sa1.setLocation(270, 495);
+        sa2.setLocation(300, 590);
+        sa3.setLocation(360, 560);
+        sa4.setLocation(300, 680);
+
+        eu1.setLocation(500, 170);
+        eu2.setLocation(560, 205);
+        eu3.setLocation(685, 270);
+        eu4.setLocation(440, 270);
+        eu5.setLocation(570, 290);
+        eu6.setLocation(510, 360);
+        eu7.setLocation(600, 390);
+
+        af1.setLocation(510, 480);
+        af2.setLocation(580, 480);
+        af3.setLocation(650, 540);
+        af4.setLocation(630, 630);
+        af5.setLocation(630, 720);
+        af6.setLocation(750, 720);
+
+        as1.setLocation(850, 205);
+        as2.setLocation(930, 160);
+        as3.setLocation(1000, 165);
+        as4.setLocation(795,260);
+        as5.setLocation(920, 265);
+        as6.setLocation(770, 360);
+        as7.setLocation(925, 335);
+        as8.setLocation(1070, 300);
+        as9.setLocation(910, 410);
+        as10.setLocation(700, 460);
+        as11.setLocation(830, 460);
+        as12.setLocation(935, 495);
+
+        ar1.setLocation(870, 600);
+        ar2.setLocation(1050, 555);
+        ar3.setLocation(990, 660);
+        ar4.setLocation(1020, 660);
+        
+        na1.setActionCommand("na1");
+        na2.setActionCommand("na2");
+        na3.setActionCommand("na3");
+        na4.setActionCommand("na4");
+        na5.setActionCommand("na5");
+        na6.setActionCommand("na6");
+        na7.setActionCommand("na7");
+        na8.setActionCommand("na8");
+        na9.setActionCommand("na9");
+
+        sa1.setActionCommand("sa1");
+        sa2.setActionCommand("sa2");
+        sa3.setActionCommand("sa3");
+        sa4.setActionCommand("sa4");
+
+        eu1.setActionCommand("eu1");
+        eu2.setActionCommand("eu2");
+        eu3.setActionCommand("eu3");
+        eu4.setActionCommand("eu4");
+        eu5.setActionCommand("eu5");
+        eu6.setActionCommand("eu6");
+        eu7.setActionCommand("eu7");
+
+        af1.setActionCommand("af1");
+        af2.setActionCommand("af2");
+        af3.setActionCommand("af3");
+        af4.setActionCommand("af4");
+        af5.setActionCommand("af5");
+        af6.setActionCommand("af6");
+
+        as1.setActionCommand("as1");
+        as2.setActionCommand("as2");
+        as3.setActionCommand("as3");
+        as4.setActionCommand("as4");
+        as5.setActionCommand("as5");
+        as6.setActionCommand("as6");
+        as7.setActionCommand("as7");
+        as8.setActionCommand("as8");
+        as9.setActionCommand("as9");
+        as10.setActionCommand("as10");
+        as11.setActionCommand("as11");
+   
+        ar1.setActionCommand("ar1");
+        ar2.setActionCommand("ar2");
+        ar3.setActionCommand("ar3");
+        ar4.setActionCommand("ar4");
+        
+        buttons.put("na1",na1);
+        buttons.put("na2",na2);
+        buttons.put("na3",na3);
+        buttons.put("na4",na4);
+        buttons.put("na5",na5);
+        buttons.put("na6",na6);
+        buttons.put("na7",na7);
+        buttons.put("na8",na8);
+        buttons.put("na9",na9);
+
+        buttons.put("sa1",sa1);
+        buttons.put("sa2",sa2);
+        buttons.put("sa3",sa3);
+        buttons.put("sa4",sa4);
+
+        buttons.put("eu1",eu1);
+        buttons.put("eu2",eu2);
+        buttons.put("eu3",eu3);
+        buttons.put("eu4",eu4);
+        buttons.put("eu5",eu5);
+        buttons.put("eu6",eu6);
+        buttons.put("eu7",eu7);
+
+        buttons.put("af1",af1);
+        buttons.put("af2",af2);
+        buttons.put("af3",af3);
+        buttons.put("af4",af4);
+        buttons.put("af5",af5);
+        buttons.put("af6",af6);
+
+        buttons.put("as1",as1);
+        buttons.put("as2",as2);
+        buttons.put("as3",as3);
+        buttons.put("as4",as4);
+        buttons.put("as5",as5);
+        buttons.put("as6",as6);
+        buttons.put("as7",as7);
+        buttons.put("as8",as8);
+        buttons.put("as9",as9);
+        buttons.put("as10",as10);
+        buttons.put("as11",as11);
+        buttons.put("as12",as12);
+
+        buttons.put("ar1",ar1);
+        buttons.put("ar2",ar2);
+        buttons.put("ar3",ar3);
+        buttons.put("ar4",ar4);
+        
+        na1.addActionListener(mal);
+        na2.addActionListener(mal);
+        na3.addActionListener(mal);
+        na4.addActionListener(mal);
+        na5.addActionListener(mal);
+        na6.addActionListener(mal);
+        na7.addActionListener(mal);
+        na8.addActionListener(mal);
+        na9.addActionListener(mal);
+
+        sa1.addActionListener(mal);
+        sa2.addActionListener(mal);
+        sa3.addActionListener(mal);
+        sa4.addActionListener(mal);
+
+        eu1.addActionListener(mal);
+        eu2.addActionListener(mal);
+        eu3.addActionListener(mal);
+        eu4.addActionListener(mal);
+        eu5.addActionListener(mal);
+        eu6.addActionListener(mal);
+        eu7.addActionListener(mal);
+
+        af1.addActionListener(mal);
+        af2.addActionListener(mal);
+        af3.addActionListener(mal);
+        af4.addActionListener(mal);
+        af5.addActionListener(mal);
+        af6.addActionListener(mal);
+
+        as1.addActionListener(mal);
+        as2.addActionListener(mal);
+        as3.addActionListener(mal);
+        as4.addActionListener(mal);
+        as5.addActionListener(mal);
+        as6.addActionListener(mal);
+        as7.addActionListener(mal);
+        as8.addActionListener(mal);
+        as9.addActionListener(mal);
+        as10.addActionListener(mal);
+        as11.addActionListener(mal);
+        as12.addActionListener(mal);
+
+        ar1.addActionListener(mal);
+        ar2.addActionListener(mal);
+        ar3.addActionListener(mal);
+        ar4.addActionListener(mal);
+
+        add(na1);
+        add(na2);
+        add(na3);
+        add(na4);
+        add(na5);
+        add(na6);
+        add(na7);
+        add(na8);
+        add(na9);
+
+        add(sa1);
+        add(sa2);
+        add(sa3);
+        add(sa4);
+
+        add(eu1);
+        add(eu2);
+        add(eu3);
+        add(eu4);
+        add(eu5);
+        add(eu6);
+        add(eu7);
+
+        add(af1);
+        add(af2);
+        add(af3);
+        add(af4);
+        add(af5);
+        add(af6);
+
+        add(as1);
+        add(as2);
+        add(as3);
+        add(as4);
+        add(as5);
+        add(as6);
+        add(as7);
+        add(as8);
+        add(as9);
+        add(as10);
+        add(as11);
+        add(as12);
+
+        add(ar1);
+        add(ar2);
+        add(ar3);
+        add(ar4);
+    }
+    private void mainMenu(){
+        JFrame menu = new JFrame("Risk - Main Menu - Team Rocket");
+        menu.setSize(420, 420);
+        menu.setLocation(200,200);
+        menu.setLayout(null);
+        menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JButton newGame = new JButton("New Game");
+        JButton loadGame = new JButton("Load Game");
+                
+    }
     private void setNewGameWindow()
     {
         newGameWindow = new JFrame("New Game Settings");
@@ -281,7 +637,7 @@ public class GraphicalView extends JFrame implements Observer
                         }
                     }
                 }
-                game.beginGame();
+                //game.beginGame();
                 gameInfo.setText(
                         "Player 1 territories \n" + game.getTerritories(0));
                 gameInfo.append(
@@ -298,7 +654,27 @@ public class GraphicalView extends JFrame implements Observer
         );
         newGameWindow.add(startGame);
     }
+    private class MapButtonListener implements ActionListener{
 
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+           for (Territory t: gameMap.getTerritories()){
+               if (t.getCountry().getButtonTitle().equals(e.getActionCommand())){
+                   if (true){
+                   countryFrom = t;
+                   System.out.println("countryFrom: " + t.getCountry().toString());
+                   }
+                   if (true){
+                       countryTo = t;
+                       System.out.println("countryTo: " + t.getCountry().toString());
+                   }
+               }
+           }
+            
+        }
+        
+    }
     private class NumPlayersListener implements ActionListener
     {
 
@@ -536,8 +912,11 @@ public class GraphicalView extends JFrame implements Observer
                     g2.setColor(player.getColor());
                     for (Territory t : player.getTerritories())
                     {
-                        g2.drawString(String.valueOf(t.getArmies()),
-                                t.getPointX(), t.getPointY());
+                        System.out.println(t.getCountry().getButtonTitle());
+                        buttons.get(t.getCountry().getButtonTitle()).setBackground(player.getColor());  
+                        buttons.get(t.getCountry().getButtonTitle()).setForeground(Color.BLACK);     
+                        buttons.get(t.getCountry().getButtonTitle()).setText(String.valueOf(t.getArmies()));
+                        
                     }
                 }
             }
