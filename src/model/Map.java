@@ -117,6 +117,24 @@ public class Map
         unclaimedTerritories.remove(0);
 
     }
+    
+    /* Gives selected Territory to player,
+     * @Param Player, player to give the territory to
+     * @param Territory, Territory to give to the player
+     * 
+     * 
+     */
+    public void giveTerritory(Player playerToGiveTo, Territory territoryToGive)
+    {
+        
+        playerToGiveTo.territoryObtained(territoryToGive);
+        playerToGiveTo.loseAnArmy();
+        
+        territoryToGive.changeOccupier(playerToGiveTo);
+        territoryToGive.setArmies(1);
+        
+       unclaimedTerritories.remove(territoryToGive);
+    }
 
     // new method here
     public int exchangeCards(Player p)

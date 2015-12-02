@@ -43,6 +43,19 @@ public class EasyBot extends Player
     }
 
     @Override
+    public Territory claimTerritory(List<Territory> territories)
+    {
+        for(Territory i : territories)
+        {
+            if(i.getOccupier() == null)
+            {
+                return i;
+            }
+        }
+        return null;
+    }
+    
+    @Override
     public void fortify()
     {
         boolean thinking = true;
