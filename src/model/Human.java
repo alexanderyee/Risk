@@ -52,7 +52,7 @@ public class Human extends Player
         }
     }
 
-    public void placeDeployedArmies(int armies)
+    public void placeDeployedArmiesRand(int armies)
     {
         Scanner s = new Scanner(System.in);
         int choice;

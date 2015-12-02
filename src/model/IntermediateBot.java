@@ -99,7 +99,7 @@ public class IntermediateBot extends Player
     }
 
     @Override
-    public void placeDeployedArmies(int armies)
+    public void placeDeployedArmiesRand(int armies)
     {
         Territory terr;
 
