@@ -130,21 +130,22 @@ public class EasyBot extends Player
         ArrayList<Integer> validChoices = new ArrayList<Integer>();
         for (int i = 0; i < getTotalTerritories(); i++)
         {
-            if(territories.get(i).getArmies() > 1)
+            if (territories.get(i).getArmies() > 1)
             {
                 adjList = (ArrayList<Territory>) territories.get(i)
                         .getAdjacentTerritories();
                 for (int j = 0; j < adjList.size(); j++)
                 { // if(not attacking yourself
-                    if (!(adjList.get(j).getOccupier().getPlayerID() == getPlayerID()))
+                    if (!(adjList.get(j).getOccupier()
+                            .getPlayerID() == getPlayerID()))
                     {
                         validChoices.add(i);
                         /*
-                         * we have to make sure that only territories that are adj
-                         * to enemy territories are selected as options
+                         * we have to make sure that only territories that are
+                         * adj to enemy territories are selected as options
                          */
                     }
-                }   
+                }
             }
         }
         int choice = r.nextInt(validChoices.size());

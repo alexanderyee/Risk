@@ -71,16 +71,16 @@ public class Game
     {
         rollToGoFirst();
         claimTerritories();
-      //  beginGame();
+        // beginGame();
     }
 
     private void rollToGoFirst()
     {
         Random r = new Random();
         currentPID = r.nextInt(players.size()); // so this number is 0 to
-                                                        // (size-1)
+                                                // (size-1)
 
- }
+    }
 
     private void claimTerritories()
     {
@@ -88,12 +88,13 @@ public class Game
         for (int ii = 0; ii < 42; ii++)
         {
 
-            currentPID = currentPID % numPlayers; //to prevent out of bounds exception
+            currentPID = currentPID % numPlayers; // to prevent out of bounds
+                                                  // exception
             map.giveRandomTerritory(players.get(currentPID));
 
             currentPID++;
 
-            currentPID=currentPID%numPlayers;
+            currentPID = currentPID % numPlayers;
         }
 
     }
@@ -103,21 +104,21 @@ public class Game
         Player curr;
         while (!gameOver)
         {
-            currentPID=currentPID % numPlayers;
+            currentPID = currentPID % numPlayers;
             curr = players.get(currentPID);
-           int bonus = curr.deploy();
-          //  bonus += map.exchangeCards(curr);
-           System.out.println("Player " +currentPID + " it is your turn: \n");
+            int bonus = curr.deploy();
+            // bonus += map.exchangeCards(curr);
+            System.out.println("Player " + currentPID + " it is your turn: \n");
             curr.placeDeployedArmies(bonus);
             attack();
             if (curr.getTotalTerritories() == 42)
                 gameOver = true;
             else
             {
-              currentPID++;
+                currentPID++;
             }
         }
-    } //TODO: check if curr fortifies here
+    } // TODO: check if curr fortifies here
 
     // PRIVATE METHODS
     public String getTerritories(int k) // not meant to take in an index, but a
@@ -136,9 +137,8 @@ public class Game
 
         // Asks if the player wants to attack or no
 
-            
         boolean choice = players.get(currentPID).willAttack();
-        
+
         if (choice == true)
         {
             Player currentPlayer = players.get(currentPID); // don't use
@@ -157,7 +157,7 @@ public class Game
                 while (attackUnresolved)
                 {
                     // get the two territory choices involved in the battle
-                    int attackingTerritoryNumber = currentPlayer.attackFrom(); 
+                    int attackingTerritoryNumber = currentPlayer.attackFrom();
                     Territory attackingTerritory = currentPlayer
                             .getTerritories().get(attackingTerritoryNumber);
 
@@ -169,12 +169,11 @@ public class Game
                     Player defendingPlayer = defendingTerritory.getOccupier();
                     // carry out the dice rolling and army losses
                     resolveAttack(attackingTerritory, defendingTerritory);
-                   
-                      System.out.println(currentPID);
+
+                    System.out.println(currentPID);
                     System.out.println("Attarckers terrys \n"
                             + this.getTerritories(currentPID));
-                  
-                    
+
                     System.out.println("defenders terrys \n"
                             + defendingPlayer.getTerroritories());
 
@@ -185,8 +184,7 @@ public class Game
                             currentPlayer.fortify();
                     }
                 } // end while
-               
-            
+
             } // end try
             catch (NullPointerException e)
             {
@@ -263,12 +261,9 @@ public class Game
         {
             defender.loseTerritory(defending);
             defending.changeOccupier(attacking.getOccupier());
-            
+
             attacker.addTerritory(defending);
-          
-            
-            
-            
+
             return true;
         }
         else if (attacking.getArmies() == 1)

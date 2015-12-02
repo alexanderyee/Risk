@@ -60,7 +60,8 @@ public class HardCpu extends Player
             Territory fortifyTo = territories
                     .get(r.nextInt(territories.size()));
             int times = 0;
-            while (fortifyTo.getArmies() < 1 && times < territories.size() && !isFortified(fortifyTo))
+            while (fortifyTo.getArmies() < 1 && times < territories.size()
+                    && !isFortified(fortifyTo))
             {
                 fortifyTo = territories.get(r.nextInt(territories.size()));
                 times++;
@@ -99,14 +100,13 @@ public class HardCpu extends Player
             }
         }
     }
-    
+
     private boolean isFortified(Territory t)
     {
         boolean result = true;
-        for(Territory adj : t.getAdjacentTerritories())
+        for (Territory adj : t.getAdjacentTerritories())
         {
-            if(t.getArmies() < (2 * adj.getArmies()))
-                result = false;
+            if (t.getArmies() < (2 * adj.getArmies())) result = false;
         }
         return result;
     }
@@ -118,17 +118,17 @@ public class HardCpu extends Player
 
         for (int i = 0; i < armies; i++)
         {
-            if(!terrNAmer.isEmpty() && !nAmer)
+            if (!terrNAmer.isEmpty() && !nAmer)
                 terr = terrNAmer.get(r.nextInt(terrNAmer.size()));
-            else if(!terrSAmer.isEmpty() && !sAmer)
+            else if (!terrSAmer.isEmpty() && !sAmer)
                 terr = terrSAmer.get(r.nextInt(terrSAmer.size()));
-            else if(!terrAfrica.isEmpty() && !africa)
+            else if (!terrAfrica.isEmpty() && !africa)
                 terr = terrAfrica.get(r.nextInt(terrAfrica.size()));
-            else if(!terrAustr.isEmpty() && !austr)
+            else if (!terrAustr.isEmpty() && !austr)
                 terr = terrAustr.get(r.nextInt(terrAustr.size()));
-            else if(!terrAsia.isEmpty() && !asia)
+            else if (!terrAsia.isEmpty() && !asia)
                 terr = terrAsia.get(r.nextInt(terrAsia.size()));
-            else if(!terrEuro.isEmpty() && !euro)
+            else if (!terrEuro.isEmpty() && !euro)
                 terr = terrEuro.get(r.nextInt(terrEuro.size()));
             else
                 terr = territories.get(r.nextInt(territories.size()));
