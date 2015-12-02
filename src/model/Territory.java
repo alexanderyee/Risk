@@ -15,12 +15,13 @@ public class Territory
     private Countries name;
     private List<Territory> adj;
     private int numAdj;
+    private int X, Y;
 
     // CONSTRUCTOR
     /*
      * Constructor for the territory
      */
-    public Territory(Countries name)
+    public Territory(Countries name, int x, int y)
     {
         adj = new ArrayList<Territory>();
         this.cont = name.getContinent();
@@ -28,6 +29,8 @@ public class Territory
         this.color = cont.getColor();
         armies = 0;
         occupier = null;
+        this.X = x;
+        this.Y = y;
     }
 
     public void setAdj(Territory[] adjs)
@@ -122,6 +125,17 @@ public class Territory
     public String toString()
     {
         return name.toString() + "number of armies is: " + armies;
+    }
+
+    public int getPointX()
+    {
+        // TODO Auto-generated method stub
+        return this.X;
+    }
+
+    public int getPointY()
+    {
+        return this.Y;
     }
 
 }

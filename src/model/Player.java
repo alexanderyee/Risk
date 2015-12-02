@@ -1,6 +1,7 @@
 
 package model;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 /*
@@ -15,6 +16,7 @@ public abstract class Player
     private int playerID;
     private int totalArmies;
     private int totalTerritories;
+    private String playerName;
     protected ArrayList<Territory> territories; // this had to be changed
 
     /*
@@ -67,6 +69,26 @@ public abstract class Player
         map = b;
         territories = new ArrayList<Territory>();
 
+    }
+
+    public void setPlayerName(String name)
+    {
+        if (name == null)
+        {
+            if (getClass() != Human.class)
+                this.playerName = "Bot" + String.valueOf(this.playerID);
+            else
+                this.playerName = "Human " + String.valueOf(this.playerID);
+        }
+        else
+        {
+            this.playerName = name;
+        }
+    }
+
+    public String getPlayerName()
+    {
+        return this.playerName;
     }
 
     public void addTerritory(Territory t)
@@ -346,6 +368,17 @@ public abstract class Player
     public int getPlayerID()
     {
         return playerID;
+    }
+
+    public Color getColor()
+    {
+        if (this.playerID == 0) return Color.RED;
+        if (this.playerID == 1) return Color.BLUE;
+        if (this.playerID == 2) return Color.YELLOW;
+        if (this.playerID == 3) return Color.GREEN;
+        if (this.playerID == 4) return new Color(51, 25, 0);
+        if (this.playerID == 5) return Color.MAGENTA;
+        return Color.BLACK;
     }
 
 }

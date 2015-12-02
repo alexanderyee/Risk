@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -109,6 +110,95 @@ public class HardCpu extends Player
             if (t.getArmies() < (2 * adj.getArmies())) result = false;
         }
         return result;
+    }
+
+    public void fortifyAlternative()
+    {
+        ArrayList<Territory> borders = identifyBorders();
+    }
+
+    /*
+     * Identify borders method, determines this units "border" countries.
+     * (countries which have an enemy state near them)
+     */
+    public ArrayList<Territory> identifyBorders()
+    {
+        ArrayList<Territory> territoryList = super.getTerritories();
+        ArrayList<Territory> adjList = new ArrayList<Territory>();
+        ArrayList<Territory> borders = new ArrayList<Territory>();
+
+        borders.removeAll(borders);
+        for (Territory i : territoryList)
+        {
+            adjList.removeAll(adjList);
+            adjList = (ArrayList<Territory>) i.getAdjacentTerritories();
+            for (Territory j : adjList)
+            {
+                if (j.getOccupier().getPID() != this.pid)
+                {
+                    borders.add(i);
+                }
+            }
+        }
+        return borders;
+    }
+
+    /*
+     * This is a non-random deploy method, should be refactored later
+     */
+    public void deployAlternative(int armiesToDeployWith)
+    {
+        // boolean thinking = true;
+        ArrayList<Territory> borders = identifyBorders();
+        HashMap<Territory, Integer> deployMap = determineThreats(borders);
+
+        for (int i = 0; i < armiesToDeployWith; i++)
+        {
+            Territory smallest = ((ArrayList<Territory>) deployMap.keySet())
+                    .get(0);
+            for (Territory j : deployMap.keySet())
+            {
+                if (deployMap.get(j) < deployMap.get(smallest))
+                {
+                    smallest = j;
+                }
+            }
+
+            smallest.addArmies(1);
+            deployMap.put(smallest, deployMap.get(smallest) + 1);
+        }
+    }
+
+    /*
+     * This method is used by deploy, which will determine the best locations to
+     * deploy the hard AI's armies. It does this by searching through the ai's
+     * borders and finding the difference between armies and mapping that to the
+     * territory, it only maps the highest difference between the territories
+     * [Territory a] -> [difference of armies between Territory a and Territory
+     * b]
+     * @return HashMap<Territory, Integer>
+     */
+    private HashMap<Territory, Integer> determineThreats(
+            ArrayList<Territory> borders)
+    {
+        ArrayList<Territory> threatList = new ArrayList<Territory>();
+
+        HashMap<Territory, Integer> deployMap = new HashMap<Territory, Integer>();
+
+        for (Territory i : borders)
+        {
+            ArrayList<Territory> adjList = (ArrayList<Territory>) i
+                    .getAdjacentTerritories();
+            for (Territory j : adjList)
+            {
+                if (j.getOccupier().getPID() != this.getPID() && deployMap
+                        .get(i) < (i.getArmies() - (j.getArmies() - 1)))
+                    deployMap.put(i, i.getArmies() - (j.getArmies() - 1));
+            }
+
+        }
+
+        return deployMap;
     }
 
     @Override
