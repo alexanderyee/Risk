@@ -363,7 +363,7 @@ public abstract class Player
 
     // deploy methods
 
-    abstract public void placeDeployedArmies(int armies);
+    abstract public void placeDeployedArmiesRand(int armies);
 
     public int getPlayerID()
     {

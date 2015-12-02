@@ -109,7 +109,7 @@ public class Map
         }
 
         Collections.shuffle(unclaimedTerritories);
-        Territory temp = unclaimedTerritories.get(0);
+        Territory temp = unclaimedTerritories.get(0); //p.claimTerritoryChoice(unclaimedTerritories);
         p.territoryObtained(temp);
         p.loseAnArmy();
         temp.changeOccupier(p);

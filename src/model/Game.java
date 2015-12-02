@@ -113,7 +113,7 @@ public class Game extends Observable
             int bonus = curr.deploy();
             // bonus += map.exchangeCards(curr);
             System.out.println("Player " + currentPID + " it is your turn: \n");
-            curr.placeDeployedArmies(bonus);
+            curr.placeDeployedArmiesRand(bonus);
             attack();
             if (curr.getTotalTerritories() == 42)
                 gameOver = true;
