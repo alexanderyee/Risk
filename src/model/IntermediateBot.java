@@ -12,6 +12,9 @@ public class IntermediateBot extends Player
     private int atkFrom;
     private int atkTo;
     private ArrayList<String> realThoughts = new ArrayList<String>();
+    private ArrayList<Territory> validChoices = new ArrayList<Territory>();
+    private boolean firstTurn = true;
+    private int numTerrsAtBeginningOfTurn;
 
     /*
      * Represents the Intermediate AI bot in Risk, will choose a single
@@ -20,7 +23,7 @@ public class IntermediateBot extends Player
     public IntermediateBot(int pid, int initArmies, Map b)
     {
         super(pid, initArmies, b);
-        r = new Random();
+        r = new Random(2);
         this.pid = pid;
         addThoughts();
     }
@@ -44,17 +47,18 @@ public class IntermediateBot extends Player
     }
 
     @Override
-    public void fortify()
+    public void fortify() throws Exception
     {
         boolean thinking = true;
         while (thinking)
         {
             System.out.println(this.getTerroritories());
 
-            System.out
-                    .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                                // a
-                                                                                // thing
+//            System.out
+//                    .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
+//                                                                                // a
+//                                                                                // thing
+            System.out.println("Player "+this.pid+", is foritfying.");
             Territory fortifyTo = territories
                     .get(r.nextInt(territories.size()));
             int times = 0;
@@ -99,71 +103,132 @@ public class IntermediateBot extends Player
     }
 
     @Override
-    public void placeDeployedArmiesRand(int armies)
+    public void placeDeployedArmiesRand(int armies) throws Exception
     {
-        Territory terr;
-
         for (int i = 0; i < armies; i++)
         {
-            terr = territories.get(r.nextInt(2));
-            terr.addArmies(1);
+            Territory least = territories.get(0);
+            for(Territory terr : territories)
+            {
+                if(terr.getArmies() < least.getArmies())
+                {
+                    least = terr;
+                }
+            }
+            least.addArmies(1);
             loseAnArmy();
         }
         System.out
-                .println("IntermediateBot " + this.pid + "has deployed armies");
+                .println("IntermediateBot " + this.pid + " has deployed armies");
     }
 
     @Override
     public boolean willAttack()
     {
-        return true;
+        if(territories.size() == 42) //I won!
+            return false;
+        ArrayList<Territory> newValidChoices = new ArrayList<Territory>();
+        ArrayList<Territory> adjList = null;
+        for(Territory terr : territories) //go through our territories
+        {
+            if(terr.getArmies() >= 2) //if one has at least 2 territories it can attack as long as...
+            {
+                adjList = (ArrayList<Territory>) terr.getAdjacentTerritories();
+                for (Territory enemy : adjList) //make sure you have a valid enemy target from that location
+                { // if(not attacking yourself
+                    if (enemy.getOccupier().getPlayerID() != pid)
+                    {
+                        newValidChoices.add(terr);
+                        break; //we only need to add it once
+                    }
+                }
+            }
+        }
+        validChoices = newValidChoices;
+        System.out.println("ValidChoices: \n" + validChoices);
+        boolean canAttack = !validChoices.isEmpty();
+        numTerrsAtBeginningOfTurn = territories.size();
+        return canAttack;
     }
 
     @Override
     public int attackFrom()
     {
+        atkFrom = 0;
+        atkTo = 0;
         int maxDif = 0;
         int from;
         int at;
-        int choice = 0;
-        int choice2 = 0;
-        for (Territory t : getTerritories()) // go through my terr's
+        Territory t;
+        Territory e;
+        for (int i = 0; i < validChoices.size(); i++) // go through my terr's
         {
+            t = validChoices.get(i);
             if (t.getArmies() > 1) // if I can attack from it
             {
                 from = t.getArmies(); // check armies here
-                for (Territory e : t.getAdjacentTerritories()) // go through
-                // adjacents
+                for (int j = 0; j < t.getAdjacentTerritories().size(); j++) //go through adjacents
                 {
+                    e = t.getAdjacentTerritories().get(j);
                     if (e.getOccupier() != this) // if it's an enemy terr
                     {
                         at = e.getArmies(); // get its armies
                         if ((from - at) > maxDif)
                         {
                             maxDif = from - at;
-                            atkFrom = choice; // choose to attack where I have
+                            atkFrom = i; // choose to attack where I have
                             // greatest advantage
-                            atkTo = choice2;
+                            atkTo = j;
                         }
                     }
-                    choice2++;
                 }
             }
-            choice++;
         }
-        return atkFrom;
+        Territory tFrom = validChoices.get(atkFrom);
+        int indexOfActualTerrFrom = territories.indexOf(tFrom);
+        Territory tTo = tFrom.getAdjacentTerritories().get(atkTo);
+        System.out.println("IntBot "+this.pid+" is attacking from "+tFrom+".");
+        System.out.println("IntBot "+this.pid+" is attacking at "+tTo+".");
+        return indexOfActualTerrFrom;
     }
 
     @Override
     public int attackAt(int atkTerrNum)
     {
+        Territory atkAt = territories.get(atkTerrNum).getAdjacentTerritories().get(atkTo);
+        System.out.println("IntBot "+this.pid+" is attacking at"+atkAt+".");
         return atkTo;
     }
 
     @Override
     public boolean attackAgain()
     {
-        return false;
+        if(territories.size() == 42) //If you won, don't attack again
+            return false;
+        ArrayList<Territory> newValidChoices = new ArrayList<Territory>(); //otherwise check if CAN attack
+        ArrayList<Territory> adjList = null;
+        for(Territory terr : validChoices) //go through our territories
+        {
+            if(terr.getArmies() >= 2) //if one has at least 2 territories it can attack as long as...
+            {
+                adjList = (ArrayList<Territory>) terr.getAdjacentTerritories();
+                for (Territory enemy : adjList) //make sure you have a valid enemy target from that location
+                { // if(not attacking yourself
+                    if (enemy.getOccupier().getPlayerID() != pid)
+                    {
+                        newValidChoices.add(terr);
+                        break; //we only need to add it once
+                    }
+                }
+            }
+        }
+        validChoices = newValidChoices;
+        System.out.println("ValidChoices: \n" + validChoices);
+        boolean canAttack = !validChoices.isEmpty();
+        if(canAttack && territories.size() >= numTerrsAtBeginningOfTurn) //if CAN and you're winning, keep going
+            return true;
+        else //otherwise quit
+            return false;
     }
 
     @Override
@@ -175,13 +240,21 @@ public class IntermediateBot extends Player
     @Override
     public int attackDice(int armies)
     {
-        return 1;
+        if(armies > 3)
+            return 3;
+        else if(armies > 2)
+            return 2;
+        else
+            return 1;
     }
 
     @Override
     public int defenseDice(int atkPID, String defStr, int atkDice, int armies)
     {
-        return 1;
+        if(armies > 1)
+            return 2;
+        else
+            return 1;
     }
 
     @Override
@@ -229,15 +302,20 @@ public class IntermediateBot extends Player
     @Override
     public Territory claimTerritory(List<Territory> list)
     {
-        // TODO Auto-generated method stub
+        for(Territory i : territories)
+        {
+            if(i.getOccupier() == null)
+            {
+                return i;
+            }
+        }
         return null;
     }
 
     @Override
-    public int attackInvade()
+    public int attackInvade(int armies)
     {
-        // TODO Auto-generated method stub
-        return 0;
+        return armies-1; //invade with max num of troops possible?
     }
 
 }

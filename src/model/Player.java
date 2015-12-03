@@ -131,7 +131,7 @@ public abstract class Player
         return result.toString();
     }
 
-    public void addArmy(int terrNumber)
+    public void addArmy(int terrNumber) throws Exception
     {
         if (totalArmies <= 0)
         {
@@ -294,7 +294,7 @@ public abstract class Player
 
     abstract public ArrayList<Integer> cardSetChoices();
 
-    public void playerOwnsTerritory(Card c)
+    public void playerOwnsTerritory(Card c) throws Exception
     {
         for (Territory t : territories)
         {
@@ -305,7 +305,7 @@ public abstract class Player
         }
     }
 
-    abstract public void fortify();
+    abstract public void fortify() throws Exception;
 
     // PRIVATE METHODS
 
@@ -357,7 +357,7 @@ public abstract class Player
 
     public abstract boolean attackAgain();
     
-    public abstract int attackInvade(); //TODO: implement in all Player sub-classes
+    public abstract int attackInvade(int armies); //TODO: implement in all Player sub-classes
 
     public abstract boolean willFortify();
 
@@ -368,7 +368,7 @@ public abstract class Player
 
     // deploy methods
 
-    abstract public void placeDeployedArmiesRand(int armies);
+    abstract public void placeDeployedArmiesRand(int armies) throws Exception;
 
     public int getPlayerID()
     {
