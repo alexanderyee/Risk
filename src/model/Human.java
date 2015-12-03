@@ -52,7 +52,7 @@ public class Human extends Player
         }
     }
 
-    public void placeDeployedArmies(int armies)
+    public void placeDeployedArmiesRand(int armies)
     {
         Scanner s = new Scanner(System.in);
         int choice;
@@ -281,4 +281,18 @@ public class Human extends Player
     
    
     
+    @Override
+    public Territory claimTerritory(List<Territory> list)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int attackInvade()
+    {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }

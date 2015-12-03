@@ -709,7 +709,7 @@ public class GraphicalView extends JFrame implements Observer
                         else
                         {
                             countryFrom = t;
-                            gameInfo.append("You have " + bonus
+                            gameInfo.append("You have " + (bonus - 1)
                                     + " armies left to deploy. \n");
                             curr.placeDeployedArmies(countryFrom);
                             bonus--;

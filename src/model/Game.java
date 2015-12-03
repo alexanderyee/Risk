@@ -86,6 +86,18 @@ public class Game extends Observable
 
     }
 
+    private void claimTerritoriesAlt()
+    {
+        
+        while(map.getUnclaimedTerritories().size() > 0)
+        {
+            for(Player i : players)
+            {
+                map.giveTerritory(i, i.claimTerritory(map.getUnclaimedTerritories()));
+            }
+        }
+    }
+    
     private void claimTerritories()
     {
         System.out.println("Randomly claiming territories.");
@@ -113,8 +125,9 @@ public class Game extends Observable
             int bonus = curr.deploy();
             // bonus += map.exchangeCards(curr);
             System.out.println("Player " + currentPID + " it is your turn: \n");
-            curr.placeDeployedArmies(bonus);
+            curr.placeDeployedArmiesRand(bonus);
             attack();
+            System.out.println("PLAYER TURN CHANGED.");
             if (curr.getTotalTerritories() == 42)
                 gameOver = true;
             else
@@ -266,15 +279,19 @@ public class Game extends Observable
             defending.changeOccupier(attacking.getOccupier());
 
             attacker.addTerritory(defending);
-
+            //TODO: Call method on player to have them invade the territory!!!
+            int invadingArmies = attacker.attackInvade();
+            defending.addArmies(invadingArmies);
             return true;
         }
         else if (attacking.getArmies() == 1)
         {
+            System.out.println("The attacker failed.");
             return true;
         }
         else
         {
+            System.out.println("What does this even do? Third attack resolved branch.");
             return false;
         }
     }

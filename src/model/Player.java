@@ -1,8 +1,10 @@
 
+
 package model;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 /*
  * @author Ben Shields / Daniel Phillips (Mostly Ben)
@@ -346,6 +348,8 @@ public abstract class Player
      * continue attacking or not This should be attached to a GUI module or
      * button to let the player choose if he wants to continue attacking or not
      */
+    public abstract Territory claimTerritory(List<Territory> list);
+    
     public abstract boolean willAttack();
 
     public abstract int attackFrom();
@@ -353,6 +357,8 @@ public abstract class Player
     public abstract int attackAt(int attackingTerritoryNumber);
 
     public abstract boolean attackAgain();
+    
+    public abstract int attackInvade(); //TODO: implement in all Player sub-classes
 
     public abstract boolean willFortify();
 
@@ -363,7 +369,7 @@ public abstract class Player
 
     // deploy methods
 
-    abstract public void placeDeployedArmies(int armies);
+    abstract public void placeDeployedArmiesRand(int armies);
 
     public int getPlayerID()
     {

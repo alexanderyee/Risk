@@ -144,15 +144,14 @@ public class HardCpu extends Player
     }
 
     /*
-     * This is a non-random deploy method, should be refactored later
+     * This is a non-random deploy method, should be re-factored later
      */
-    public void deployAlternative(int armiesToDeployWith)
+    public void placeDeployedArmies(int armiesToDeployWith)
     {
-        // boolean thinking = true;
         ArrayList<Territory> borders = identifyBorders();
         HashMap<Territory, Integer> deployMap = determineThreats(borders);
 
-        for (int i = 0; i < armiesToDeployWith; i++)
+        for (int i = 0; i < armiesToDeployWith; i++) //find my territory that is in the most danger
         {
             Territory smallest = ((ArrayList<Territory>) deployMap.keySet())
                     .get(0);
@@ -163,10 +162,10 @@ public class HardCpu extends Player
                     smallest = j;
                 }
             }
-
-            smallest.addArmies(1);
-            deployMap.put(smallest, deployMap.get(smallest) + 1);
+            smallest.addArmies(1); //add a troop to that territory
+            deployMap.put(smallest, deployMap.get(smallest) + 1); //update deployMap too
         }
+        System.out.println("HardCpu " + this.pid + "has deployed armies");
     }
 
     /*
@@ -202,7 +201,7 @@ public class HardCpu extends Player
     }
 
     @Override
-    public void placeDeployedArmies(int armies)
+    public void placeDeployedArmiesRand(int armies)
     {
         Territory terr;
 
@@ -492,6 +491,21 @@ public class HardCpu extends Player
             }
         }
         return choices;
+    }
+
+
+    @Override
+    public Territory claimTerritory(List<Territory> list)
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public int attackInvade()
+    {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 }

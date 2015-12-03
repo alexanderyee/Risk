@@ -33,7 +33,7 @@ public class HumanTests
     {
         Map earth = new Map();
         Player reaper = new Human(0, 666, earth);
-        reaper.placeDeployedArmies(3);
+        reaper.placeDeployedArmiesRand(3);
         Scanner s = new Scanner(System.in);
         /*
          * I don't really know how to test this, all it does is: (1) it asks you

@@ -109,13 +109,30 @@ public class Map
         }
 
         Collections.shuffle(unclaimedTerritories);
-        Territory temp = unclaimedTerritories.get(0);
+        Territory temp = unclaimedTerritories.get(0); //p.claimTerritoryChoice(unclaimedTerritories);
         p.territoryObtained(temp);
         p.loseAnArmy();
         temp.changeOccupier(p);
         temp.setArmies(1);
         unclaimedTerritories.remove(0);
 
+    }
+
+    /*
+     * Gives selected Territory to player,
+     * @Param Player, player to give the territory to
+     * @param Territory, Territory to give to the player
+     */
+    public void giveTerritory(Player playerToGiveTo, Territory territoryToGive)
+    {
+
+        playerToGiveTo.territoryObtained(territoryToGive);
+        playerToGiveTo.loseAnArmy();
+
+        territoryToGive.changeOccupier(playerToGiveTo);
+        territoryToGive.setArmies(1);
+
+        unclaimedTerritories.remove(territoryToGive);
     }
 
     // new method here
@@ -186,9 +203,11 @@ public class Map
         else
             cardSetValue += 5;
     }
-    public ArrayList<Territory> getTerritories(){
+
+    public ArrayList<Territory> getTerritories()
+    {
         return territories;
-        
+
     }
 
 }
