@@ -18,11 +18,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -37,7 +41,10 @@ import javax.swing.JRadioButtonMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import model.Dice;
+import model.EasyBot;
 import model.Game;
+import model.Human;
 import model.Map;
 import model.Player;
 import model.Territory;
@@ -51,7 +58,6 @@ public class GraphicalView extends JFrame implements Observer
         window.setVisible(true);
     }
 
-    private Game game;
     private Image map;
     private Map gameMap;
     private MapPanel mapPanel;
@@ -76,9 +82,17 @@ public class GraphicalView extends JFrame implements Observer
     private int numHumans;
     private Territory countryFrom;
     private Territory countryTo;
-    private HashMap<String,JButton> buttons;
+    private HashMap<String, JButton> buttons;
+    boolean deployFlag = false;
+    boolean attackFlag = false;
+    boolean fortifyFlag = false;
+    private int bonus;
+    private Player curr;
+    private JPanel mainMenu;
+
     public GraphicalView()
     {
+
         buttons = new HashMap<>();
         gameMap = new Map();
         mainMenu();
@@ -130,7 +144,7 @@ public class GraphicalView extends JFrame implements Observer
         mapPanel.setLayout(null);
         mapPanel.setSize(new Dimension(imgWidth, imgHeight));
         mapPanel.setLocation(0, 0);
-        gameInfo = new JTextArea("testing to see what happens");
+        gameInfo = new JTextArea();
         gameInfo.setSize(new Dimension(screensize.width - imgWidth, imgHeight));
         gameInfo.setLocation(imgWidth, 0);
         console = new JTextField();
@@ -140,14 +154,13 @@ public class GraphicalView extends JFrame implements Observer
         attack.setSize(new Dimension(100, 30));
         attack.setLocation(100, 100);
         attack.addActionListener(new ActionListener()
-        
+
         {
 
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                
-                game.attack();
+
                 repaint();
                 gameInfo.append("\n Attack updated");
             }
@@ -159,10 +172,12 @@ public class GraphicalView extends JFrame implements Observer
         this.add(gameInfo);
         this.add(console);
         this.add(attack);
-        
+
         repaint();
     }
-    private void setMapButtons(){
+
+    private void setMapButtons()
+    {
         ActionListener mal = new MapButtonListener();
         JButton na1 = new JButton("");
         JButton na2 = new JButton("");
@@ -211,56 +226,56 @@ public class GraphicalView extends JFrame implements Observer
         JButton ar2 = new JButton("");
         JButton ar3 = new JButton("");
         JButton ar4 = new JButton("");
-        na1.setSize(30,30);
-        na2.setSize(30,30);
-        na3.setSize(30,30);
-        na4.setSize(30,30);
-        na5.setSize(30,30);
-        na6.setSize(30,30);
-        na7.setSize(30,30);
-        na8.setSize(30,30);
-        na9.setSize(30,30);
+        na1.setSize(40, 20);
+        na2.setSize(30, 30);
+        na3.setSize(30, 30);
+        na4.setSize(30, 30);
+        na5.setSize(30, 30);
+        na6.setSize(30, 30);
+        na7.setSize(30, 30);
+        na8.setSize(30, 30);
+        na9.setSize(30, 30);
 
-        sa1.setSize(30,30);
-        sa2.setSize(30,30);
-        sa3.setSize(30,30);
-        sa4.setSize(30,30);
+        sa1.setSize(30, 30);
+        sa2.setSize(30, 30);
+        sa3.setSize(30, 30);
+        sa4.setSize(30, 30);
 
-        eu1.setSize(30,30);
-        eu2.setSize(30,30);
-        eu3.setSize(30,30);
-        eu4.setSize(30,30);
-        eu5.setSize(30,30);
-        eu6.setSize(30,30);
-        eu7.setSize(30,30);
+        eu1.setSize(30, 30);
+        eu2.setSize(30, 30);
+        eu3.setSize(30, 30);
+        eu4.setSize(30, 30);
+        eu5.setSize(30, 30);
+        eu6.setSize(30, 30);
+        eu7.setSize(30, 30);
 
-        af1.setSize(30,30);
-        af2.setSize(30,30);
-        af3.setSize(30,30);
-        af4.setSize(30,30);
-        af5.setSize(30,30);
-        af6.setSize(30,30);
+        af1.setSize(30, 30);
+        af2.setSize(30, 30);
+        af3.setSize(30, 30);
+        af4.setSize(30, 30);
+        af5.setSize(30, 30);
+        af6.setSize(30, 30);
 
-        as1.setSize(30,30);
-        as2.setSize(30,30);
-        as3.setSize(30,30);
-        as4.setSize(30,30);
-        as5.setSize(30,30);
-        as6.setSize(30,30);
-        as7.setSize(30,30);
-        as8.setSize(30,30);
-        as9.setSize(30,30);
-        as10.setSize(30,30);
-        as11.setSize(30,30);
-        as12.setSize(30,30);
+        as1.setSize(30, 30);
+        as2.setSize(30, 30);
+        as3.setSize(30, 30);
+        as4.setSize(30, 30);
+        as5.setSize(30, 30);
+        as6.setSize(30, 30);
+        as7.setSize(30, 30);
+        as8.setSize(30, 30);
+        as9.setSize(30, 30);
+        as10.setSize(30, 30);
+        as11.setSize(30, 30);
+        as12.setSize(30, 30);
 
-        ar1.setSize(30,30);
-        ar2.setSize(30,30);
-        ar3.setSize(30,30);
-        ar4.setSize(30,30);
-        
+        ar1.setSize(30, 30);
+        ar2.setSize(30, 30);
+        ar3.setSize(30, 30);
+        ar4.setSize(30, 30);
+
         na1.setLocation(80, 150);
-        na2.setLocation(170,150);
+        na2.setLocation(170, 150);
         na3.setLocation(400, 140);
         na4.setLocation(175, 250);
         na5.setLocation(240, 235);
@@ -292,7 +307,7 @@ public class GraphicalView extends JFrame implements Observer
         as1.setLocation(850, 205);
         as2.setLocation(930, 160);
         as3.setLocation(1000, 165);
-        as4.setLocation(795,260);
+        as4.setLocation(795, 260);
         as5.setLocation(920, 265);
         as6.setLocation(770, 360);
         as7.setLocation(925, 335);
@@ -306,7 +321,7 @@ public class GraphicalView extends JFrame implements Observer
         ar2.setLocation(1050, 555);
         ar3.setLocation(990, 660);
         ar4.setLocation(1020, 660);
-        
+
         na1.setActionCommand("na1");
         na2.setActionCommand("na2");
         na3.setActionCommand("na3");
@@ -348,60 +363,60 @@ public class GraphicalView extends JFrame implements Observer
         as9.setActionCommand("as9");
         as10.setActionCommand("as10");
         as11.setActionCommand("as11");
-   
+
         ar1.setActionCommand("ar1");
         ar2.setActionCommand("ar2");
         ar3.setActionCommand("ar3");
         ar4.setActionCommand("ar4");
-        
-        buttons.put("na1",na1);
-        buttons.put("na2",na2);
-        buttons.put("na3",na3);
-        buttons.put("na4",na4);
-        buttons.put("na5",na5);
-        buttons.put("na6",na6);
-        buttons.put("na7",na7);
-        buttons.put("na8",na8);
-        buttons.put("na9",na9);
 
-        buttons.put("sa1",sa1);
-        buttons.put("sa2",sa2);
-        buttons.put("sa3",sa3);
-        buttons.put("sa4",sa4);
+        buttons.put("na1", na1);
+        buttons.put("na2", na2);
+        buttons.put("na3", na3);
+        buttons.put("na4", na4);
+        buttons.put("na5", na5);
+        buttons.put("na6", na6);
+        buttons.put("na7", na7);
+        buttons.put("na8", na8);
+        buttons.put("na9", na9);
 
-        buttons.put("eu1",eu1);
-        buttons.put("eu2",eu2);
-        buttons.put("eu3",eu3);
-        buttons.put("eu4",eu4);
-        buttons.put("eu5",eu5);
-        buttons.put("eu6",eu6);
-        buttons.put("eu7",eu7);
+        buttons.put("sa1", sa1);
+        buttons.put("sa2", sa2);
+        buttons.put("sa3", sa3);
+        buttons.put("sa4", sa4);
 
-        buttons.put("af1",af1);
-        buttons.put("af2",af2);
-        buttons.put("af3",af3);
-        buttons.put("af4",af4);
-        buttons.put("af5",af5);
-        buttons.put("af6",af6);
+        buttons.put("eu1", eu1);
+        buttons.put("eu2", eu2);
+        buttons.put("eu3", eu3);
+        buttons.put("eu4", eu4);
+        buttons.put("eu5", eu5);
+        buttons.put("eu6", eu6);
+        buttons.put("eu7", eu7);
 
-        buttons.put("as1",as1);
-        buttons.put("as2",as2);
-        buttons.put("as3",as3);
-        buttons.put("as4",as4);
-        buttons.put("as5",as5);
-        buttons.put("as6",as6);
-        buttons.put("as7",as7);
-        buttons.put("as8",as8);
-        buttons.put("as9",as9);
-        buttons.put("as10",as10);
-        buttons.put("as11",as11);
-        buttons.put("as12",as12);
+        buttons.put("af1", af1);
+        buttons.put("af2", af2);
+        buttons.put("af3", af3);
+        buttons.put("af4", af4);
+        buttons.put("af5", af5);
+        buttons.put("af6", af6);
 
-        buttons.put("ar1",ar1);
-        buttons.put("ar2",ar2);
-        buttons.put("ar3",ar3);
-        buttons.put("ar4",ar4);
-        
+        buttons.put("as1", as1);
+        buttons.put("as2", as2);
+        buttons.put("as3", as3);
+        buttons.put("as4", as4);
+        buttons.put("as5", as5);
+        buttons.put("as6", as6);
+        buttons.put("as7", as7);
+        buttons.put("as8", as8);
+        buttons.put("as9", as9);
+        buttons.put("as10", as10);
+        buttons.put("as11", as11);
+        buttons.put("as12", as12);
+
+        buttons.put("ar1", ar1);
+        buttons.put("ar2", ar2);
+        buttons.put("ar3", ar3);
+        buttons.put("ar4", ar4);
+
         na1.addActionListener(mal);
         na2.addActionListener(mal);
         na3.addActionListener(mal);
@@ -498,16 +513,34 @@ public class GraphicalView extends JFrame implements Observer
         add(ar3);
         add(ar4);
     }
-    private void mainMenu(){
-        JFrame menu = new JFrame("Risk - Main Menu - Team Rocket");
-        menu.setSize(420, 420);
-        menu.setLocation(200,200);
-        menu.setLayout(null);
-        menu.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    private void mainMenu() // sets up the main menu
+    {
+        mainMenu = new JPanel();
+        mainMenu.setLayout(null);
+        mainMenu.setLocation(0, 0);
+        mainMenu.setSize(this.getMaximumSize());
+
         JButton newGame = new JButton("New Game");
+        newGame.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent arg0)
+            {
+                newGameWindow.setVisible(true);
+            }
+        });
         JButton loadGame = new JButton("Load Game");
-                
+        newGame.setLocation(500, 0);
+        newGame.setSize(100, 40);
+        loadGame.setLocation(500, 60);
+        loadGame.setSize(100, 40);
+        mainMenu.add(newGame);
+        mainMenu.add(loadGame);
+        mainMenu.setVisible(true);
+        this.add(mainMenu);
     }
+
     private void setNewGameWindow()
     {
         newGameWindow = new JFrame("New Game Settings");
@@ -519,11 +552,13 @@ public class GraphicalView extends JFrame implements Observer
         JLabel players = new JLabel("Players:");
         players.setSize(60, 20);
         players.setLocation(0, 0);
-        JRadioButton two = new JRadioButton("2");
-        two.setActionCommand("2");
-        two.setLocation(0, 20);
-        two.setSize(60, 20);
-        two.setSelected(true);
+        JLabel setNameMsg = new JLabel("Enter names (one on each line):");
+        setNameMsg.setSize(290, 20);
+        setNameMsg.setLocation(300, 0);
+        JTextField setName = new JTextField();
+        setName.setSize(300, 400);
+        setName.setLocation(360, 20);
+
         JRadioButton three = new JRadioButton("3");
         three.setActionCommand("3");
         three.setLocation(0, 40);
@@ -532,6 +567,7 @@ public class GraphicalView extends JFrame implements Observer
         four.setActionCommand("4");
         four.setLocation(0, 60);
         four.setSize(60, 20);
+
         JRadioButton five = new JRadioButton("5");
         five.setActionCommand("5");
         five.setLocation(0, 80);
@@ -540,19 +576,17 @@ public class GraphicalView extends JFrame implements Observer
         six.setActionCommand("6");
         six.setLocation(0, 100);
         six.setSize(60, 20);
-        numPlayersOption.add(two);
+
         numPlayersOption.add(three);
         numPlayersOption.add(four);
         numPlayersOption.add(five);
         numPlayersOption.add(six);
-        newGameWindow.add(two);
         newGameWindow.add(three);
         newGameWindow.add(four);
         newGameWindow.add(five);
         newGameWindow.add(six);
         newGameWindow.add(players);
         ActionListener npl = new NumPlayersListener();
-        two.addActionListener(npl);
         three.addActionListener(npl);
         four.addActionListener(npl);
         five.addActionListener(npl);
@@ -570,7 +604,7 @@ public class GraphicalView extends JFrame implements Observer
         hOne.setActionCommand("1");
         hOne.setLocation(80, 40);
         hOne.setSize(80, 20);
-        hOne.setSelected(true);
+
         JRadioButton hTwo = new JRadioButton("2");
         hTwo.setActionCommand("2");
         hTwo.setLocation(80, 60);
@@ -583,6 +617,7 @@ public class GraphicalView extends JFrame implements Observer
         hFour.setActionCommand("4");
         hFour.setLocation(80, 100);
         hFour.setSize(80, 20);
+
         JRadioButton hFive = new JRadioButton("5");
         hFive.setActionCommand("5");
         hFive.setLocation(80, 120);
@@ -617,64 +652,252 @@ public class GraphicalView extends JFrame implements Observer
 
         JButton startGame = new JButton("Start Game");
         startGame.setSize(80, 20);
-        startGame.setLocation(340, 440);
-        startGame.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent arg0)
-            {
-                game = new Game(numPlayers - numHumans, numHumans);
-                newGameFlag = true;
-                for (Player player : game.getPlayers())
-                {
-                    while (player.getArmies() > 0)
-                    {
-                        for (int j = 1; j <= player.getTerritories()
-                                .size(); j++)
-                        {
-                            if (player.getArmies() == 0) break;
-                            player.addArmy(j);
-                        }
-                    }
-                }
-                //game.beginGame();
-                gameInfo.setText(
-                        "Player 1 territories \n" + game.getTerritories(0));
-                gameInfo.append(
-                        "Player 2 territories \n" + game.getTerritories(1));
-                gameInfo.append(
-                        "Player 3 territories \n" + game.getTerritories(2));
-                gameInfo.append(
-                        "Player 4 territories \n" + game.getTerritories(3));
-                repaint();
-            }
-
-        }
-
-        );
+        startGame.setLocation(340, 420);
+        startGame.addActionListener(new NewGameListener());
         newGameWindow.add(startGame);
     }
-    private class MapButtonListener implements ActionListener{
+
+    private class NewGameListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent arg0)
+        {
+            initializeMemberVariables(numPlayers - numHumans, numHumans);
+            initializePlayers(numPlayers - numHumans, numHumans);
+            setupGame();
+
+            newGameFlag = true;
+            for (Player player : getPlayers())
+            {
+                while (player.getArmies() > 0)
+                {
+                    for (int j = 1; j <= player.getTerritories().size(); j++)
+                    {
+                        if (player.getArmies() == 0) break;
+                        player.addArmy(j);
+                    }
+                }
+            }
+            beginTurn();
+
+            repaint();
+            mainMenu.setVisible(false);
+            newGameWindow.setVisible(false);
+        }
+
+    }
+
+    private class MapButtonListener implements ActionListener
+    {
 
         @Override
         public void actionPerformed(ActionEvent e)
         {
-           for (Territory t: gameMap.getTerritories()){
-               if (t.getCountry().getButtonTitle().equals(e.getActionCommand())){
-                   if (true){
-                   countryFrom = t;
-                   System.out.println("countryFrom: " + t.getCountry().toString());
-                   }
-                   if (true){
-                       countryTo = t;
-                       System.out.println("countryTo: " + t.getCountry().toString());
-                   }
-               }
-           }
-            
+            for (Territory t : gameMap.getTerritories())
+            {
+                if (t.getCountry().getButtonTitle()
+                        .equals(e.getActionCommand()))
+                {
+                    if (deployFlag)
+                    { // deploying
+                        if (!t.getOccupier().equals(curr))
+                        {
+                            gameInfo.append(
+                                    "Please select a valid territory to deploy to \n Your color is: "
+                                            + curr.getColorString() + "\n");
+                        }
+                        else
+                        {
+                            countryFrom = t;
+                            gameInfo.append("You have " + bonus
+                                    + " armies left to deploy. \n");
+                            curr.placeDeployedArmies(countryFrom);
+                            bonus--;
+                            repaint();
+                            if (bonus == 0)
+                            {
+                                countryFrom = null;
+                                deployFlag = false;
+                                JOptionPane jop = new JOptionPane();
+
+                                String[] options = new String[] { "Attack",
+                                        "Fortify", "Skip turn" };
+                                int n = jop.showOptionDialog(null,
+                                        "Select your next move",
+                                        "Risk Move for " + curr.getPlayerName(),
+                                        JOptionPane.DEFAULT_OPTION,
+                                        JOptionPane.PLAIN_MESSAGE, null,
+                                        options, options[0]);
+                                if (n == 0)
+                                {
+                                    attackFlag = true;
+                                    gameInfo.append(curr.getPlayerName()
+                                            + ", please select a territory to attack from\n");
+                                }
+                                else if (n == 1)
+                                {
+                                    fortifyFlag = true;
+                                    gameInfo.append(
+                                            "Please select a territory to move armies from\n");
+                                }
+                                else if (n == 2)
+                                {
+                                    currentPID++;
+                                    beginTurn();
+                                }
+
+                            }
+                        }
+                    }
+                    else if (attackFlag)
+                    {
+                        if (countryFrom == null)
+                        {
+                            if (!t.getOccupier().equals(curr))
+                            {
+                                gameInfo.append(
+                                        "Please select a valid territory to attack from\n Your color is: "
+                                                + curr.getColorString() + "\n");
+                            }
+                            else
+                            {
+                                countryFrom = t;
+                                gameInfo.append(
+                                        "Please select a territory to attack\n");
+                            }
+
+                        }
+
+                        else
+                        {
+                            if (t.getOccupier().equals(curr) || !countryFrom
+                                    .getAdjacentTerritories().contains(t))
+                            {
+                                gameInfo.append(
+                                        "Please select a valid territory to attack\n Your color is: "
+                                                + curr.getColorString() + "\n");
+                            }
+
+                            else
+                            {
+
+                                countryTo = t;
+                                int n = 0;
+                                while (n == 0)
+                                {
+                                    resolveAttack(countryFrom, countryTo);
+                                    repaint();
+                                    JOptionPane jop = new JOptionPane();
+                                    String[] options = new String[] {
+                                            "Attack again", "Fortify",
+                                            "Skip turn" };
+                                    n = jop.showOptionDialog(null,
+                                            "Select your next move",
+                                            "Risk Move for "
+                                                    + curr.getPlayerName(),
+                                            JOptionPane.DEFAULT_OPTION,
+                                            JOptionPane.PLAIN_MESSAGE, null,
+                                            options, options[0]);
+
+                                }
+                                if (n == 1)
+                                {
+                                    countryFrom = null;
+                                    countryTo = null;
+                                    attackFlag = false;
+                                    fortifyFlag = true;
+                                    gameInfo.append(
+                                            "Please select a territory to move armies from\n");
+
+                                }
+                                else if (n == 2)
+                                {
+                                    countryFrom = null;
+                                    countryTo = null;
+                                    attackFlag = false;
+                                    currentPID++;
+                                    beginTurn();
+                                }
+                            }
+                        }
+                    }
+                    else if (fortifyFlag)
+                    {
+                        if (countryFrom == null)
+                        {
+                            if (!t.getOccupier().equals(curr))
+                            {
+                                gameInfo.append(
+                                        "Please select a valid territory to transport armies from\n Your color is: "
+                                                + curr.getColorString() + "\n");
+                            }
+                            else
+                            {
+                                countryFrom = t;
+                                gameInfo.append(
+                                        "Please select a territory to move armies to\n");
+                            }
+                        }
+                        else
+                        {
+                            if (!(t.getOccupier().equals(curr) && countryFrom
+                                    .getAdjacentTerritories().contains(t)))
+                            {
+                                gameInfo.append(
+                                        "Please select a valid territory to fortify\n Your color is: "
+                                                + curr.getColorString() + "\n");
+                            }
+
+                            else
+                            {
+                                countryTo = t;
+                                String errorMessage = " ";
+                                int move = -1;
+                                while (!errorMessage.isEmpty())
+                                {
+                                    String stringInput = JOptionPane
+                                            .showInputDialog(errorMessage
+                                                    + "Enter number.");
+                                    try
+                                    {
+                                        int number = Integer
+                                                .parseInt(stringInput);
+                                        if (number >= countryFrom.getArmies()
+                                                || number < 0)
+                                        {
+                                            errorMessage = "That number is not within the \n"
+                                                    + "allowed range!\n";
+                                        }
+                                        else
+                                        {
+
+                                            move = number;
+                                            errorMessage = ""; // no more error
+                                        }
+                                    }
+                                    catch (NumberFormatException f)
+                                    {
+                                        // The typed text was not an integer
+                                        errorMessage = "The text you typed is not a number.\n";
+                                    }
+                                }
+                                curr.fortify(countryFrom, countryTo, move);
+                                repaint();
+                                countryFrom = null;
+                                countryTo = null;
+                                fortifyFlag = false;
+                                currentPID++;
+                                beginTurn();
+                            }
+                        }
+                    }
+                }
+
+            }
+
         }
-        
     }
+
     private class NumPlayersListener implements ActionListener
     {
 
@@ -706,74 +929,12 @@ public class GraphicalView extends JFrame implements Observer
         @Override
         public void actionPerformed(ActionEvent e)
         {
+            String nameInput = JOptionPane.showInputDialog("Enter name for "
+                    + getPlayers().get(getCurrPID()).getPlayerName());
+            getPlayers().get(getCurrPID()).setPlayerName(nameInput);
+            gameInfo.append("Name changed: " + nameInput);
 
-            JFrame jf = new JFrame();
-            jf.setSize(400, 200);
-            jf.setLocation(0, 0);
-            jf.setLayout(new FlowLayout());
-            JLabel msg = new JLabel("Please set name for: "
-                    + game.getPlayers().get(game.getCurrPID()).getPlayerName());
-            JTextField nameInput = new JTextField();
-            nameInput.setSize(150, 20);
-            jf.add(msg);
-            jf.add(nameInput);
-            jf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            jf.addWindowListener(new WindowListener()
-            {
-
-                @Override
-                public void windowOpened(WindowEvent e)
-                {
-                    // TODO Auto-generated method stub
-
-                }
-
-                @Override
-                public void windowClosing(WindowEvent e)
-                {
-                    game.getPlayers().get(game.getCurrPID())
-                            .setPlayerName(nameInput.getText());
-                }
-
-                @Override
-                public void windowClosed(WindowEvent e)
-                {
-                    // TODO Auto-generated method stub
-
-                }
-
-                @Override
-                public void windowIconified(WindowEvent e)
-                {
-                    // TODO Auto-generated method stub
-
-                }
-
-                @Override
-                public void windowDeiconified(WindowEvent e)
-                {
-                    // TODO Auto-generated method stub
-
-                }
-
-                @Override
-                public void windowActivated(WindowEvent e)
-                {
-                    // TODO Auto-generated method stub
-
-                }
-
-                @Override
-                public void windowDeactivated(WindowEvent e)
-                {
-                    // TODO Auto-generated method stub
-
-                }
-
-            });
-            jf.setVisible(true);
         }
-
     }
 
     private class Save implements WindowListener
@@ -792,19 +953,20 @@ public class GraphicalView extends JFrame implements Observer
                 {
                     FileInputStream fis = new FileInputStream("RiskSave");
                     ObjectInputStream input = new ObjectInputStream(fis);
-                    game = new Game(3, 1); // need to add JOptionPane to this in
-                                           // the future; for now, defaulted to
+                    // game = new Game(3, 1); // need to add JOptionPane to this
+                    // in
+                    // the future; for now, defaulted to
                     input.close();
                     fis.close();
                 } // End try.....
                 catch (Exception ex)
                 {
-                    game = new Game(3, 1); // for now, same as try block...
+                    // game = new Game(3, 1); // for now, same as try block...
                 }
             }
             else
             {
-                game = new Game(3, 1); // ^^^
+                // game = new Game(3, 1); // ^^^
 
             }
 
@@ -824,7 +986,7 @@ public class GraphicalView extends JFrame implements Observer
                 {
                     FileOutputStream fos = new FileOutputStream("RiskSave");
                     ObjectOutputStream outFile = new ObjectOutputStream(fos);
-                    outFile.writeObject(game);
+                    // outFile.writeObject(game);
                     outFile.close();
                     fos.close();
                 }
@@ -907,16 +1069,25 @@ public class GraphicalView extends JFrame implements Observer
             if (newGameFlag)
             {
                 g2.setFont(new Font("default", Font.BOLD, 16));
-                for (Player player : game.getPlayers())
+                for (Player player : getPlayers())
                 {
-                    g2.setColor(player.getColor());
+                    // g2.setColor(player.getColor());
                     for (Territory t : player.getTerritories())
                     {
-                        System.out.println(t.getCountry().getButtonTitle());
-                        buttons.get(t.getCountry().getButtonTitle()).setBackground(player.getColor());  
-                        buttons.get(t.getCountry().getButtonTitle()).setForeground(Color.BLACK);     
-                        buttons.get(t.getCountry().getButtonTitle()).setText(String.valueOf(t.getArmies()));
-                        
+
+                        buttons.get(t.getCountry().getButtonTitle())
+                                .setBackground(player.getColor());
+                        buttons.get(t.getCountry().getButtonTitle())
+                                .setOpaque(true);
+                        buttons.get(t.getCountry().getButtonTitle())
+                                .setBorderPainted(false);
+                        buttons.get(t.getCountry().getButtonTitle())
+                                .setFont(new Font("Arial", Font.BOLD, 8));
+                        // buttons.get(t.getCountry().getButtonTitle()).setText(String.valueOf(t.getArmies()));
+
+                        g2.drawString(String.valueOf(t.getArmies()),
+                                t.getPointX(), t.getPointY());
+
                     }
                 }
             }
@@ -936,6 +1107,231 @@ public class GraphicalView extends JFrame implements Observer
              */
 
         }
+
+    }
+
+    /** Begin game functionality code **/
+
+    // CONSTRUCTOR HELPER METHODS
+    private void initializeMemberVariables(int numBots, int numHumans)
+    {
+        turnsPlayed = 0;
+        roundsPlayed = 0;
+        gameOver = false;
+        cardSetValue = 4;
+        gameMap = new Map();
+        this.numPlayers = numBots + numHumans;
+        players = new ArrayList<Player>();
+    }
+
+    private void initializePlayers(int numBots, int numHumans)
+    {
+        int initArmies = 0;
+        if (numPlayers == 3)
+            initArmies = 35;
+        else if (numPlayers == 4)
+            initArmies = 30;
+        else if (numPlayers == 5)
+            initArmies = 25;
+        else if (numPlayers == 6) initArmies = 20;
+        for (int ii = 0; ii < numBots; ii++)
+        { // instantiate bots
+
+            Player p = new EasyBot(ii, initArmies, gameMap);
+            players.add(p);
+        }
+        for (int jj = numBots; jj < numPlayers; jj++)
+        { // instantiate
+          // humans
+
+            Player p = new Human(jj, initArmies, gameMap);
+
+            players.add(p);
+        }
+    }
+
+    private void setupGame()
+    {
+        rollToGoFirst();
+        claimTerritories();
+        // beginGame();
+    }
+
+    private void rollToGoFirst()
+    {
+        Random r = new Random();
+        currentPID = r.nextInt(players.size()); // so this number is 0 to
+                                                // (size-1)
+
+    }
+
+    private void claimTerritories()
+    {
+        System.out.println("Randomly claiming territories.");
+        for (int ii = 0; ii < 42; ii++)
+        {
+
+            currentPID = currentPID % numPlayers; // to prevent out of bounds
+                                                  // exception
+            gameMap.giveRandomTerritory(players.get(currentPID));
+
+            currentPID++;
+
+            currentPID = currentPID % numPlayers;
+        }
+
+    }
+
+    public void beginTurn()
+    {
+
+        currentPID = currentPID % numPlayers;
+        curr = players.get(currentPID);
+        bonus = curr.deploy();
+        // bonus += map.exchangeCards(curr);
+        gameInfo.setText("Player " + currentPID + " it is your turn: \n");
+        gameInfo.append("Your color is: " + curr.getColorString() + "\n");
+        gameInfo.append(curr.getPlayerName()
+                + ", please select a territory to deploy a single army to. \n");
+        deployFlag = true;
+    }
+    // TODO: check if curr fortifies here
+
+    // PRIVATE METHODS
+    public String getTerritories(int k) // not meant to take in an index, but a
+                                        // player number
+    {
+        return players.get(k).getTerroritories();
+    }
+
+    public void placeArmyInPlayerTerritory(int p, int terrNumber)
+    {
+        players.get(p).addArmy(terrNumber);
+    }
+
+    private int turnsPlayed;
+    private int roundsPlayed;
+    private boolean gameOver;
+    private int cardSetValue; // we can delete this now, moving it to Map class
+    // game piece variables
+
+    // player variables
+    private int handsReedemed = 0;
+    private ArrayList<Player> players;
+    private int currentPID;
+
+    public boolean resolveAttack(Territory attacking, Territory defending)
+    {
+        /*
+         * Needs error checking to make sure that there are at least 2 armies in
+         * the attacking territory
+         */
+        Dice dice = new Dice();
+
+        Player attacker = attacking.getOccupier();
+        Player defender = defending.getOccupier();
+        JOptionPane jop = new JOptionPane();
+        jop.setMessage("Select your next move");
+        String[] options = new String[] { "1" };
+        if (attacking.getArmies() == 3)
+            options = new String[] { "1", "2" };
+        else if (attacking.getArmies() > 3)
+        {
+            options = new String[] { "1", "2", "3" };
+        }
+        int n = jop.showOptionDialog(null, "Select number of dice to roll",
+                "Risk Attack Dice for Attacker: " + curr.getPlayerName(),
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+                options, options[0]);
+        int attackerRollNumber = n + 1;
+
+        ArrayList<Integer> attackersRolls;
+        // attackersRolls.addAll(dice.roll2(attackerRollNumber));
+
+        int atkPID = attacking.getOccupier().getPID();
+        String defStr = defending.toString();
+        int atkDice = attackerRollNumber;
+        JOptionPane jop2 = new JOptionPane();
+        jop.setMessage("Select your next move");
+        String[] options2 = new String[] { "1" };
+        if (defending.getArmies() >= 3) options2 = new String[] { "1", "2" };
+
+        int n2 = jop.showOptionDialog(null, "Select number of dice to roll",
+                "Risk Attack Dice for Defender: " + defender.getPlayerName(),
+                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+                options2, options2[0]);
+        int defenderRollNumber = n2 + 1;
+        /*
+         * int defenderRollNumber = defender.defenseDice(atkPID, defStr,
+         * atkDice, defending.getArmies());
+         */
+        ArrayList<Integer> defendersRolls;
+        int min = Math.min(attackerRollNumber, defenderRollNumber);
+        attackersRolls = dice.roll2(attackerRollNumber);
+
+        defendersRolls = dice.roll2(defenderRollNumber);
+
+        Collections.sort(attackersRolls, Collections.reverseOrder());
+        Collections.sort(defendersRolls, Collections.reverseOrder());
+
+        for (int i = 0; i < min; i++)
+        {
+            // System.out.printf("attacker %d defender %d
+            // \n",attackersRolls.get(i),defendersRolls.get(i));
+
+            if (attackersRolls.get(i) <= defendersRolls.get(i))
+
+            {
+                gameInfo.append(" Attacker rolled: " + attackersRolls.get(i)
+                        + " \nDefender's roll:" + defendersRolls.get(i)
+                        + "\n\n");
+
+                attacking.addArmies(-1);
+            }
+            else if (attackersRolls.get(i) > defendersRolls.get(i))
+            {
+                gameInfo.append(" Attacker rolled: " + attackersRolls.get(i)
+                        + " \nDefender's roll:" + defendersRolls.get(i) + "\n");
+                defending.addArmies(-1);
+            }
+        }
+
+        // if the defending player loses, give the territory to the attacking
+        // player
+        // and return true, the attack has been resolved
+        if (defending.getArmies() == 0)
+        {
+            defender.loseTerritory(defending);
+            defending.changeOccupier(attacking.getOccupier());
+
+            attacker.addTerritory(defending);
+            defending.addArmies(1);
+            attacking.removeArmies(1);
+            return true;
+        }
+        else if (attacking.getArmies() == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public Territory getTerritory(String c)
+    {
+        return gameMap.getTerritory(c);
+    }
+
+    public ArrayList<Player> getPlayers()
+    {
+        return this.players;
+    }
+
+    public int getCurrPID()
+    {
+        return this.currentPID;
 
     }
 }

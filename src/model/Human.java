@@ -273,4 +273,12 @@ public class Human extends Player
         return choices;
     }
 
+    public void placeDeployedArmies(Territory terr)
+    {
+        terr.addArmies(1);
+        loseAnArmy();
+    }
+    
+   
+    
 }
