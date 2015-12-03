@@ -136,7 +136,7 @@ public class Map
     }
 
     // new method here
-    public int exchangeCards(Player p) throws Exception
+    public int exchangeCards(Player p)
     {
         ArrayList<Card> playersHand = p.cards; // get the players cards create
         // getter

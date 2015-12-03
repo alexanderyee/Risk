@@ -78,11 +78,11 @@ public class Territory
         armies = a;
     }
 
-    public int addArmies(int n) throws Exception
+    public int addArmies(int n)
     {
         this.armies += n;
         if(armies < 0)
-            throw new Exception("Negative armies");
+            System.out.println("Negative armies");
         return this.armies;
     }
 

@@ -7,7 +7,7 @@ import model.Game;
 public class Run6Bots
 {
 
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
         System.out.println("================================================");
         System.out.println("Intro shit");

@@ -47,7 +47,7 @@ public class HardCpu extends Player
     }
 
     @Override
-    public void fortify() throws Exception
+    public void fortify()
     {
         boolean thinking = true;
         while (thinking)
@@ -146,7 +146,7 @@ public class HardCpu extends Player
     /*
      * This is a non-random deploy method, should be re-factored later
      */
-    public void placeDeployedArmies(int armiesToDeployWith) throws Exception
+    public void placeDeployedArmies(int armiesToDeployWith)
     {
         ArrayList<Territory> borders = identifyBorders();
         HashMap<Territory, Integer> deployMap = determineThreats(borders);
@@ -201,7 +201,7 @@ public class HardCpu extends Player
     }
 
     @Override
-    public void placeDeployedArmiesRand(int armies) throws Exception
+    public void placeDeployedArmiesRand(int armies)
     {
         Territory terr;
 

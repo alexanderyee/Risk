@@ -47,7 +47,7 @@ public class IntermediateBot extends Player
     }
 
     @Override
-    public void fortify() throws Exception
+    public void fortify()
     {
         boolean thinking = true;
         while (thinking)
@@ -103,7 +103,7 @@ public class IntermediateBot extends Player
     }
 
     @Override
-    public void placeDeployedArmiesRand(int armies) throws Exception
+    public void placeDeployedArmiesRand(int armies)
     {
         for (int i = 0; i < armies; i++)
         {

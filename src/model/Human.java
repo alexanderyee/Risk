@@ -14,7 +14,7 @@ public class Human extends Player
     }
 
     @Override
-    public void fortify() throws Exception
+    public void fortify()
     {
         boolean legitChoice = false;
         while (!legitChoice)
@@ -52,7 +52,7 @@ public class Human extends Player
         }
     }
 
-    public void placeDeployedArmiesRand(int armies) throws Exception
+    public void placeDeployedArmiesRand(int armies)
     {
         Scanner s = new Scanner(System.in);
         int choice;
@@ -273,6 +273,14 @@ public class Human extends Player
         return choices;
     }
 
+    public void placeDeployedArmies(Territory terr)
+    {
+        terr.addArmies(1);
+        loseAnArmy();
+    }
+    
+   
+    
     @Override
     public Territory claimTerritory(List<Territory> list)
     {

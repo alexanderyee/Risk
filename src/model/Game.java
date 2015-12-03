@@ -125,7 +125,7 @@ public class Game extends Observable
 
     }
 
-    public void beginGame() throws Exception
+    public void beginGame()
     {
         Player curr;
         while (!gameOver)
@@ -172,12 +172,12 @@ public class Game extends Observable
         return players.get(k).getTerritories().toString();
     }
 
-    public void placeArmyInPlayerTerritory(int p, int terrNumber) throws Exception
+    public void placeArmyInPlayerTerritory(int p, int terrNumber)
     {
         players.get(p).addArmy(terrNumber);
     }
 
-    public void attack() throws Exception
+    public void attack()
     {
 
         // Asks if the player wants to attack or no
@@ -242,7 +242,7 @@ public class Game extends Observable
 
     ///////////////////// Resolved attack
 
-    public boolean resolveAttack(Territory attacking, Territory defending) throws Exception
+    public boolean resolveAttack(Territory attacking, Territory defending)
     {
         /*
          * Needs error checking to make sure that there are at least 2 armies in

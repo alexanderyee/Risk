@@ -1,4 +1,5 @@
 
+
 package model;
 
 import java.awt.Color;
@@ -69,12 +70,12 @@ public abstract class Player
         dice = new Dice();
         map = b;
         territories = new ArrayList<Territory>();
-
+        setPlayerName("");
     }
 
     public void setPlayerName(String name)
     {
-        if (name == null)
+        if (name.isEmpty())
         {
             if (getClass() != Human.class)
                 this.playerName = "Bot" + String.valueOf(this.playerID);
@@ -131,7 +132,7 @@ public abstract class Player
         return result.toString();
     }
 
-    public void addArmy(int terrNumber) throws Exception
+    public void addArmy(int terrNumber)
     {
         if (totalArmies <= 0)
         {
@@ -294,7 +295,7 @@ public abstract class Player
 
     abstract public ArrayList<Integer> cardSetChoices();
 
-    public void playerOwnsTerritory(Card c) throws Exception
+    public void playerOwnsTerritory(Card c)
     {
         for (Territory t : territories)
         {
@@ -305,7 +306,7 @@ public abstract class Player
         }
     }
 
-    abstract public void fortify() throws Exception;
+    abstract public void fortify();
 
     // PRIVATE METHODS
 
@@ -368,7 +369,7 @@ public abstract class Player
 
     // deploy methods
 
-    abstract public void placeDeployedArmiesRand(int armies) throws Exception;
+    abstract public void placeDeployedArmiesRand(int armies);
 
     public int getPlayerID()
     {
@@ -386,4 +387,25 @@ public abstract class Player
         return Color.BLACK;
     }
 
+    public String getColorString()
+    {
+        if (this.playerID == 0) return "RED";
+        if (this.playerID == 1) return "BLUE";
+        if (this.playerID == 2) return "YELLOW";
+        if (this.playerID == 3) return "GREEN";
+        if (this.playerID == 4) return "BROWN";
+        if (this.playerID == 5) return "MAGENTA";
+        return "BLACK";
+    }
+    public void placeDeployedArmies(Territory terr)
+    {
+        terr.addArmies(1);
+        loseAnArmy();
+    }
+    public void fortify(Territory fortifyFrom, Territory fortifyTo, int move)
+    {
+            fortifyFrom.removeArmies(move); 
+            fortifyTo.addArmies(move);
+    }
+    
 }

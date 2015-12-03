@@ -7,7 +7,7 @@ import model.Game;
 public class textualView
 {
 
-    public static void main(String[] args) throws Exception
+    public static void main(String[] args)
     {
         /*
          * System.out.println("Enter number of humans."); int humans =
