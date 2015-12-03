@@ -151,7 +151,8 @@ public class HardCpu extends Player
         ArrayList<Territory> borders = identifyBorders();
         HashMap<Territory, Integer> deployMap = determineThreats(borders);
 
-        for (int i = 0; i < armiesToDeployWith; i++) //find my territory that is in the most danger
+        for (int i = 0; i < armiesToDeployWith; i++) // find my territory that
+                                                     // is in the most danger
         {
             Territory smallest = ((ArrayList<Territory>) deployMap.keySet())
                     .get(0);
@@ -162,8 +163,10 @@ public class HardCpu extends Player
                     smallest = j;
                 }
             }
-            smallest.addArmies(1); //add a troop to that territory
-            deployMap.put(smallest, deployMap.get(smallest) + 1); //update deployMap too
+            smallest.addArmies(1); // add a troop to that territory
+            deployMap.put(smallest, deployMap.get(smallest) + 1); // update
+                                                                  // deployMap
+                                                                  // too
         }
         System.out.println("HardCpu " + this.pid + "has deployed armies");
     }
@@ -492,7 +495,6 @@ public class HardCpu extends Player
         }
         return choices;
     }
-
 
     @Override
     public Territory claimTerritory(List<Territory> list)

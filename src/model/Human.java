@@ -278,9 +278,7 @@ public class Human extends Player
         terr.addArmies(1);
         loseAnArmy();
     }
-    
-   
-    
+
     @Override
     public Territory claimTerritory(List<Territory> list)
     {

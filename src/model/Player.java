@@ -1,5 +1,4 @@
 
-
 package model;
 
 import java.awt.Color;
@@ -349,7 +348,7 @@ public abstract class Player
      * button to let the player choose if he wants to continue attacking or not
      */
     public abstract Territory claimTerritory(List<Territory> list);
-    
+
     public abstract boolean willAttack();
 
     public abstract int attackFrom();
@@ -357,8 +356,9 @@ public abstract class Player
     public abstract int attackAt(int attackingTerritoryNumber);
 
     public abstract boolean attackAgain();
-    
-    public abstract int attackInvade(int armies); //TODO: implement in all Player sub-classes
+
+    public abstract int attackInvade(int armies); // TODO: implement in all
+                                                  // Player sub-classes
 
     public abstract boolean willFortify();
 
@@ -397,15 +397,17 @@ public abstract class Player
         if (this.playerID == 5) return "MAGENTA";
         return "BLACK";
     }
+
     public void placeDeployedArmies(Territory terr)
     {
         terr.addArmies(1);
         loseAnArmy();
     }
+
     public void fortify(Territory fortifyFrom, Territory fortifyTo, int move)
     {
-            fortifyFrom.removeArmies(move); 
-            fortifyTo.addArmies(move);
+        fortifyFrom.removeArmies(move);
+        fortifyTo.addArmies(move);
     }
-    
+
 }

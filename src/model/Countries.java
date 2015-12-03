@@ -2,58 +2,31 @@ package model;
 
 public enum Countries
 {
-   
-    ALASKA("na1"),
-    NW_TERRITORY("na2"),
-    GREENLAND("na3"),
-    ALBERTA("na4"),
-    ONTARIO("na5"),
-    QUEBEC("na6"),
-    WESTERN_US("na7"),
-    EASTERN_US("na8"),
-    CENT_AMERICA("na9"),
 
-    VENENZUELA("sa1"),
-    PERU("sa2"),
-    BRAZIL("sa3"),
-    ARGENTINA("sa4"),
+    ALASKA("na1"), NW_TERRITORY("na2"), GREENLAND("na3"), ALBERTA(
+            "na4"), ONTARIO("na5"), QUEBEC("na6"), WESTERN_US(
+                    "na7"), EASTERN_US("na8"), CENT_AMERICA("na9"),
 
-    ICELAND("eu1"),
-    SCANDINAVIA("eu2"),
-    UKRAINE("eu3"),
-    GREAT_BRITAIN("eu4"),
-    N_EUROPE("eu5"),
-    W_EUROPE("eu6"),
-    S_EUROPE("eu7"),
+    VENENZUELA("sa1"), PERU("sa2"), BRAZIL("sa3"), ARGENTINA("sa4"),
 
-   N_AFRICA("af1"),
-    EGYPT("af2"),
-    E_AFRICA("af3"),
-    CONGO("af4"),
-    S_AFRICA("af5"),
-    MADAGASCAR("af6"),
+    ICELAND("eu1"), SCANDINAVIA("eu2"), UKRAINE("eu3"), GREAT_BRITAIN(
+            "eu4"), N_EUROPE("eu5"), W_EUROPE("eu6"), S_EUROPE("eu7"),
 
-    SIBERIA("as1"),
-    YAKUTSK("as2"),
-    KAMCHATKA("as3"),
-    URAL("as4"),
-    IRKUTSK("as5"),
-    AFGHANISTAN("as6"),
-    MONGOLIA("as7"),
-    JAPAN("as8"),
-    CHINA("as9"),
-    MIDDLE_EAST("as10"),
-    INDIA("as11"),
-    SIAM("as12"),
+    N_AFRICA("af1"), EGYPT("af2"), E_AFRICA("af3"), CONGO("af4"), S_AFRICA(
+            "af5"), MADAGASCAR("af6"),
 
-    INDONESIA("ar1"),
-    NEW_GUINEA("ar2"),
-    W_AUSTRALIA("ar3"),
-    E_AUSTRALIA("ar4");
+    SIBERIA("as1"), YAKUTSK("as2"), KAMCHATKA("as3"), URAL("as4"), IRKUTSK(
+            "as5"), AFGHANISTAN("as6"), MONGOLIA("as7"), JAPAN("as8"), CHINA(
+                    "as9"), MIDDLE_EAST("as10"), INDIA("as11"), SIAM("as12"),
+
+    INDONESIA("ar1"), NEW_GUINEA("ar2"), W_AUSTRALIA("ar3"), E_AUSTRALIA("ar4");
     private final String buttonTitle;
-    private Countries(String str) {
+
+    private Countries(String str)
+    {
         this.buttonTitle = str;
     }
+
     public Continent getContinent()
     {
         if (this.equals(this.ALASKA) || this.equals(this.NW_TERRITORY)
@@ -80,10 +53,14 @@ public enum Countries
             return Continent.AUSTRALIA;
         return Continent.ASIA;
     }
-    public String getButtonTitle() {
+
+    public String getButtonTitle()
+    {
         return this.buttonTitle;
     }
-    public static void main(String[] args){
+
+    public static void main(String[] args)
+    {
         System.out.println(Countries.ALASKA.getButtonTitle());
     }
 }
