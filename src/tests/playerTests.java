@@ -6,7 +6,7 @@ import model.*;
 
 public class playerTests
 {
-    EasyBot bot;
+    MediumBot bot;
 
     @Test
     public void testPlayer()
@@ -18,7 +18,7 @@ public class playerTests
     public void testConstructorAndGettersAndSetters()
     {
         Map b = new Map();
-        bot = new EasyBot(420, 100, b);
+        bot = new MediumBot(420, 100, b);
 
         assertEquals(bot.getArmies(), 100);
         assertTrue(bot.getArmies() != 200);

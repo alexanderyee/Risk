@@ -13,7 +13,7 @@ import model.CardType;
 import model.Continent;
 import model.Countries;
 import model.Dice;
-import model.EasyBot;
+import model.MediumBot;
 import model.Map;
 import model.Player;
 import model.RiskResources;
@@ -30,7 +30,7 @@ public class MapTest
                 new Territory(Countries.AFGHANISTAN, 0, 0).toString());
         System.out.println(map.listUnclaimed());
         assertEquals(map.getUnclaimedTerritories().size(), 42);
-        Player p = new EasyBot(0, 1, map);
+        Player p = new MediumBot(0, 1, map);
         for (int i = 0; i < 69; i++)
             map.giveRandomTerritory(p);
         assertTrue(map.getUnclaimedTerritories().isEmpty());

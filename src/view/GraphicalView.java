@@ -42,7 +42,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import model.Dice;
-import model.EasyBot;
+import model.MediumBot;
 import model.Game;
 import model.Human;
 import model.Map;
@@ -1137,7 +1137,7 @@ public class GraphicalView extends JFrame implements Observer
         for (int ii = 0; ii < numBots; ii++)
         { // instantiate bots
 
-            Player p = new EasyBot(ii, initArmies, gameMap);
+            Player p = new MediumBot(ii, initArmies, gameMap);
             players.add(p);
         }
         for (int jj = numBots; jj < numPlayers; jj++)

@@ -17,7 +17,7 @@ import model.CardType;
 import model.Continent;
 import model.Countries;
 import model.Dice;
-import model.EasyBot;
+import model.MediumBot;
 import model.Game;
 import model.Human;
 import model.Map;
@@ -38,7 +38,7 @@ public class GameTest
 
         assertEquals(map.getUnclaimedTerritories().size(), 42);
 
-        Player p = new EasyBot(0, 1, map);
+        Player p = new MediumBot(0, 1, map);
 
         for (int i = 0; i < 69; i++)
             map.giveRandomTerritory(p);
@@ -66,7 +66,7 @@ public class GameTest
 
         assertEquals(unclaimedString, testString);
 
-        EasyBot bot = new EasyBot(1, 10, map);
+        MediumBot bot = new MediumBot(1, 10, map);
 
         assertTrue(map.listPlayerTerritories(bot).equals(""));
 
@@ -202,7 +202,7 @@ public class GameTest
     public void testPlayerAndBots()
     {
         Map b = new Map();
-        EasyBot bot = new EasyBot(420, 100, b);
+        MediumBot bot = new MediumBot(420, 100, b);
 
         // Armies tests
         assertEquals(bot.getArmies(), 100);
