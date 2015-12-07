@@ -22,6 +22,7 @@ public class EasyBot extends Player
         r = new Random(2); //THIS IS JUST FOR TESTING Run6Bots
         this.pid = pid;
         addThoughts();
+        
     }
 
     public EasyBot(int pid, int initArmies, Map b, Random s)
@@ -193,15 +194,9 @@ public class EasyBot extends Player
         System.out.println("Player "+this.pid+" is an EasyBot and will attack until it can't.");
         for (Territory t : getTerritories())
         {
-//            System.out
-//                    .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-//                                                                                // a
-//                                                                                // thing
             if (t.getArmies() > 1) return true;
         }
-//        System.out.println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-//                                                                              // a
-//                                                                              // thing
+                                                                             
         System.out.println("Player "+this.pid+" can no longer attack and is therefore done attacking.");
         return false;
     }
