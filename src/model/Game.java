@@ -32,6 +32,14 @@ public class Game extends Observable
         initializePlayers(numBots, numHumans);
         setupGame();
     }
+    
+    public Game(int numEasyBots, int numMediumBots, int numHardBots, int numHumans)
+    {
+        initializeMemberVariables(numEasyBots + numMediumBots + numHardBots, numHumans);
+        initializePlayers(numEasyBots, numMediumBots, numHardBots, numHumans);
+        setupGame();
+        
+    }
 
     // CONSTRUCTOR HELPER METHODS
     private void initializeMemberVariables(int numBots, int numHumans)
@@ -45,6 +53,42 @@ public class Game extends Observable
         players = new ArrayList<Player>();
     }
 
+    private void initializePlayers(int numEasyBots, int numMediumBots, int numHardBots, int numHumans)
+    {
+        int initArmies = 0;
+        
+        if (numPlayers == 3)
+            initArmies = 35;
+        else if (numPlayers == 4)
+            initArmies = 30;
+        else if (numPlayers == 5)
+            initArmies = 25;
+        else if (numPlayers == 6) initArmies = 20;
+        
+        
+        for(int i = 0; i < numEasyBots; i++)
+        {
+            Player p = new EasyBot(players.size(), initArmies, map);
+            players.add(p);
+        }
+        for(int i = 0; i < numMediumBots; i++)
+        {    
+            Player p = new MediumBot(players.size(), initArmies, map);
+            players.add(p);
+        }
+        for(int i = 0; i < numHardBots; i++)
+        {    
+            Player p = new HardCpu(players.size(), initArmies, map);
+            players.add(p);
+        }
+        for(int i = 0; i < numHumans; i++)
+        {    
+            Player p = new Human(players.size(), initArmies, map);
+            players.add(p);
+        }
+        
+    }
+    
     private void initializePlayers(int numBots, int numHumans)
     {
         int initArmies = 0;
