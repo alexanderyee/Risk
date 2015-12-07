@@ -80,9 +80,18 @@ public class Territory
 
     public int addArmies(int n)
     {
-        this.armies += n;
-        if (armies < 0) System.out.println("Negative armies");
-        return this.armies;
+        
+        if (armies + n < 0)
+        {
+            //System.out.println("Negative armies");
+            return this.armies;
+        }
+        else
+        {
+            this.armies += n;
+            return this.armies;
+        }
+        
     }
 
     public int removeArmies(int n)

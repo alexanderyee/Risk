@@ -52,6 +52,12 @@ public class HardCpu extends Player
     {
         ArrayList<Territory> borders = this.identifyBorders();
         HashMap<Territory, Integer> threatMap = this.determineThreats(borders);
+        
+        System.out.println(borders.toString());
+        System.out.println(threatMap.toString());
+        
+        
+        
         int redeployCount = 0;
 
         for (Territory i : this.territories)
@@ -79,12 +85,14 @@ public class HardCpu extends Player
                         }
                     }
 
-                    i.removeArmies(1);
                     threatenedTerritory.addArmies(1);
+                    i.removeArmies(1);
+                    
                     threatMap.put(threatenedTerritory,
                             threatMap.get(threatenedTerritory) - 1);
                 }
             }
+            redeployCount ++;
         }
 
     }
@@ -138,6 +146,10 @@ public class HardCpu extends Player
         ArrayList<Territory> borders = identifyBorders();
         HashMap<Territory, Integer> deployMap = determineThreats(borders);
 
+        
+        System.out.println(borders.toString());
+        System.out.println(deployMap.toString());
+        
         for (int i = 0; i < armiesToDeployWith; i++) // find my territory that
                                                      // is in the most danger
         {
@@ -154,8 +166,8 @@ public class HardCpu extends Player
             smallest.addArmies(1); // add a troop to that territory
             deployMap.put(smallest, deployMap.get(smallest) - 1); // update
 
-                                                                  // deployMap
-                                                                  // too
+            // deployMap
+            // too
         }
         System.out.println("HardCpu " + this.pid + "has deployed armies");
     }
@@ -182,13 +194,14 @@ public class HardCpu extends Player
                     .getAdjacentTerritories();
             for (Territory j : adjList)
             {
-                if (j.getOccupier().getPID() != this.getPID() && deployMap
-                        .get(i) < (i.getArmies() - (j.getArmies() - 1)))
+                if (j.getArmies() > 1 && j.getOccupier().getPID() != this.getPID() && (i.getArmies() - (j.getArmies() - 1) > 1))
                     deployMap.put(i, i.getArmies() - (j.getArmies() - 1));
             }
 
         }
 
+        System.out.println(deployMap.toString());
+        System.exit(0);
         return deployMap;
     }
 
@@ -305,42 +318,42 @@ public class HardCpu extends Player
     public HashMap<Territory, ArrayList<Object>> getAttackList()
     {
         HashMap<Territory, ArrayList<Object>> attackList = new HashMap<Territory, ArrayList<Object>>();
-        
+
         ArrayList<Territory> borders = this.identifyBorders();
-        
-        for(Territory i : borders)
+
+        for (Territory i : borders)
         {
-            if(i.getArmies() > 1)
+            if (i.getArmies() > 1)
             {
-            for(Territory j : i.getAdjacentTerritories())
-            {
-                if(!(j.getOccupier().equals(this) && j.getArmies() < i.getArmies() && !(attackList.containsValue(j))))
+                for (Territory j : i.getAdjacentTerritories())
                 {
-                    Integer armiesToAttackWith = 0;
-                    if(i.getArmies() > 3)
+                    if (!(j.getOccupier().equals(this)
+                            && j.getArmies() < i.getArmies()
+                            && !(attackList.containsValue(j))))
                     {
-                        armiesToAttackWith = 3;
-                    }
-                    else
-                    {
-                        armiesToAttackWith = i.getArmies() - 1;
-                        
-                    }
-                            
+                        Integer armiesToAttackWith = 0;
+                        if (i.getArmies() > 3)
+                        {
+                            armiesToAttackWith = 3;
+                        }
+                        else
+                        {
+                            armiesToAttackWith = i.getArmies() - 1;
+
+                        }
+
                         ArrayList<Object> toAttackWithDiceRolls = new ArrayList<Object>();
                         toAttackWithDiceRolls.add(j);
                         toAttackWithDiceRolls.add(armiesToAttackWith);
-                        
+
                         attackList.put(i, toAttackWithDiceRolls);
                     }
                 }
             }
         }
-        
+
         return attackList;
     }
-
-
 
     private void countTerritories() // just to know if continents are captured
     {
