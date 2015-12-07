@@ -206,7 +206,7 @@ public class GraphicalView extends JFrame
         setMapButtons();
        // this.add(addArmy);
         this.add(mapPanel);
-      //  this.add(gameInfo);
+        this.add(gameInfo);
         //this.add(console);
         this.add(attack);
         this.add(scrollInfo);

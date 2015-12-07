@@ -188,12 +188,12 @@ public class Game extends Observable
                 curr = players.get(currentPID);
             }
             int totalTerr = 0;
-            for (Player i : players)
-            {
-        //        System.out.println("Player: " + i.getPID() + ", has "
-          //              + i.getTotalTerritories() + " total terroritories");
-                totalTerr += i.getTotalTerritories();
-            }
+//            for (Player i : players)
+//            {
+//        //        System.out.println("Player: " + i.getPID() + ", has "
+//          //              + i.getTotalTerritories() + " total terroritories");
+//                totalTerr += i.getTotalTerritories();
+//            }
 
             int bonus = curr.deploy();
             // bonus += map.exchangeCards(curr);
@@ -275,7 +275,8 @@ public class Game extends Observable
                     int attackingTerritoryNumber = currentPlayer.attackFrom();
                     Territory attackingTerritory = currentPlayer
                             .getTerritories().get(attackingTerritoryNumber);
-        //            System.out.println("Attacking from " + attackingTerritory);
+                    System.out.println(currentPlayer.getClass().toString() + " # " + 
+                            currentPlayer.getPID() + " Attacking from " + attackingTerritory);
 
                     int defendingTerritoryNumber = currentPlayer
                             .attackAt(attackingTerritoryNumber);
