@@ -224,7 +224,6 @@ public class EasyBot extends Player
         ArrayList<Territory> adjList = null;
         for (Territory terr : validChoices) // go through our territories
         {
-            if (t.getArmies() > 1) return true;
             if (terr.getArmies() >= 2) // if one has at least 2 territories it
                                        // can attack as long as...
             {
@@ -243,7 +242,6 @@ public class EasyBot extends Player
         }
                                                                              
         System.out.println("Player "+this.pid+" can no longer attack and is therefore done attacking.");
-        return false;
         validChoices = newValidChoices;
     //    System.out.println("ValidChoices: \n" + validChoices);
         boolean canAttack = !validChoices.isEmpty();
