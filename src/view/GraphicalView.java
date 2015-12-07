@@ -1,8 +1,6 @@
 package view;
 
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -21,13 +19,9 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Random;
-import java.util.Scanner;
 
 import javax.imageio.ImageIO;
-import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -39,20 +33,20 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JRadioButtonMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import model.Dice;
 import model.EasyBot;
-import model.MediumBot;
-import model.Game;
 import model.HardCpu;
 import model.Human;
 import model.Map;
+import model.MediumBot;
 import model.Player;
 import model.Territory;
 
-public class GraphicalView extends JFrame implements Observer
+public class GraphicalView extends JFrame
 {
 
     public static void main(String[] args)
@@ -93,7 +87,13 @@ public class GraphicalView extends JFrame implements Observer
     private int bonus;
     private Player curr;
     private JPanel mainMenu;
-
+    private int turnsPlayed;
+    private int roundsPlayed;
+    private boolean gameOver;
+    private int handsReedemed = 0;
+    private ArrayList<Player> players;
+    private int currentPID;
+    private JScrollPane scrollInfo;
     public GraphicalView()
     {
         buttons = new HashMap<>();
@@ -114,22 +114,37 @@ public class GraphicalView extends JFrame implements Observer
             }
         });
         changeDiff = new JMenuItem("Change difficulty...");
-        changeDiff.addActionListener(new ActionListener(){
+        changeDiff.addActionListener(new ActionListener()
+        {
 
             @Override
             public void actionPerformed(ActionEvent e)
             {
-               JOptionPane jop = new JOptionPane();
-               String[] options = new String[players.size()];
-               for (Player p: players){
-                   options [p.getPlayerID()] = p.getPlayerName();
-               }
-               int n = jop.showOptionDialog(null, "Select number of dice to roll",
-                       "Risk Attack Dice for Attacker: " + curr.getPlayerName(),
-                       JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-                       options, options[0]); // add another jop 
+                JOptionPane jop = new JOptionPane();
+                String[] options = new String[players.size()];
+                for (Player p : players)
+                {
+                    options[p.getPlayerID()] = p.getPlayerName();
+                }
+                int n = jop.showOptionDialog(null, "Change difficulty",
+                        "Change player/difficulty for... ",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                        null, options, options[0]); // add another jop
+
+                String[] options2 = { "Easy", "Medium", "Hard", "Human" };
+
+                int n2 = jop.showOptionDialog(null, "Change difficulty",
+                        "Change player/difficulty for" + options[n] + " to... ",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                        null, options2, options2[0]);
+                switchDifficulty(players.get(n), options2[n2]); // this won't
+                                                                // work if
+                                                                // playerID ==
+                                                                // index of
+                                                                // Player in
+                                                                // players
             }
-            
+
         });
         loadGameOption = new JMenuItem("Load Game");
         settings = new JMenu("Settings");
@@ -160,8 +175,6 @@ public class GraphicalView extends JFrame implements Observer
         Dimension screensize = Toolkit.getDefaultToolkit().getScreenSize();
         setSize(screensize);
         setLayout(null);
-        WindowListener wl = new Save();
-        // this.addWindowListener(wl);
         mapPanel = new MapPanel();
         mapPanel.setLayout(null);
         mapPanel.setSize(new Dimension(imgWidth, imgHeight));
@@ -169,10 +182,12 @@ public class GraphicalView extends JFrame implements Observer
         gameInfo = new JTextArea();
         gameInfo.setSize(new Dimension(screensize.width - imgWidth, imgHeight));
         gameInfo.setLocation(imgWidth, 0);
+        scrollInfo = new JScrollPane (gameInfo, 
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         console = new JTextField();
         console.setSize(new Dimension(screensize.width - imgWidth, 30));
         console.setLocation(imgWidth, imgHeight);
-        console.addActionListener(new ConsoleListener());
+
         attack.setSize(new Dimension(100, 30));
         attack.setLocation(100, 100);
         attack.addActionListener(new ActionListener()
@@ -189,16 +204,15 @@ public class GraphicalView extends JFrame implements Observer
 
         });
         setMapButtons();
-        this.add(addArmy);
+       // this.add(addArmy);
         this.add(mapPanel);
-        this.add(gameInfo);
-        this.add(console);
+      //  this.add(gameInfo);
+        //this.add(console);
         this.add(attack);
-
+        this.add(scrollInfo);
+        scrollInfo.updateUI();
         repaint();
     }
-
-
 
     private void setMapButtons()
     {
@@ -555,6 +569,29 @@ public class GraphicalView extends JFrame implements Observer
             }
         });
         JButton loadGame = new JButton("Load Game");
+        loadGame.addActionListener(new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                { // this part would be a lot easier if we used Game
+                    FileInputStream fis = new FileInputStream("RiskSave");
+                    ObjectInputStream input = new ObjectInputStream(fis);
+                    gameMap = (Map) input.readObject();
+
+                    input.close();
+                    fis.close();
+                }
+                catch (IOException | ClassNotFoundException gdi)
+                {
+                    System.out.println("No save detected. Loading new game...");
+                    gdi.printStackTrace();
+                }
+            }
+
+        });
         newGame.setLocation(500, 0);
         newGame.setSize(100, 40);
         loadGame.setLocation(500, 60);
@@ -729,12 +766,14 @@ public class GraphicalView extends JFrame implements Observer
                             gameInfo.append(
                                     "Please select a valid territory to deploy to \n Your color is: "
                                             + curr.getColorString() + "\n");
+                            scrollInfo.updateUI();
                         }
                         else
                         {
                             countryFrom = t;
                             gameInfo.append("You have " + (bonus - 1)
                                     + " armies left to deploy. \n");
+                            scrollInfo.updateUI();
                             curr.placeDeployedArmies(countryFrom);
                             bonus--;
                             repaint();
@@ -748,7 +787,8 @@ public class GraphicalView extends JFrame implements Observer
                                         "Fortify", "Skip turn" };
                                 int n = jop.showOptionDialog(null,
                                         "Select your next move",
-                                        "Risk Move for " + curr.getPlayerName(),
+                                        "Risk: Move for "
+                                                + curr.getPlayerName(),
                                         JOptionPane.DEFAULT_OPTION,
                                         JOptionPane.PLAIN_MESSAGE, null,
                                         options, options[0]);
@@ -757,12 +797,14 @@ public class GraphicalView extends JFrame implements Observer
                                     attackFlag = true;
                                     gameInfo.append(curr.getPlayerName()
                                             + ", please select a territory to attack from\n");
+                                    scrollInfo.updateUI();
                                 }
                                 else if (n == 1)
                                 {
                                     fortifyFlag = true;
                                     gameInfo.append(
                                             "Please select a territory to move armies from\n");
+                                    scrollInfo.updateUI();
                                 }
                                 else if (n == 2)
                                 {
@@ -782,12 +824,14 @@ public class GraphicalView extends JFrame implements Observer
                                 gameInfo.append(
                                         "Please select a valid territory to attack from\n Your color is: "
                                                 + curr.getColorString() + "\n");
+                                scrollInfo.updateUI();
                             }
                             else
                             {
                                 countryFrom = t;
                                 gameInfo.append(
                                         "Please select a territory to attack\n");
+                                scrollInfo.updateUI();
                             }
 
                         }
@@ -800,6 +844,7 @@ public class GraphicalView extends JFrame implements Observer
                                 gameInfo.append(
                                         "Please select a valid territory to attack\n Your color is: "
                                                 + curr.getColorString() + "\n");
+                                scrollInfo.updateUI();
                             }
 
                             else
@@ -807,22 +852,40 @@ public class GraphicalView extends JFrame implements Observer
 
                                 countryTo = t;
                                 int n = 0;
+                                boolean canAttack = true;
                                 while (n == 0)
                                 {
-                                    resolveAttack(countryFrom, countryTo);
+                                    canAttack = !resolveAttack(countryFrom,
+                                            countryTo);
                                     repaint();
                                     JOptionPane jop = new JOptionPane();
-                                    String[] options = new String[] {
-                                            "Attack again", "Fortify",
-                                            "Skip turn" };
-                                    n = jop.showOptionDialog(null,
-                                            "Select your next move",
-                                            "Risk Move for "
-                                                    + curr.getPlayerName(),
-                                            JOptionPane.DEFAULT_OPTION,
-                                            JOptionPane.PLAIN_MESSAGE, null,
-                                            options, options[0]);
+                                    if (canAttack)
+                                    {
+                                        String[] options = new String[] {
+                                                "Attack again", "Fortify",
+                                                "Skip turn" };
 
+                                        n = jop.showOptionDialog(null,
+                                                "Select your next move",
+                                                "Risk: Move for "
+                                                        + curr.getPlayerName(),
+                                                JOptionPane.DEFAULT_OPTION,
+                                                JOptionPane.PLAIN_MESSAGE, null,
+                                                options, options[0]);
+                                    }
+                                    else
+                                    {
+                                        String[] options = new String[] {
+                                                "Fortify", "Skip turn" };
+
+                                        n = jop.showOptionDialog(null,
+                                                "Select your next move",
+                                                "Risk: Move for "
+                                                        + curr.getPlayerName(),
+                                                JOptionPane.DEFAULT_OPTION,
+                                                JOptionPane.PLAIN_MESSAGE, null,
+                                                options, options[0]) + 1;
+                                    }
                                 }
                                 if (n == 1)
                                 {
@@ -832,7 +895,7 @@ public class GraphicalView extends JFrame implements Observer
                                     fortifyFlag = true;
                                     gameInfo.append(
                                             "Please select a territory to move armies from\n");
-
+                                    scrollInfo.updateUI();
                                 }
                                 else if (n == 2)
                                 {
@@ -854,12 +917,14 @@ public class GraphicalView extends JFrame implements Observer
                                 gameInfo.append(
                                         "Please select a valid territory to transport armies from\n Your color is: "
                                                 + curr.getColorString() + "\n");
+                                scrollInfo.updateUI();
                             }
                             else
                             {
                                 countryFrom = t;
                                 gameInfo.append(
                                         "Please select a territory to move armies to\n");
+                                scrollInfo.updateUI();
                             }
                         }
                         else
@@ -870,6 +935,7 @@ public class GraphicalView extends JFrame implements Observer
                                 gameInfo.append(
                                         "Please select a valid territory to fortify\n Your color is: "
                                                 + curr.getColorString() + "\n");
+                                scrollInfo.updateUI();
                             }
 
                             else
@@ -967,33 +1033,6 @@ public class GraphicalView extends JFrame implements Observer
         @Override
         public void windowOpened(WindowEvent e)
         {
-            JOptionPane jop = new JOptionPane();
-            jop.setMessage("Start from earlier save?");
-            int n = jop.showConfirmDialog(null, "Start from earlier save?",
-                    "Save State", JOptionPane.YES_NO_OPTION);
-            if (n == jop.YES_OPTION)
-            {
-                try
-                {
-                    FileInputStream fis = new FileInputStream("RiskSave");
-                    ObjectInputStream input = new ObjectInputStream(fis);
-                    // game = new Game(3, 1); // need to add JOptionPane to this
-                    // in
-                    // the future; for now, defaulted to
-                    input.close();
-                    fis.close();
-                } // End try.....
-                catch (Exception ex)
-                {
-                    // game = new Game(3, 1); // for now, same as try block...
-                }
-            }
-            else
-            {
-                // game = new Game(3, 1); // ^^^
-
-            }
-
         }
 
         @Override
@@ -1062,15 +1101,6 @@ public class GraphicalView extends JFrame implements Observer
 
     }
 
-    @Override
-    public void update(Observable o, Object arg)
-    {
-        repaint();
-        gameInfo.setText((String) arg); // make sure to send a string whenever
-                                        // you update to update the game
-                                        // information text area.
-    }
-
     private class MapPanel extends JPanel
     {
         public MapPanel()
@@ -1118,22 +1148,6 @@ public class GraphicalView extends JFrame implements Observer
         }
     }
 
-    private class ConsoleListener implements ActionListener
-    {
-
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {// TODO: Implement this method
-            /*
-             * This happens whenever enter button is pressed in the JTextField
-             * for the console. I'm not sure what you guys want here since it
-             * has to send messages to Game.java
-             */
-
-        }
-
-    }
-
     /** Begin game functionality code **/
 
     // CONSTRUCTOR HELPER METHODS
@@ -1142,7 +1156,6 @@ public class GraphicalView extends JFrame implements Observer
         turnsPlayed = 0;
         roundsPlayed = 0;
         gameOver = false;
-        cardSetValue = 4;
         gameMap = new Map();
         this.numPlayers = numBots + numHumans;
         players = new ArrayList<Player>();
@@ -1217,6 +1230,7 @@ public class GraphicalView extends JFrame implements Observer
         gameInfo.append("Your color is: " + curr.getColorString() + "\n");
         gameInfo.append(curr.getPlayerName()
                 + ", please select a territory to deploy a single army to. \n");
+        scrollInfo.updateUI();
         if (curr.getClass() != Human.class)
         {
             curr.placeDeployedArmiesRand(bonus);
@@ -1278,13 +1292,6 @@ public class GraphicalView extends JFrame implements Observer
 
     public boolean resolveAttackBot(Territory attacking, Territory defending) // handles
                                                                               // attacking
-                                                                              // between
-                                                                              // 2
-                                                                              // bots
-                                                                              // and
-                                                                              // 1
-                                                                              // bot
-                                                                              // 1
                                                                               // human
     {
         /*
@@ -1304,7 +1311,6 @@ public class GraphicalView extends JFrame implements Observer
         int defenderRollNumber;
         if (defender.getClass() == Human.class)
         {
-
             String[] options2 = new String[] { "1" };
             if (defending.getArmies() >= 3)
                 options2 = new String[]
@@ -1332,23 +1338,16 @@ public class GraphicalView extends JFrame implements Observer
 
         for (int i = 0; i < min; i++)
         {
-            // System.out.printf("attacker %d defender %d
-            // \n",attackersRolls.get(i),defendersRolls.get(i));
-
+            gameInfo.append("Attacker's highest roll: " + attackersRolls.get(i)
+                    + "\n" + "Defender's highest roll: " + defendersRolls.get(i)
+                    + "\n");
+            scrollInfo.updateUI();
             if (attackersRolls.get(i) <= defendersRolls.get(i))
-
             {
-                // System.out.printf(
-                // "@Attacker rolled %d \n@Defender's roll %d \n",
-                // attackersRolls.get(i), defendersRolls.get(i));
-
                 attacking.addArmies(-1);
             }
-            else if (attackersRolls.get(i) > defendersRolls.get(i))
+            else
             {
-                // System.out.printf(
-                // "@Attacker rolled %d \n@Defender's roll %d \n",
-                // attackersRolls.get(i), defendersRolls.get(i));
                 defending.addArmies(-1);
             }
         }
@@ -1392,17 +1391,6 @@ public class GraphicalView extends JFrame implements Observer
     {
         players.get(p).addArmy(terrNumber);
     }
-
-    private int turnsPlayed;
-    private int roundsPlayed;
-    private boolean gameOver;
-    private int cardSetValue; // we can delete this now, moving it to Map class
-    // game piece variables
-
-    // player variables
-    private int handsReedemed = 0;
-    private ArrayList<Player> players;
-    private int currentPID;
 
     public boolean resolveAttack(Territory attacking, Territory defending)
     {
@@ -1478,10 +1466,10 @@ public class GraphicalView extends JFrame implements Observer
             if (attackersRolls.get(i) <= defendersRolls.get(i))
 
             {
-                gameInfo.append(" Attacker rolled: " + attackersRolls.get(i)
-                        + " \nDefender's roll:" + defendersRolls.get(i)
-                        + "\n\n");
-
+                gameInfo.append("Attacker's highest roll: "
+                        + attackersRolls.get(i) + " \nDefender's highest roll:"
+                        + defendersRolls.get(i) + "\n");
+                scrollInfo.updateUI();
                 attacking.addArmies(-1);
             }
             else if (attackersRolls.get(i) > defendersRolls.get(i))
@@ -1489,6 +1477,7 @@ public class GraphicalView extends JFrame implements Observer
                 gameInfo.append(" Attacker rolled: " + attackersRolls.get(i)
                         + " \nDefender's roll:" + defendersRolls.get(i) + "\n");
                 defending.addArmies(-1);
+                scrollInfo.updateUI();
             }
         }
 
@@ -1499,8 +1488,9 @@ public class GraphicalView extends JFrame implements Observer
         {
             defender.loseTerritory(defending);
             defending.changeOccupier(attacking.getOccupier());
-            
+
             attacker.addTerritory(defending);
+            attacker.territoryObtained(defending);
             defending.addArmies(1);
             attacking.removeArmies(1);
             return true;
@@ -1546,13 +1536,13 @@ public class GraphicalView extends JFrame implements Observer
         {
             result = new HardCpu(former.getPlayerID(), 0, this.gameMap);
         }
-        else 
+        else
             result = new Human(former.getPlayerID(), 0, this.gameMap);
         result.swapPlayerInfo(former);
         players.remove(former);
         players.add(result);
         return result;
-        
+
     }
 
 }
