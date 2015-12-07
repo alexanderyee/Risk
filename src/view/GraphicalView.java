@@ -22,6 +22,11 @@ import java.util.HashMap;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.DataLine;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -94,8 +99,11 @@ public class GraphicalView extends JFrame
     private ArrayList<Player> players;
     private int currentPID;
     private JScrollPane scrollInfo;
+    //////Sount stuff
+   private static Clip clip;
     public GraphicalView()
     {
+        playIntro(); 
         buttons = new HashMap<>();
         gameMap = new Map();
         mainMenu();
@@ -107,9 +115,11 @@ public class GraphicalView extends JFrame
         newGameOption = new JMenuItem("New Game");
         newGameOption.addActionListener(new ActionListener()
         {
+          
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
+                playClick();
                 newGameWindow.setVisible(true);
             }
         });
@@ -206,7 +216,7 @@ public class GraphicalView extends JFrame
         setMapButtons();
        // this.add(addArmy);
         this.add(mapPanel);
-      //  this.add(gameInfo);
+        this.add(gameInfo);
         //this.add(console);
         this.add(attack);
         this.add(scrollInfo);
@@ -565,6 +575,7 @@ public class GraphicalView extends JFrame
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
+                playClick();
                 newGameWindow.setVisible(true);
             }
         });
@@ -577,6 +588,7 @@ public class GraphicalView extends JFrame
             {
                 try
                 { // this part would be a lot easier if we used Game
+                    playClick();
                     FileInputStream fis = new FileInputStream("RiskSave");
                     ObjectInputStream input = new ObjectInputStream(fis);
                     gameMap = (Map) input.readObject();
@@ -1221,7 +1233,7 @@ public class GraphicalView extends JFrame
 
     public void beginTurn()
     {
-
+       
         currentPID = currentPID % numPlayers;
         curr = players.get(currentPID);
         bonus = curr.deploy();
@@ -1544,5 +1556,46 @@ public class GraphicalView extends JFrame
         return result;
 
     }
+    public static synchronized void playIntro() {
+        try {
+            File yourFile=new File("./images/BecomeALegend.wav");
+            AudioInputStream stream;
+            AudioFormat format;
+            DataLine.Info info;
+           // Clip clip;
 
+            stream = AudioSystem.getAudioInputStream(yourFile);
+            format = stream.getFormat();
+            info = new DataLine.Info(Clip.class, format);
+            clip = (Clip) AudioSystem.getLine(info);
+            clip.open(stream);
+            clip.start();
+        }
+        catch (Exception e) {
+            //whatevers
+        }
+      }
+   public void stopIntro(){
+       clip.stop();
+       clip.close();
+   }
+   public static synchronized void playClick() {
+       try {
+           File yourFile=new File("./images/click.wav");
+           AudioInputStream stream;
+           AudioFormat format;
+           DataLine.Info info;
+           Clip clip;
+
+           stream = AudioSystem.getAudioInputStream(yourFile);
+           format = stream.getFormat();
+           info = new DataLine.Info(Clip.class, format);
+           clip = (Clip) AudioSystem.getLine(info);
+           clip.open(stream);
+           clip.start();
+       }
+       catch (Exception e) {
+           //whatevers
+       }
+     }
 }
