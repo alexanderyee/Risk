@@ -20,8 +20,7 @@ public class playerTests
     public void testConstructorAndGettersAndSetters()
     {
         Map b = new Map();
-        mbot = new MediumBot(420, 100, b);
-
+      
         assertEquals(mbot.getArmies(), 100);
         assertTrue(mbot.getArmies() != 200);
 

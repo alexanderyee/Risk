@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
+import java.util.Scanner;
 
 import javax.imageio.ImageIO;
 import javax.swing.BoxLayout;
@@ -76,6 +77,7 @@ public class GraphicalView extends JFrame implements Observer
     private JMenu gameMenu;
     private JMenuItem newGameOption;
     private JMenuItem loadGameOption;
+    private JMenuItem changeDiff;
     private JMenu settings;
     private JRadioButtonMenuItem soundOption;
     private JMenuItem setNameOption;
@@ -111,6 +113,24 @@ public class GraphicalView extends JFrame implements Observer
                 newGameWindow.setVisible(true);
             }
         });
+        changeDiff = new JMenuItem("Change difficulty...");
+        changeDiff.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+               JOptionPane jop = new JOptionPane();
+               String[] options = new String[players.size()];
+               for (Player p: players){
+                   options [p.getPlayerID()] = p.getPlayerName();
+               }
+               int n = jop.showOptionDialog(null, "Select number of dice to roll",
+                       "Risk Attack Dice for Attacker: " + curr.getPlayerName(),
+                       JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+                       options, options[0]); // add another jop 
+            }
+            
+        });
         loadGameOption = new JMenuItem("Load Game");
         settings = new JMenu("Settings");
         soundOption = new JRadioButtonMenuItem("Sound");
@@ -118,6 +138,7 @@ public class GraphicalView extends JFrame implements Observer
         menuBar.add(gameMenu);
         gameMenu.add(newGameOption);
         gameMenu.add(loadGameOption);
+        gameMenu.add(changeDiff);
         menuBar.add(settings);
         settings.add(soundOption);
         settings.add(setNameOption);
@@ -176,6 +197,8 @@ public class GraphicalView extends JFrame implements Observer
 
         repaint();
     }
+
+
 
     private void setMapButtons()
     {
@@ -1519,10 +1542,12 @@ public class GraphicalView extends JFrame implements Observer
         {
             result = new MediumBot(former.getPlayerID(), 0, this.gameMap);
         }
-        else 
+        else if (diff.equals("Hard"))
         {
             result = new HardCpu(former.getPlayerID(), 0, this.gameMap);
         }
+        else 
+            result = new Human(former.getPlayerID(), 0, this.gameMap);
         result.swapPlayerInfo(former);
         players.remove(former);
         players.add(result);
