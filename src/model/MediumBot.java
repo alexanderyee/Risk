@@ -12,7 +12,7 @@ public class MediumBot extends Player
     private int pid;
     private ArrayList<String> realThoughts = new ArrayList<String>();
     private ArrayList<Territory> validChoices = new ArrayList<Territory>();
-
+    private int n;
     /*
      * Represents the Easy AI bot in Risk, will choose pseudo random decisions
      */
@@ -22,6 +22,7 @@ public class MediumBot extends Player
         r = new Random(2); // THIS IS JUST FOR TESTING Run6Bots
         this.pid = pid;
         addThoughts();
+        n = 0;
     }
 
     public MediumBot(int pid, int initArmies, Map b, Random s)
@@ -170,6 +171,10 @@ public class MediumBot extends Player
     @Override
     public boolean willAttack()
     {
+        if (n == 2){
+            n = 0;
+            return false;
+        }
         if (territories.size() == 42) // I won!
             return false;
         ArrayList<Territory> newValidChoices = new ArrayList<Territory>();
@@ -195,6 +200,7 @@ public class MediumBot extends Player
         validChoices = newValidChoices;
         //System.out.println("ValidChoices: \n" + validChoices);
         boolean canAttack = !validChoices.isEmpty();
+        n++;
         return canAttack;
     }
 
@@ -239,6 +245,11 @@ public class MediumBot extends Player
     @Override
     public boolean attackAgain() // always attacks again until it can't
     {
+       
+        if (n == 2){
+            n = 0;
+            return false;
+        }
         if (territories.size() == 42) // I won!
             return false;
         //System.out.println("Player " + this.pid
@@ -271,6 +282,7 @@ public class MediumBot extends Player
        // else
             //System.out.println("Player " + this.pid
              //       + " can no longer attack and is therefore done attacking.");
+        n++;
         return canAttack;
     }
 

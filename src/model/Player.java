@@ -113,6 +113,31 @@ public abstract class Player
 
     public void loseTerritory(Territory t)
     {
+        if (t.getContinent() == Continent.AFRICA){
+            terrAfrica.remove(t);
+            occupiedAfrica--;
+            }
+        else if (t.getContinent() == Continent.ASIA){
+            terrAsia.remove(t);
+            occupiedAsia--;
+            }
+        else if (t.getContinent() == Continent.AUSTRALIA){
+            terrAustr.remove(t);
+            occupiedAutstralia--;
+            }
+        else if (t.getContinent() == Continent.EUROPE){
+            terrEuro.remove(t);
+            occupiedEurope--;
+            }
+        else if (t.getContinent() == Continent.NAMERICA){
+            terrNAmer.remove(t);
+            occupiedNAmerica--;
+            }
+            
+        else if (t.getContinent() == Continent.SAMERICA){
+            terrSAmer.remove(t);
+            occupiedSAmerica--;
+        }
         territories.remove(t);
     }
 
@@ -408,6 +433,18 @@ public abstract class Player
     {
         fortifyFrom.removeArmies(move);
         fortifyTo.addArmies(move);
+    }
+
+    public void swapPlayerInfo(Player former)
+    {
+        this.totalArmies = former.getArmies();
+        this.totalTerritories = former.getTotalTerritories();
+        for (Territory t: former.getTerritories()){
+            this.addTerritory(t);
+            this.territoryObtained(t);
+        }
+        this.playerName = former.getPlayerName();
+        
     }
 
 }

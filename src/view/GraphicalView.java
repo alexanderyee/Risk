@@ -42,8 +42,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import model.Dice;
+import model.EasyBot;
 import model.MediumBot;
 import model.Game;
+import model.HardCpu;
 import model.Human;
 import model.Map;
 import model.Player;
@@ -92,7 +94,6 @@ public class GraphicalView extends JFrame implements Observer
 
     public GraphicalView()
     {
-
         buttons = new HashMap<>();
         gameMap = new Map();
         mainMenu();
@@ -678,11 +679,11 @@ public class GraphicalView extends JFrame implements Observer
                     }
                 }
             }
-            beginTurn();
 
             repaint();
             mainMenu.setVisible(false);
             newGameWindow.setVisible(false);
+            beginTurn();
         }
 
     }
@@ -1189,13 +1190,173 @@ public class GraphicalView extends JFrame implements Observer
         curr = players.get(currentPID);
         bonus = curr.deploy();
         // bonus += map.exchangeCards(curr);
-        gameInfo.setText("Player " + currentPID + " it is your turn: \n");
+        gameInfo.append("Player " + currentPID + " it is your turn: \n");
         gameInfo.append("Your color is: " + curr.getColorString() + "\n");
         gameInfo.append(curr.getPlayerName()
                 + ", please select a territory to deploy a single army to. \n");
-        deployFlag = true;
+        if (curr.getClass() != Human.class)
+        {
+            curr.placeDeployedArmiesRand(bonus);
+            attack(); // already takes care of fortify in here
+            repaint();
+            currentPID++;
+            beginTurn();
+        }
+        else
+            deployFlag = true;
+
     }
     // TODO: check if curr fortifies here
+
+    private void attack()
+    {
+        // Asks if the player wants to attack or no
+        boolean choice = players.get(currentPID).willAttack();
+        if (choice == true)
+        {
+            Player currentPlayer = players.get(currentPID);
+            // Determines the current player object
+            try
+            {
+                boolean attackUnresolved = true;
+                while (attackUnresolved)
+                {
+                    // get the two territory choices involved in the battle
+                    int attackingTerritoryNumber = currentPlayer.attackFrom();
+                    Territory attackingTerritory = currentPlayer
+                            .getTerritories().get(attackingTerritoryNumber);
+
+                    int defendingTerritoryNumber = currentPlayer
+                            .attackAt(attackingTerritoryNumber);
+                    Territory defendingTerritory = attackingTerritory
+                            .getAdjacentTerritories()
+                            .get(defendingTerritoryNumber);
+
+                    // carry out the dice rolling and army losses
+                    resolveAttackBot(attackingTerritory, defendingTerritory);
+                    if (!currentPlayer.attackAgain())
+                    {
+                        attackUnresolved = false;
+                        if (currentPlayer.willFortify())
+                            currentPlayer.fortify();
+                    }
+                } // end while
+
+            } // end try
+            catch (NullPointerException e)
+            {
+                e.printStackTrace();
+            }
+        } // end if
+        return;
+    }// end method
+
+    ///////////////////// Resolved attack
+
+    public boolean resolveAttackBot(Territory attacking, Territory defending) // handles
+                                                                              // attacking
+                                                                              // between
+                                                                              // 2
+                                                                              // bots
+                                                                              // and
+                                                                              // 1
+                                                                              // bot
+                                                                              // 1
+                                                                              // human
+    {
+        /*
+         * Needs error checking to make sure that there are at least 2 armies in
+         * the attacking territory
+         */
+
+        Dice dice = new Dice();
+        JOptionPane jop = new JOptionPane();
+        Player attacker = attacking.getOccupier();
+        Player defender = defending.getOccupier();
+        int attackerRollNumber = attacker.attackDice(attacking.getArmies());
+        ArrayList<Integer> attackersRolls;
+        int atkPID = attacking.getOccupier().getPID();
+        String defStr = defending.toString();
+        int atkDice = attackerRollNumber;
+        int defenderRollNumber;
+        if (defender.getClass() == Human.class)
+        {
+
+            String[] options2 = new String[] { "1" };
+            if (defending.getArmies() >= 3)
+                options2 = new String[]
+            { "1", "2" };
+            int n2 = jop.showOptionDialog(null, "Select number of dice to roll",
+                    "Risk Attack Dice for Defender: "
+                            + defender.getPlayerName(),
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+                    options2, options2[0]);
+            defenderRollNumber = n2 + 1;
+        }
+        else
+        {
+            defenderRollNumber = defender.defenseDice(atkPID, defStr, atkDice,
+                    defending.getArmies());
+        }
+        ArrayList<Integer> defendersRolls;
+        int min = Math.min(attackerRollNumber, defenderRollNumber);
+        attackersRolls = dice.roll2(attackerRollNumber);
+
+        defendersRolls = dice.roll2(defenderRollNumber);
+
+        Collections.sort(attackersRolls, Collections.reverseOrder());
+        Collections.sort(defendersRolls, Collections.reverseOrder());
+
+        for (int i = 0; i < min; i++)
+        {
+            // System.out.printf("attacker %d defender %d
+            // \n",attackersRolls.get(i),defendersRolls.get(i));
+
+            if (attackersRolls.get(i) <= defendersRolls.get(i))
+
+            {
+                // System.out.printf(
+                // "@Attacker rolled %d \n@Defender's roll %d \n",
+                // attackersRolls.get(i), defendersRolls.get(i));
+
+                attacking.addArmies(-1);
+            }
+            else if (attackersRolls.get(i) > defendersRolls.get(i))
+            {
+                // System.out.printf(
+                // "@Attacker rolled %d \n@Defender's roll %d \n",
+                // attackersRolls.get(i), defendersRolls.get(i));
+                defending.addArmies(-1);
+            }
+        }
+
+        // if the defending player loses, give the territory to the attacking
+        // player
+        // and return true, the attack has been resolved
+        if (defending.getArmies() <= 0)
+        {
+            defender.loseTerritory(defending);
+            defending.changeOccupier(attacking.getOccupier());
+
+            attacker.addTerritory(defending);
+            // TODO: Call method on player to have them invade the territory!!!
+            int invadingArmies = attacker.attackInvade(attacking.getArmies());
+            defending.addArmies(invadingArmies); // move troops into newly
+                                                 // acquired territory
+            attacking.addArmies(-1 * invadingArmies); // remove those troops
+                                                      // from the attacking terr
+            return true;
+        }
+        else if (attacking.getArmies() == 1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+
+    }
 
     // PRIVATE METHODS
     public String getTerritories(int k) // not meant to take in an index, but a
@@ -1251,16 +1412,28 @@ public class GraphicalView extends JFrame implements Observer
         int atkPID = attacking.getOccupier().getPID();
         String defStr = defending.toString();
         int atkDice = attackerRollNumber;
-        JOptionPane jop2 = new JOptionPane();
-        jop.setMessage("Select your next move");
-        String[] options2 = new String[] { "1" };
-        if (defending.getArmies() >= 3) options2 = new String[] { "1", "2" };
+        int defenderRollNumber = 1;
+        if (defender.getClass() == Human.class)
+        {
+            jop.setMessage("Select your next move");
+            String[] options2 = new String[] { "1" };
+            if (defending.getArmies() >= 3)
+                options2 = new String[]
+            { "1", "2" };
 
-        int n2 = jop.showOptionDialog(null, "Select number of dice to roll",
-                "Risk Attack Dice for Defender: " + defender.getPlayerName(),
-                JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-                options2, options2[0]);
-        int defenderRollNumber = n2 + 1;
+            int n2 = jop.showOptionDialog(null, "Select number of dice to roll",
+                    "Risk Attack Dice for Defender: "
+                            + defender.getPlayerName(),
+                    JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+                    options2, options2[0]);
+            defenderRollNumber = n2 + 1;
+        }
+        else
+        {
+            defenderRollNumber = defender.defenseDice(atkPID, defStr, atkDice,
+                    defending.getArmies());
+        }
+
         /*
          * int defenderRollNumber = defender.defenseDice(atkPID, defStr,
          * atkDice, defending.getArmies());
@@ -1303,7 +1476,7 @@ public class GraphicalView extends JFrame implements Observer
         {
             defender.loseTerritory(defending);
             defending.changeOccupier(attacking.getOccupier());
-
+            
             attacker.addTerritory(defending);
             defending.addArmies(1);
             attacking.removeArmies(1);
@@ -1334,4 +1507,27 @@ public class GraphicalView extends JFrame implements Observer
         return this.currentPID;
 
     }
+
+    public Player switchDifficulty(Player former, String diff)
+    {
+        Player result;
+        if (diff.equals("Easy"))
+        {
+            result = new EasyBot(former.getPlayerID(), 0, this.gameMap);
+        }
+        else if (diff.equals("Medium"))
+        {
+            result = new MediumBot(former.getPlayerID(), 0, this.gameMap);
+        }
+        else 
+        {
+            result = new HardCpu(former.getPlayerID(), 0, this.gameMap);
+        }
+        result.swapPlayerInfo(former);
+        players.remove(former);
+        players.add(result);
+        return result;
+        
+    }
+
 }
