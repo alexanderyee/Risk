@@ -153,6 +153,7 @@ public class HardCpu extends Player
             }
             smallest.addArmies(1); // add a troop to that territory
             deployMap.put(smallest, deployMap.get(smallest) - 1); // update
+
                                                                   // deployMap
                                                                   // too
         }
@@ -339,12 +340,7 @@ public class HardCpu extends Player
         return attackList;
     }
 
-    public ArrayList<Integer> determineDice()
-    {
-        HashMap<Territory, Territory> attackList = getAttackList();
-        ArrayList<Integer> diceRolls = new ArrayList<Integer>();
 
-    }
 
     private void countTerritories() // just to know if continents are captured
     {
@@ -542,7 +538,7 @@ public class HardCpu extends Player
     }
 
     @Override
-    public int attackInvade()
+    public int attackInvade(int armies)
     {
         // TODO Auto-generated method stub
         return 0;

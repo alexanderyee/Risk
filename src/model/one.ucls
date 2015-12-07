@@ -37,8 +37,8 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="5" language="java" name="model.IntermediateBot" project="GroupRisk" 
-    file="/GroupRisk/src/model/IntermediateBot.java" binary="false" corner="BOTTOM_RIGHT">    
+  <class id="5" language="java" name="model.EasyBot" project="GroupRisk" file="/GroupRisk/src/model/EasyBot.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
     <position height="405" width="204" x="628" y="-17"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
       sort-features="false" accessors="true" visibility="true">      
@@ -73,7 +73,7 @@
       <operations public="true" package="true" protected="true" private="true" static="true"/>    
     </display>  
   </class>  
-  <class id="9" language="java" name="model.EasyBot" project="GroupRisk" file="/GroupRisk/src/model/EasyBot.java" 
+  <class id="9" language="java" name="model.MediumBot" project="GroupRisk" file="/GroupRisk/src/model/MediumBot.java" 
     binary="false" corner="BOTTOM_RIGHT">    
     <position height="369" width="204" x="1070" y="-17"/>    
     <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
@@ -146,72 +146,72 @@
     </display>  
   </class>  
   <association id="17">    
-    <bendpoint x="1635" y="1027"/>    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="18" name="name">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="19" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="20">    
     <bendpoint x="1698" y="-17"/>    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="21" name="terrNAmer">        
+      <attribute id="18" name="terrNAmer">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="22" minimum="0" maximum="2147483647">        
+      <multiplicity id="19" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="23">    
+  <association id="20">    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="24" name="dice">        
+      <attribute id="21" name="map">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="25" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="6" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="26">    
-    <bendpoint x="1841" y="-858"/>    
-    <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="27" name="map">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="28" minimum="0" maximum="1">        
+      <multiplicity id="22" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="29">    
+  <association id="23">    
+    <bendpoint x="2085" y="-17"/>    
+    <bendpoint x="2085" y="590"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="24" name="cards">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="25" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="26">    
     <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="30" name="country">        
+      <attribute id="27" name="type">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="28" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="29">    
+    <bendpoint x="1841" y="-858"/>    
+    <end type="SOURCE" refId="10" navigable="false">      
+      <attribute id="30" name="map">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="31" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="1" navigable="true"/>    
+    <end type="TARGET" refId="13" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="32">    
-    <bendpoint x="1656" y="-17"/>    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="33" name="terrEuro">        
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="33" name="allTerritories">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="34" minimum="0" maximum="2147483647">        
@@ -222,61 +222,58 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="35">    
-    <bendpoint x="1719" y="-17"/>    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="36" name="occupier">        
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="36" name="unclaimedTerritories">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="37" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="15" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="38">    
-    <bendpoint x="2085" y="-17"/>    
-    <bendpoint x="2085" y="590"/>    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="39" name="cards">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="40" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="16" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="41">    
-    <end type="SOURCE" refId="5"/>    
-    <end type="TARGET" refId="15"/>  
-  </generalization>  
-  <association id="42">    
-    <bendpoint x="1635" y="-17"/>    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="43" name="territories">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="44" minimum="0" maximum="2147483647">        
+      <multiplicity id="37" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="45">    
+  <association id="38">    
     <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="46" name="deck">        
+      <attribute id="39" name="territories">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="47" minimum="0" maximum="1">        
+      <multiplicity id="40" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="41">    
+    <bendpoint x="1656" y="-17"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="42" name="terrEuro">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="43" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="44">    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="45" name="deck">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="46" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="12" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <generalization id="47">    
+    <end type="SOURCE" refId="5"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
   <association id="48">    
     <end type="SOURCE" refId="12" navigable="false">      
       <attribute id="49" name="CardQ">        
@@ -290,131 +287,134 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="51">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="52" name="adj">        
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="52" name="dice">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="53" minimum="0" maximum="2147483647">        
+      <multiplicity id="53" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="54">    
+    <bendpoint x="1593" y="-17"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="55" name="terrAfrica">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="56" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <generalization id="54">    
+  <generalization id="57">    
     <end type="SOURCE" refId="14"/>    
     <end type="TARGET" refId="15"/>  
   </generalization>  
-  <association id="55">    
-    <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="56" name="color">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="57" minimum="0" maximum="1">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="3" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
   <association id="58">    
-    <end type="SOURCE" refId="16" navigable="false">      
-      <attribute id="59" name="type">        
+    <bendpoint x="1635" y="1027"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="59" name="name">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="60" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="7" navigable="true"/>    
+    <end type="TARGET" refId="1" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="61">    
-    <bendpoint x="1572" y="-17"/>    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="62" name="terrSAmer">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="63" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="64">    
-    <end type="SOURCE" refId="9"/>    
-    <end type="TARGET" refId="15"/>  
-  </generalization>  
-  <association id="65">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="66" name="territories">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="67" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="68">    
-    <bendpoint x="1677" y="-17"/>    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="69" name="terrAsia">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="70" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <generalization id="71">    
+  <generalization id="61">    
     <end type="SOURCE" refId="4"/>    
     <end type="TARGET" refId="15"/>  
   </generalization>  
-  <association id="72">    
-    <bendpoint x="1593" y="-17"/>    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="73" name="terrAfrica">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </attribute>      
-      <multiplicity id="74" minimum="0" maximum="2147483647">        
-        <position height="0" width="0" x="0" y="0"/>      
-      </multiplicity>    
-    </end>    
-    <end type="TARGET" refId="2" navigable="true"/>    
-    <display labels="true" multiplicity="true"/>  
-  </association>  
-  <association id="75">    
+  <generalization id="62">    
+    <end type="SOURCE" refId="9"/>    
+    <end type="TARGET" refId="15"/>  
+  </generalization>  
+  <association id="63">    
     <end type="SOURCE" refId="10" navigable="false">      
-      <attribute id="76" name="players">        
+      <attribute id="64" name="players">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="77" minimum="0" maximum="2147483647">        
+      <multiplicity id="65" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="15" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
-  <association id="78">    
-    <end type="SOURCE" refId="8" navigable="false">      
-      <attribute id="79" name="allTerritories">        
+  <association id="66">    
+    <end type="SOURCE" refId="16" navigable="false">      
+      <attribute id="67" name="country">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="80" minimum="0" maximum="2147483647">        
+      <multiplicity id="68" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="69">    
+    <bendpoint x="1635" y="-17"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="70" name="territories">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="71" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
     <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
+  <association id="72">    
+    <bendpoint x="1719" y="-17"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="73" name="occupier">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="74" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="75">    
+    <bendpoint x="1572" y="-17"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="76" name="terrSAmer">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="77" minimum="0" maximum="2147483647">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="78">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="79" name="cont">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="80" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
   <association id="81">    
-    <end type="SOURCE" refId="13" navigable="false">      
-      <attribute id="82" name="unclaimedTerritories">        
+    <bendpoint x="1614" y="-17"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="82" name="terrAustr">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="83" minimum="0" maximum="2147483647">        
@@ -425,9 +425,8 @@
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="84">    
-    <bendpoint x="1614" y="-17"/>    
-    <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="85" name="terrAustr">        
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="85" name="adj">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="86" minimum="0" maximum="2147483647">        
@@ -439,26 +438,27 @@
   </association>  
   <association id="87">    
     <end type="SOURCE" refId="2" navigable="false">      
-      <attribute id="88" name="cont">        
+      <attribute id="88" name="color">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
       <multiplicity id="89" minimum="0" maximum="1">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="11" navigable="true"/>    
+    <end type="TARGET" refId="3" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <association id="90">    
+    <bendpoint x="1677" y="-17"/>    
     <end type="SOURCE" refId="15" navigable="false">      
-      <attribute id="91" name="map">        
+      <attribute id="91" name="terrAsia">        
         <position height="0" width="0" x="0" y="0"/>      
       </attribute>      
-      <multiplicity id="92" minimum="0" maximum="1">        
+      <multiplicity id="92" minimum="0" maximum="2147483647">        
         <position height="0" width="0" x="0" y="0"/>      
       </multiplicity>    
     </end>    
-    <end type="TARGET" refId="13" navigable="true"/>    
+    <end type="TARGET" refId="2" navigable="true"/>    
     <display labels="true" multiplicity="true"/>  
   </association>  
   <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 

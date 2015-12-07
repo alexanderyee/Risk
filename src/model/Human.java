@@ -273,6 +273,12 @@ public class Human extends Player
         return choices;
     }
 
+    public void placeDeployedArmies(Territory terr)
+    {
+        terr.addArmies(1);
+        loseAnArmy();
+    }
+
     @Override
     public Territory claimTerritory(List<Territory> list)
     {
@@ -281,7 +287,7 @@ public class Human extends Player
     }
 
     @Override
-    public int attackInvade()
+    public int attackInvade(int armies)
     {
         // TODO Auto-generated method stub
         return 0;

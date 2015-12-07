@@ -6,24 +6,26 @@ import model.*;
 
 public class playerTests
 {
-    EasyBot bot;
-
+    MediumBot mbot;
+    EasyBot ebot;
+    HardCpu hbot;
+    Human human;
     @Test
     public void testPlayer()
     {
-
+        
     }
 
     @Test
     public void testConstructorAndGettersAndSetters()
     {
         Map b = new Map();
-        bot = new EasyBot(420, 100, b);
+        mbot = new MediumBot(420, 100, b);
 
-        assertEquals(bot.getArmies(), 100);
-        assertTrue(bot.getArmies() != 200);
+        assertEquals(mbot.getArmies(), 100);
+        assertTrue(mbot.getArmies() != 200);
 
-        assertTrue(bot.getPID() == 420);
+        assertTrue(mbot.getPID() == 420);
 
     }
 }

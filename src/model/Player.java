@@ -69,12 +69,12 @@ public abstract class Player
         dice = new Dice();
         map = b;
         territories = new ArrayList<Territory>();
-
+        setPlayerName("");
     }
 
     public void setPlayerName(String name)
     {
-        if (name == null)
+        if (name.isEmpty())
         {
             if (getClass() != Human.class)
                 this.playerName = "Bot" + String.valueOf(this.playerID);
@@ -113,6 +113,31 @@ public abstract class Player
 
     public void loseTerritory(Territory t)
     {
+        if (t.getContinent() == Continent.AFRICA){
+            terrAfrica.remove(t);
+            occupiedAfrica--;
+            }
+        else if (t.getContinent() == Continent.ASIA){
+            terrAsia.remove(t);
+            occupiedAsia--;
+            }
+        else if (t.getContinent() == Continent.AUSTRALIA){
+            terrAustr.remove(t);
+            occupiedAutstralia--;
+            }
+        else if (t.getContinent() == Continent.EUROPE){
+            terrEuro.remove(t);
+            occupiedEurope--;
+            }
+        else if (t.getContinent() == Continent.NAMERICA){
+            terrNAmer.remove(t);
+            occupiedNAmerica--;
+            }
+            
+        else if (t.getContinent() == Continent.SAMERICA){
+            terrSAmer.remove(t);
+            occupiedSAmerica--;
+        }
         territories.remove(t);
     }
 
@@ -348,7 +373,7 @@ public abstract class Player
      * button to let the player choose if he wants to continue attacking or not
      */
     public abstract Territory claimTerritory(List<Territory> list);
-    
+
     public abstract boolean willAttack();
 
     public abstract int attackFrom();
@@ -356,8 +381,9 @@ public abstract class Player
     public abstract int attackAt(int attackingTerritoryNumber);
 
     public abstract boolean attackAgain();
-    
-    public abstract int attackInvade(); //TODO: implement in all Player sub-classes
+
+    public abstract int attackInvade(int armies); // TODO: implement in all
+                                                  // Player sub-classes
 
     public abstract boolean willFortify();
 
@@ -384,6 +410,41 @@ public abstract class Player
         if (this.playerID == 4) return new Color(51, 25, 0);
         if (this.playerID == 5) return Color.MAGENTA;
         return Color.BLACK;
+    }
+
+    public String getColorString()
+    {
+        if (this.playerID == 0) return "RED";
+        if (this.playerID == 1) return "BLUE";
+        if (this.playerID == 2) return "YELLOW";
+        if (this.playerID == 3) return "GREEN";
+        if (this.playerID == 4) return "BROWN";
+        if (this.playerID == 5) return "MAGENTA";
+        return "BLACK";
+    }
+
+    public void placeDeployedArmies(Territory terr)
+    {
+        terr.addArmies(1);
+        loseAnArmy();
+    }
+
+    public void fortify(Territory fortifyFrom, Territory fortifyTo, int move)
+    {
+        fortifyFrom.removeArmies(move);
+        fortifyTo.addArmies(move);
+    }
+
+    public void swapPlayerInfo(Player former)
+    {
+        this.totalArmies = former.getArmies();
+        this.totalTerritories = former.getTotalTerritories();
+        for (Territory t: former.getTerritories()){
+            this.addTerritory(t);
+            this.territoryObtained(t);
+        }
+        this.playerName = former.getPlayerName();
+        
     }
 
 }
