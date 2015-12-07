@@ -26,6 +26,7 @@ public class EasyBot extends Player
         r = new Random(2);
         this.pid = pid;
         addThoughts();
+        
     }
 
     public EasyBot(int pid, int initArmies, Map b, Random s)
@@ -239,6 +240,8 @@ public class EasyBot extends Player
                 }
             }
         }
+                                                                             
+        System.out.println("Player "+this.pid+" can no longer attack and is therefore done attacking.");
         validChoices = newValidChoices;
     //    System.out.println("ValidChoices: \n" + validChoices);
         boolean canAttack = !validChoices.isEmpty();

@@ -193,6 +193,7 @@ public class Game extends Observable
     public String getTerritories(int k) // not meant to take in an index, but a
                                         // player number
     {
+
         return players.get(k).getTerritories().toString();
     }
 

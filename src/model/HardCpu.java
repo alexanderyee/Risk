@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -49,57 +50,43 @@ public class HardCpu extends Player
     @Override
     public void fortify()
     {
-        boolean thinking = true;
-        while (thinking)
-        {
-            System.out.println(this.getTerroritories());
+        ArrayList<Territory> borders = this.identifyBorders();
+        HashMap<Territory, Integer> threatMap = this.determineThreats(borders);
+        int redeployCount = 0;
 
-            System.out
-                    .println(realThoughts.get(r.nextInt(realThoughts.size()))); // says
-                                                                                // a
-                                                                                // thing
-            Territory fortifyTo = territories
-                    .get(r.nextInt(territories.size()));
-            int times = 0;
-            while (fortifyTo.getArmies() < 1 && times < territories.size()
-                    && !isFortified(fortifyTo))
+        for (Territory i : this.territories)
+        {
+            if (redeployCount >= this.getArmies())
             {
-                fortifyTo = territories.get(r.nextInt(territories.size()));
-                times++;
+                break;
             }
-            if (times == territories.size())
+
+            if (!(borders.contains(i)))
             {
-                System.out.println(
-                        "i give up, this one is beyond me, I choose to not fortify");
-                thinking = false;
-            }
-            else
-            {
-                List<Territory> possible = fortifyTo.getAdjacentTerritories();
-                System.out.println(
-                        "Let me choose a territory to fortify troops from.");
-                Territory t = possible.get(r.nextInt(possible.size()));
-                int counter = 0;
-                while (!(t.getOccupier().equals(this))
-                        && counter < possible.size() && !isFortified(t))
+                while (i.getArmies() > 1)
                 {
-                    t = possible.get(r.nextInt(possible.size()));
-                    counter++;
+                    /*
+                     * Finds the most threatened territory and moves an army
+                     * there
+                     */
+                    Territory threatenedTerritory = borders.get(0);
+                    for (Territory j : threatMap.keySet())
+                    {
+                        if (threatMap.get(j) > threatMap
+                                .get(threatenedTerritory))
+                        {
+                            threatenedTerritory = j;
+                        }
+                    }
+
+                    i.removeArmies(1);
+                    threatenedTerritory.addArmies(1);
+                    threatMap.put(threatenedTerritory,
+                            threatMap.get(threatenedTerritory) - 1);
                 }
-                if (counter == possible.size())
-                {
-                    System.out.println(
-                            "i give up, this one is beyond me, I choose to not fortify");
-                    thinking = false;
-                }
-                Territory fortifyFrom = t;
-                System.out.println("Hmm how many armies should I move from "
-                        + fortifyFrom.toString() + " to " + fortifyTo.toString()
-                        + ", less than " + (fortifyFrom.getArmies() - 1));
-                int move = fortifyFrom.getArmies() - 1;
-                fortifyFrom.addArmies(move * -1);
             }
         }
+
     }
 
     private boolean isFortified(Territory t)
@@ -161,10 +148,12 @@ public class HardCpu extends Player
                 if (deployMap.get(j) < deployMap.get(smallest))
                 {
                     smallest = j;
+
                 }
             }
             smallest.addArmies(1); // add a troop to that territory
-            deployMap.put(smallest, deployMap.get(smallest) + 1); // update
+            deployMap.put(smallest, deployMap.get(smallest) - 1); // update
+
                                                                   // deployMap
                                                                   // too
         }
@@ -307,6 +296,51 @@ public class HardCpu extends Player
         }
         choice++;
     }
+
+    /*
+     * Returns a hashmap with a territory mapped to an object arrayList that
+     * contains at index 0 the territory to attack, and index 1 the number of
+     * armies to attack with
+     */
+    public HashMap<Territory, ArrayList<Object>> getAttackList()
+    {
+        HashMap<Territory, ArrayList<Object>> attackList = new HashMap<Territory, ArrayList<Object>>();
+        
+        ArrayList<Territory> borders = this.identifyBorders();
+        
+        for(Territory i : borders)
+        {
+            if(i.getArmies() > 1)
+            {
+            for(Territory j : i.getAdjacentTerritories())
+            {
+                if(!(j.getOccupier().equals(this) && j.getArmies() < i.getArmies() && !(attackList.containsValue(j))))
+                {
+                    Integer armiesToAttackWith = 0;
+                    if(i.getArmies() > 3)
+                    {
+                        armiesToAttackWith = 3;
+                    }
+                    else
+                    {
+                        armiesToAttackWith = i.getArmies() - 1;
+                        
+                    }
+                            
+                        ArrayList<Object> toAttackWithDiceRolls = new ArrayList<Object>();
+                        toAttackWithDiceRolls.add(j);
+                        toAttackWithDiceRolls.add(armiesToAttackWith);
+                        
+                        attackList.put(i, toAttackWithDiceRolls);
+                    }
+                }
+            }
+        }
+        
+        return attackList;
+    }
+
+
 
     private void countTerritories() // just to know if continents are captured
     {
