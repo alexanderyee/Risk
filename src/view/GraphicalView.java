@@ -62,7 +62,7 @@ public class GraphicalView extends JFrame implements Serializable
         GraphicalView window = new GraphicalView();
         window.setVisible(true);
     }
-    
+
     private Image map;
     private Image artillery;
     private Map gameMap;
@@ -80,6 +80,8 @@ public class GraphicalView extends JFrame implements Serializable
     private JMenu settings;
     private JRadioButtonMenuItem soundOption;
     private JMenuItem setNameOption;
+    private JMenuItem getBonusInfo;
+    private JMenuItem saveGameOption;
     private JFrame newGameWindow;
     private int numPlayers;
     private int numHumans;
@@ -105,7 +107,8 @@ public class GraphicalView extends JFrame implements Serializable
     ////// Sount stuff
     private static Clip clip;
     private CardSystemView cardView;
-    private boolean dicePop=true;
+    private boolean dicePop = true;
+    
     public GraphicalView()
     {
 
@@ -168,11 +171,40 @@ public class GraphicalView extends JFrame implements Serializable
         loadGameOption.addActionListener(new LoadGameListener());
         settings = new JMenu("Settings");
         soundOption = new JRadioButtonMenuItem("Sound");
+        soundOption.setSelected(clip.isActive());
+        soundOption.addActionListener(new SoundToggleListener());
+        getBonusInfo = new JMenuItem("Get bonus armies for continents");
+        getBonusInfo.addActionListener(new ActionListener()
+        {
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                gameInfo.append("Bonus Armies for Complete Continent:\n"
+                        + "N. America \t5\n" + "S. America \t2\n"
+                        + "Africa \t3\n" + "Asia \t7\n" + "Europe \t5\n"
+                        + "Australia \t2\n");
+            }
+
+        });
         setNameOption = new JMenuItem("Set current player name...");
+        saveGameOption = new JMenuItem("Save Game");
+        saveGameOption.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                // LMAOOOO SAVE DOESN'T WORK
+                
+            }
+        });
+        
         menuBar.add(gameMenu);
         gameMenu.add(newGameOption);
         gameMenu.add(loadGameOption);
+        gameMenu.add(saveGameOption);
         gameMenu.add(changeDiff);
+        gameMenu.add(getBonusInfo);
         menuBar.add(settings);
         settings.add(soundOption);
         settings.add(setNameOption);
@@ -577,16 +609,29 @@ public class GraphicalView extends JFrame implements Serializable
             }
         });
         JButton loadGame = new JButton("Load Game");
+        JButton about = new JButton("About");
+
         loadGame.addActionListener(new LoadGameListener());
         newGame.setLocation(800, 0);
         newGame.setSize(100, 40);
         loadGame.setLocation(800, 60);
         loadGame.setSize(100, 40);
         toggleSound.setLocation(800, 120);
-        toggleSound.setSize(100,40);
+        toggleSound.setSize(100, 40);
+
         mainMenu.add(newGame);
         mainMenu.add(loadGame);
         mainMenu.add(toggleSound);
+        JTextArea j = new JTextArea("About:\n"
+                + "Risk game created by Team Rocket as a CSC 335 final project \n"
+                + "Daniel Phillips, Reaper Romero, Ben Shields, and Alex Yee\n"
+                + "Start a new game by clicking 'New Game' or 'Load Game' if there save file has not been created.\n"
+                + "Click 'Load Game' to load a game from existing save file.");
+        j.setLocation(500, 240);
+        j.setSize(600, 100);
+        j.setOpaque(true);
+        mainMenu.add(j);
+        mainMenu.add(about);
         mainMenu.setVisible(true);
         this.add(mainMenu);
     }
@@ -706,22 +751,27 @@ public class GraphicalView extends JFrame implements Serializable
         startGame.addActionListener(new NewGameListener());
         newGameWindow.add(startGame);
     }
-    private class SoundToggleListener implements ActionListener{
+
+    private class SoundToggleListener implements ActionListener
+    {
 
         @Override
         public void actionPerformed(ActionEvent e)
         {
-          if (clip.isActive()){
-              clip.stop();
-              
-          }
-          else {
-              playIntro();
-          }
-            
+            if (clip.isActive())
+            {
+                clip.stop();
+
+            }
+            else
+            {
+                playIntro();
+            }
+
         }
-        
+
     }
+
     private class LoadGameListener implements ActionListener
     {
 
@@ -733,23 +783,23 @@ public class GraphicalView extends JFrame implements Serializable
                 playClick("click");
                 FileInputStream fis = new FileInputStream("RiskSave");
                 ObjectInputStream input = new ObjectInputStream(fis);
-                
+
                 GraphicalView g = (GraphicalView) input.readObject();
-                //  initializeMemberVariables(numPlayers - numHumans, numHumans);
+                // initializeMemberVariables(numPlayers - numHumans, numHumans);
                 turnsPlayed = 0;
                 roundsPlayed = 0;
                 gameOver = false;
                 gameMap = (Map) g.getGameMap();
-                
+
                 players = (ArrayList<Player>) g.getPlayers();
                 numPlayers = players.size();
                 numHumans = 0;
-                for (Player p: players){
-                    if (p.getClass() == Human.class)
-                        numHumans++;
+                for (Player p : players)
+                {
+                    if (p.getClass() == Human.class) numHumans++;
                 }
-                //initializePlayers(numPlayers - numHumans, numHumans);
-              //  setupGame();
+                // initializePlayers(numPlayers - numHumans, numHumans);
+                // setupGame();
                 input.close();
                 fis.close();
                 repaint();
@@ -903,33 +953,30 @@ public class GraphicalView extends JFrame implements Serializable
                             else
                             {
 
-
                                 countryTo = t;
                                 int n = 0;
                                 boolean canAttack = true;
-                             
-                                
-                                    canAttack = !resolveAttack(countryFrom,
-                                            countryTo);
-                                    repaint();
-                                    JOptionPane jop = new JOptionPane();
-                                  
-                                        String[] options = new String[] {
-                                                "Attack again", "Fortify",
-                                                "Skip turn" };
 
-                                        n = jop.showOptionDialog(null,
-                                                "Select your next move",
-                                                "Risk: Move for "
-                                                        + curr.getPlayerName(),
-                                                JOptionPane.DEFAULT_OPTION,
-                                                JOptionPane.PLAIN_MESSAGE, null,
-                                                options, options[0]);
-                                    
-                                    
-                                   
-                                if(n==0){
-                                    
+                                canAttack = !resolveAttack(countryFrom,
+                                        countryTo);
+                                repaint();
+                                JOptionPane jop = new JOptionPane();
+
+                                String[] options = new String[] {
+                                        "Attack again", "Fortify",
+                                        "Skip turn" };
+
+                                n = jop.showOptionDialog(null,
+                                        "Select your next move",
+                                        "Risk: Move for "
+                                                + curr.getPlayerName(),
+                                        JOptionPane.DEFAULT_OPTION,
+                                        JOptionPane.PLAIN_MESSAGE, null,
+                                        options, options[0]);
+
+                                if (n == 0)
+                                {
+
                                     countryFrom = null;
                                     countryTo = null;
                                     attackFlag = false;
@@ -1102,7 +1149,7 @@ public class GraphicalView extends JFrame implements Serializable
                 {
                     FileOutputStream fos = new FileOutputStream("RiskSave");
                     ObjectOutputStream outFile = new ObjectOutputStream(fos);
-                    
+
                     outFile.writeObject(getThis());
                     outFile.close();
                     fos.close();
@@ -1115,7 +1162,7 @@ public class GraphicalView extends JFrame implements Serializable
                 System.exit(0);
             }
             if (n == jop.NO_OPTION) System.exit(0);
-            
+
         }
 
         @Override
@@ -1294,7 +1341,7 @@ public class GraphicalView extends JFrame implements Serializable
         bonus = curr.deploy();
         // bonus += map.exchangeCards(curr);
 
-        gameInfo.append("Player " + currentPID + " it is your turn: \n");
+        gameInfo.append(curr.getPlayerName() + ", it is your turn: \n");
         gameInfo.append("Your color is: " + curr.getColorString() + "\n");
         gameInfo.append(curr.getPlayerName()
                 + ", please select a territory to deploy a single army to. \n");
@@ -1311,7 +1358,6 @@ public class GraphicalView extends JFrame implements Serializable
         else
         {
             bonus += gameMap.exchangeCards(curr);
-           
             cardView = new CardSystemView(curr);
             this.cardView.repaint();
             cardView.openWindow();
@@ -1535,10 +1581,11 @@ public class GraphicalView extends JFrame implements Serializable
         ((DicePopUP) d).setDefendersRolls(defendersRolls);
 
         ((DicePopUP) d).setDiceNumber(attackerRollNumber, defenderRollNumber);
-         if(dicePop){
-        ((DicePopUP) d).openWindow();
-         dicePop=false;
-         }
+        if (dicePop)
+        {
+            ((DicePopUP) d).openWindow();
+            dicePop = false;
+        }
         ((DicePopUP) d).roll();
 
         /*
