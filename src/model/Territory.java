@@ -83,11 +83,7 @@ public class Territory
         
         if (armies + n < 0)
         {
-<<<<<<< HEAD
             System.out.println("Negative armies  "+ n);
-=======
-            //System.out.println("Negative armies in add armies");
->>>>>>> 81b31983a5e8efff63f587e15e866c77a52936dd
             return this.armies;
         }
         else

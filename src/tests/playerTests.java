@@ -6,8 +6,8 @@ import model.*;
 
 public class playerTests
 {
-    MediumBot mbot;
-    EasyBot ebot;
+    EasyBot mbot;
+    MediumBot ebot;
     HardCpu hbot;
     Human human;
     @Test

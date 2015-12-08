@@ -115,12 +115,12 @@ public class Game extends Observable
         // }
         for (int ii = 0; ii < 3; ii++) // JUST FOR RUN6BOTS
         {
-            Player p = new MediumBot(ii, initArmies, map);
+            Player p = new EasyBot(ii, initArmies, map);
             players.add(p);
         }
         for (int jj = 3; jj < 6; jj++)
         {
-            Player p = new EasyBot(jj, initArmies, map);
+            Player p = new MediumBot(jj, initArmies, map);
             players.add(p);
         }
     }
@@ -178,33 +178,19 @@ public class Game extends Observable
         {
             currentPID = currentPID % numPlayers;
             curr = players.get(currentPID);
-            while (curr.getTerritories().size() == 0) // don't let players take
-                                                      // turns when they are out
-            { // as in they have no territories
-          //      System.out.println(
-          //              "Player " + currentPID + " is out of the game.");
+            while (curr.getTerritories().size() == 0) 
+                // don't let players take turns when they are out as in they have no territories
+            {
                 currentPID++;
                 currentPID = currentPID % numPlayers;
                 curr = players.get(currentPID);
             }
-            int totalTerr = 0;
-//            for (Player i : players)
-//            {
-//        //        System.out.println("Player: " + i.getPID() + ", has "
-//          //              + i.getTotalTerritories() + " total terroritories");
-//                totalTerr += i.getTotalTerritories();
-//            }
-
+            
             int bonus = curr.deploy();
-            // bonus += map.exchangeCards(curr);
-      //      System.out.println("Player " + currentPID + " it is your turn: \n");
-       //     System.out.println(
-        //            "\tTerritories:\n\t" + curr.getTerritories().toString());
+            //bonus += map.exchangeCards(curr);
             curr.placeDeployedArmiesRand(bonus);
             attack();
-   //         System.out.println("PLAYER TURN CHANGED.");
             turnsPlayed++;
-      //      System.out.println("####Turns played: " + turnsPlayed + " ####");
             if (curr.getTotalTerritories() == 42)
             {
                 winner = curr;
@@ -228,8 +214,6 @@ public class Game extends Observable
                 currentPID++;
             }
         }
-   //     System.out.println("The game is frickin over.");
-   //     System.out.println("Good job player "+winner.getPID()+" , you won!");
         return winner.getPID();
     }
 
@@ -261,8 +245,6 @@ public class Game extends Observable
                                                             // gives index out
                                                             // of bounds
             // Determines the current player object
-       //     System.out.println(
-       //             "All territories:\n" + currentPlayer.getTerritories());
             try
             {
 
@@ -275,23 +257,17 @@ public class Game extends Observable
                     int attackingTerritoryNumber = currentPlayer.attackFrom();
                     Territory attackingTerritory = currentPlayer
                             .getTerritories().get(attackingTerritoryNumber);
-                    System.out.println(currentPlayer.getClass().toString() + " # " + 
-                            currentPlayer.getPID() + " Attacking from " + attackingTerritory);
+//                    System.out.println(currentPlayer.getClass().toString() + " # " + 
+//                            currentPlayer.getPID() + " Attacking from " + attackingTerritory);
 
                     int defendingTerritoryNumber = currentPlayer
                             .attackAt(attackingTerritoryNumber);
                     Territory defendingTerritory = attackingTerritory
                             .getAdjacentTerritories()
                             .get(defendingTerritoryNumber);
-          //          System.out.println("Attacking at " + defendingTerritory);
                     Player defendingPlayer = defendingTerritory.getOccupier();
                     // carry out the dice rolling and army losses
                     resolveAttack(attackingTerritory, defendingTerritory);
-          //          System.out.println("Attacker's territories: \n"
-            //                + this.getTerritories(currentPID));
-
-           //         System.out.println("Defenders territories: \n"
-           //                 + defendingPlayer.getTerritories().toString());
 
                     if (!currentPlayer.attackAgain())
                     {
@@ -331,7 +307,6 @@ public class Game extends Observable
 
         }
         ArrayList<Integer> attackersRolls;
-        // attackersRolls.addAll(dice.roll2(attackerRollNumber));
 
         int atkPID = attacking.getOccupier().getPID();
         String defStr = defending.toString();
@@ -343,6 +318,15 @@ public class Game extends Observable
         ArrayList<Integer> defendersRolls;
         int min = Math.min(attackerRollNumber, defenderRollNumber);
         attackersRolls = dice.roll2(attackerRollNumber);
+        
+        if(attacker.getClass() == HardCpu.class)
+        {
+            for(int i = 0; i < attackersRolls.size(); i++)
+            {
+                if (attackersRolls.get(i) < 6)
+                    attackersRolls.set(i, attackersRolls.get(i) + 1);
+            }
+        }
 
         defendersRolls = dice.roll2(defenderRollNumber);
 
@@ -381,7 +365,6 @@ public class Game extends Observable
             defending.changeOccupier(attacking.getOccupier());
 
             attacker.addTerritory(defending);
-            // TODO: Call method on player to have them invade the territory!!!
             int invadingArmies = attacker.attackInvade(attacking.getArmies());
             defending.addArmies(invadingArmies); // move troops into newly
                                                  // acquired territory
