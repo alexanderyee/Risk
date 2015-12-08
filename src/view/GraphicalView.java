@@ -107,12 +107,14 @@ public class GraphicalView extends JFrame implements Serializable
     ////// Sount stuff
     private static Clip clip;
     private CardSystemView cardView = new CardSystemView();
-    private boolean dicePop=true;
-    private boolean cardPop=true;
+    private boolean dicePop = true;
+    private boolean cardPop = true;
+    private JLabel mainLabel = new JLabel("");
 
     public GraphicalView()
     {
-
+        mainLabel.setLocation(0, this.getHeight()-70);
+        mainLabel.setSize(200, 40);
         deck = new Deck();
         playIntro();
         buttons = new HashMap<>();
@@ -125,6 +127,7 @@ public class GraphicalView extends JFrame implements Serializable
         gameMenu = new JMenu("Game");
         newGameOption = new JMenuItem("New Game");
         newGameOption.addActionListener(new ActionListener()
+        
         {
 
             @Override
@@ -190,16 +193,17 @@ public class GraphicalView extends JFrame implements Serializable
         });
         setNameOption = new JMenuItem("Set current player name...");
         saveGameOption = new JMenuItem("Save Game");
-        saveGameOption.addActionListener(new ActionListener(){
+        saveGameOption.addActionListener(new ActionListener()
+        {
 
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 // LMAOOOO SAVE DOESN'T WORK
-                
+
             }
         });
-        
+
         menuBar.add(gameMenu);
         gameMenu.add(newGameOption);
         gameMenu.add(loadGameOption);
@@ -235,6 +239,7 @@ public class GraphicalView extends JFrame implements Serializable
         gameInfo = new JTextArea();
         gameInfo.setSize(new Dimension(screensize.width - imgWidth, imgHeight));
         gameInfo.setLocation(imgWidth, 0);
+        gameInfo.setEditable(false);
         scrollInfo = new JScrollPane(gameInfo,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
@@ -247,7 +252,7 @@ public class GraphicalView extends JFrame implements Serializable
         this.add(mapPanel);
         this.add(gameInfo);
         // this.add(console);
-
+        this.add(mainLabel);
         this.add(scrollInfo);
         scrollInfo.updateUI();
         repaint();
@@ -1338,17 +1343,18 @@ public class GraphicalView extends JFrame implements Serializable
     public void beginTurn()
     {
         playClick("rock");
+       
         currentPID = currentPID % numPlayers;
         curr = players.get(currentPID);
+        mainLabel.setText(curr.getPlayerName() + ", it is your turn: \n"
+                + "Your color is: " + curr.getColorString() + "\n");
         bonus = curr.deploy();
-        // bonus += map.exchangeCards(curr);
-
-
-        gameInfo.setText(curr.getPlayerName() + ", it is your turn: \n");
-
-        gameInfo.append("Your color is: " + curr.getColorString() + "\n");
-        gameInfo.append(curr.getPlayerName()
-                + ", please select a territory to deploy a single army to. \n");
+   
+   
+        gameInfo.setText(curr.getPlayerName() + ", it is your turn: \n" + "Your color is: " + curr.getColorString() + "\n");
+        
+        gameInfo.append(
+               "Please select a territory to deploy a single army to. \n");
         scrollInfo.updateUI();
         if (curr.getClass() != Human.class)
         {
@@ -1363,16 +1369,17 @@ public class GraphicalView extends JFrame implements Serializable
         {
             bonus += gameMap.exchangeCards(curr);
 
-           
             cardView.setUp(curr);
             cardView.repaint();
-            if(cardPop){
+            if (cardPop)
+            {
 
-            cardView.openWindow();
-           cardPop=false;
+                cardView.openWindow();
+                cardPop = false;
             }
             deployFlag = true;
         }
+        
     }
 
     // TODO: check if curr fortifies here
