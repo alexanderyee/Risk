@@ -62,7 +62,7 @@ public class GraphicalView extends JFrame implements Serializable
         GraphicalView window = new GraphicalView();
         window.setVisible(true);
     }
-    private GraphicalView window;
+    
     private Image map;
     private Image artillery;
     private Map gameMap;
@@ -107,7 +107,7 @@ public class GraphicalView extends JFrame implements Serializable
     private CardSystemView cardView;
     public GraphicalView()
     {
-       cardView = new CardSystemView(curr);
+
         deck = new Deck();
         playIntro();
         buttons = new HashMap<>();
@@ -1102,7 +1102,7 @@ public class GraphicalView extends JFrame implements Serializable
                     FileOutputStream fos = new FileOutputStream("RiskSave");
                     ObjectOutputStream outFile = new ObjectOutputStream(fos);
                     
-                    outFile.writeObject(window);
+                    outFile.writeObject(getThis());
                     outFile.close();
                     fos.close();
                 }
@@ -1215,6 +1215,12 @@ public class GraphicalView extends JFrame implements Serializable
         players = new ArrayList<Player>();
     }
 
+    public Object getThis()
+    {
+        // TODO Auto-generated method stub
+        return this;
+    }
+
     public Map getGameMap()
     {
         // TODO Auto-generated method stub
@@ -1304,6 +1310,8 @@ public class GraphicalView extends JFrame implements Serializable
         else
         {
             bonus += gameMap.exchangeCards(curr);
+           
+            cardView = new CardSystemView(curr);
             this.cardView.repaint();
             cardView.openWindow();
             deployFlag = true;
