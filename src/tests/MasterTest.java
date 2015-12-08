@@ -16,7 +16,7 @@ import model.Continent;
 import model.Countries;
 import model.Deck;
 import model.Dice;
-import model.MediumBot;
+import model.EasyBot;
 import model.Game;
 import model.Human;
 import model.Map;
@@ -151,7 +151,7 @@ public class MasterTest
 
         assertEquals(map.getUnclaimedTerritories().size(), 42);
 
-        Player p = new MediumBot(0, 1, map);
+        Player p = new EasyBot(0, 1, map);
 
         for (int i = 0; i < 69; i++)
             map.giveRandomTerritory(p);
@@ -179,7 +179,7 @@ public class MasterTest
 
         assertEquals(unclaimedString, testString);
 
-        MediumBot bot = new MediumBot(1, 10, map);
+        EasyBot bot = new EasyBot(1, 10, map);
 
         assertTrue(map.listPlayerTerritories(bot).equals(""));
 
@@ -315,7 +315,7 @@ public class MasterTest
     public void testPlayerAndBots()
     {
         Map b = new Map();
-        MediumBot bot = new MediumBot(420, 100, b);
+        EasyBot bot = new EasyBot(420, 100, b);
 
         // Armies tests
         assertEquals(bot.getArmies(), 100);
@@ -494,7 +494,7 @@ public class MasterTest
                 new Territory(Countries.AFGHANISTAN, 0, 0).toString());
         System.out.println(map.listUnclaimed());
         assertEquals(map.getUnclaimedTerritories().size(), 42);
-        Player p = new MediumBot(0, 1, map);
+        Player p = new EasyBot(0, 1, map);
         for (int i = 0; i < 69; i++)
             map.giveRandomTerritory(p);
         assertTrue(map.getUnclaimedTerritories().isEmpty());
@@ -617,7 +617,7 @@ public class MasterTest
 
     }
 
-    MediumBot bot;
+    EasyBot bot;
 
     @Test
     public void testPlayer()
@@ -629,7 +629,7 @@ public class MasterTest
     public void testConstructorAndGettersAndSetters()
     {
         Map b = new Map();
-        bot = new MediumBot(420, 100, b);
+        bot = new EasyBot(420, 100, b);
 
         assertEquals(bot.getArmies(), 100);
         assertTrue(bot.getArmies() != 200);

@@ -29,6 +29,7 @@ public class Run6Bots
         
         Game test = new Game(3, 3, 0, 0);
         
+        int winnerID = -42;
         int easyWins = 0;
         int mediumWins = 0;
         int hardWins = 0;
@@ -36,17 +37,17 @@ public class Run6Bots
         for(int i = 0; i < 1000; i++)
         {
             test = new Game(3, 2, 1, 0);
-            if(test.beginGame() == 5)
+            winnerID = test.beginGame();
+            if(winnerID == 5)
             {
-                
+                hardWins++;
             }
-            else if(test.beginGame() >= 3)
+            else if(winnerID >= 3)
             {
                 mediumWins ++;
             }
             else
                 easyWins++;
-            
         }
         
         System.out.println("Easy bots had a total of "+easyWins+" wins.");

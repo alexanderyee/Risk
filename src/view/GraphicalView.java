@@ -562,7 +562,8 @@ public class GraphicalView extends JFrame implements Serializable
         mainMenu.setLayout(null);
         mainMenu.setLocation(0, 0);
         mainMenu.setSize(this.getMaximumSize());
-
+        JButton toggleSound = new JButton("Toggle Sound");
+        toggleSound.addActionListener(new SoundToggleListener());
         JButton newGame = new JButton("New Game");
         newGame.addActionListener(new ActionListener()
         {
@@ -575,12 +576,15 @@ public class GraphicalView extends JFrame implements Serializable
         });
         JButton loadGame = new JButton("Load Game");
         loadGame.addActionListener(new LoadGameListener());
-        newGame.setLocation(500, 0);
+        newGame.setLocation(800, 0);
         newGame.setSize(100, 40);
-        loadGame.setLocation(500, 60);
+        loadGame.setLocation(800, 60);
         loadGame.setSize(100, 40);
+        toggleSound.setLocation(800, 120);
+        toggleSound.setSize(100,40);
         mainMenu.add(newGame);
         mainMenu.add(loadGame);
+        mainMenu.add(toggleSound);
         mainMenu.setVisible(true);
         this.add(mainMenu);
     }
@@ -700,7 +704,22 @@ public class GraphicalView extends JFrame implements Serializable
         startGame.addActionListener(new NewGameListener());
         newGameWindow.add(startGame);
     }
+    private class SoundToggleListener implements ActionListener{
 
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+          if (clip.isActive()){
+              clip.stop();
+              
+          }
+          else {
+              playIntro();
+          }
+            
+        }
+        
+    }
     private class LoadGameListener implements ActionListener
     {
 
@@ -1093,7 +1112,7 @@ public class GraphicalView extends JFrame implements Serializable
             JOptionPane jop = new JOptionPane();
             jop.setMessage("Save?");
             int n = jop.showConfirmDialog(null, "Save?", "Save State",
-                    JOptionPane.YES_NO_CANCEL_OPTION);
+                    JOptionPane.YES_NO_OPTION);
 
             if (n == jop.YES_OPTION)
             {
@@ -1113,7 +1132,7 @@ public class GraphicalView extends JFrame implements Serializable
                 System.exit(0);
             }
             if (n == jop.NO_OPTION) System.exit(0);
-
+            
         }
 
         @Override
@@ -1648,6 +1667,7 @@ public class GraphicalView extends JFrame implements Serializable
             clip = (Clip) AudioSystem.getLine(info);
             clip.open(stream);
             clip.start();
+            clip.loop(3);
         }
         catch (Exception e)
         {
