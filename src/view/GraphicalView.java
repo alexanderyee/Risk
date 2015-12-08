@@ -1654,7 +1654,7 @@ public class GraphicalView extends JFrame implements Serializable
             defending.addArmies(1);
             attacking.removeArmies(1);
             attacker.drawCard();
-
+            cardView.repaint();
             return true;
         }
         else if (attacking.getArmies() == 1)
