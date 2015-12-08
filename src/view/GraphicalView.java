@@ -105,6 +105,7 @@ public class GraphicalView extends JFrame implements Serializable
     ////// Sount stuff
     private static Clip clip;
     private CardSystemView cardView;
+    private boolean dicePop=true;
     public GraphicalView()
     {
 
@@ -902,17 +903,17 @@ public class GraphicalView extends JFrame implements Serializable
                             else
                             {
 
+
                                 countryTo = t;
                                 int n = 0;
                                 boolean canAttack = true;
-                                while (n == 0)
-                                {
+                             
+                                
                                     canAttack = !resolveAttack(countryFrom,
                                             countryTo);
                                     repaint();
                                     JOptionPane jop = new JOptionPane();
-                                    if (canAttack)
-                                    {
+                                  
                                         String[] options = new String[] {
                                                 "Attack again", "Fortify",
                                                 "Skip turn" };
@@ -924,22 +925,21 @@ public class GraphicalView extends JFrame implements Serializable
                                                 JOptionPane.DEFAULT_OPTION,
                                                 JOptionPane.PLAIN_MESSAGE, null,
                                                 options, options[0]);
-                                    }
-                                    else
-                                    {
-                                        String[] options = new String[] {
-                                                "Fortify", "Skip turn" };
-
-                                        n = jop.showOptionDialog(null,
-                                                "Select your next move",
-                                                "Risk: Move for "
-                                                        + curr.getPlayerName(),
-                                                JOptionPane.DEFAULT_OPTION,
-                                                JOptionPane.PLAIN_MESSAGE, null,
-                                                options, options[0]) + 1;
-                                    }
+                                    
+                                    
+                                   
+                                if(n==0){
+                                    
+                                    countryFrom = null;
+                                    countryTo = null;
+                                    attackFlag = false;
+                                    fortifyFlag = false;
+                                    attackFlag = true;
+                                    gameInfo.append(curr.getPlayerName()
+                                            + ", select territory to attack from\n");
+                                    scrollInfo.updateUI();
                                 }
-                                if (n == 1)
+                                else if (n == 1)
                                 {
                                     countryFrom = null;
                                     countryTo = null;
@@ -954,6 +954,7 @@ public class GraphicalView extends JFrame implements Serializable
                                     countryFrom = null;
                                     countryTo = null;
                                     attackFlag = false;
+                                    fortifyFlag = false;
                                     currentPID++;
                                     beginTurn();
                                 }
@@ -1534,8 +1535,10 @@ public class GraphicalView extends JFrame implements Serializable
         ((DicePopUP) d).setDefendersRolls(defendersRolls);
 
         ((DicePopUP) d).setDiceNumber(attackerRollNumber, defenderRollNumber);
-
+         if(dicePop){
         ((DicePopUP) d).openWindow();
+         dicePop=false;
+         }
         ((DicePopUP) d).roll();
 
         /*
