@@ -62,7 +62,7 @@ public class GraphicalView extends JFrame implements Serializable
         GraphicalView window = new GraphicalView();
         window.setVisible(true);
     }
-
+    private GraphicalView window;
     private Image map;
     private Image artillery;
     private Map gameMap;
@@ -104,9 +104,10 @@ public class GraphicalView extends JFrame implements Serializable
     private Deck deck;
     ////// Sount stuff
     private static Clip clip;
-
+    private CardSystemView cardView;
     public GraphicalView()
     {
+       cardView = new CardSystemView(curr);
         deck = new Deck();
         playIntro();
         buttons = new HashMap<>();
@@ -757,30 +758,8 @@ public class GraphicalView extends JFrame implements Serializable
             }
             catch (IOException | ClassNotFoundException gdi)
             {
-                System.out.println("No save detected. Loading new game...");
-                initializeMemberVariables(numPlayers - numHumans, numHumans);
-                initializePlayers(numPlayers - numHumans, numHumans);
-                setupGame();
-
-                newGameFlag = true;
-                for (Player player : getPlayers())
-                {
-                    while (player.getArmies() > 0)
-                    {
-                        for (int j = 1; j <= player.getTerritories()
-                                .size(); j++)
-                        {
-                            if (player.getArmies() == 0) break;
-                            player.addArmy(j);
-                        }
-                    }
-                }
-
-                repaint();
-                mainMenu.setVisible(false);
-                newGameWindow.setVisible(false);
-                beginTurn();
-                gdi.printStackTrace();
+                System.out.println("No save detected. Loading new game...\n");
+                newGameWindow.setVisible(true);
             }
 
         }
@@ -813,6 +792,8 @@ public class GraphicalView extends JFrame implements Serializable
             repaint();
             mainMenu.setVisible(false);
             newGameWindow.setVisible(false);
+            newGameWindow.dispose();
+            mainMenu.setEnabled(false);
             beginTurn();
         }
 
@@ -1120,7 +1101,8 @@ public class GraphicalView extends JFrame implements Serializable
                 {
                     FileOutputStream fos = new FileOutputStream("RiskSave");
                     ObjectOutputStream outFile = new ObjectOutputStream(fos);
-                    outFile.writeObject(this);
+                    
+                    outFile.writeObject(window);
                     outFile.close();
                     fos.close();
                 }
@@ -1322,7 +1304,7 @@ public class GraphicalView extends JFrame implements Serializable
         else
         {
             bonus += gameMap.exchangeCards(curr);
-            CardSystemView cardView = new CardSystemView(curr);
+            this.cardView.repaint();
             cardView.openWindow();
             deployFlag = true;
         }
@@ -1646,7 +1628,7 @@ public class GraphicalView extends JFrame implements Serializable
         players.remove(former);
         players.add(result);
         gameInfo.append(
-                former.getPlayerName() + " is now " + result.getPlayerName());
+                former.getPlayerName() + " is now " + result.getClass());
         return result;
 
     }

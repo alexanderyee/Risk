@@ -50,7 +50,7 @@ public class CardSystemView extends JPanel {
     public CardSystemView(Player p){
       setUpArray();
       this.cards = p.getHand();
-      
+     
       try
       {
           artillery=ImageIO.read(new File("./images/artillery.png"));
@@ -75,6 +75,7 @@ public class CardSystemView extends JPanel {
            //for RiskLogo it will be xs + 30
              Shape card1 = new Rectangle2D.Double(10, 0, 140, 260);
              int i=0;
+             g2.drawString(p.getPlayerName(), 250, 0);
              for(Card c : cards){
                 card1 = new Rectangle2D.Double(xs.get(i), 0, 140, 260);
                g2.draw(card1);
