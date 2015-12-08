@@ -38,11 +38,11 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import model.Dice;
-import model.EasyBot;
+import model.MediumBot;
 import model.HardCpu;
 import model.Human;
 import model.Map;
-import model.MediumBot;
+import model.EasyBot;
 import model.Player;
 import model.Territory;
 
@@ -1174,7 +1174,7 @@ public class GraphicalView extends JFrame
         for (int ii = 0; ii < numBots; ii++)
         { // instantiate bots
 
-            Player p = new MediumBot(ii, initArmies, gameMap);
+            Player p = new EasyBot(ii, initArmies, gameMap);
             players.add(p);
         }
         for (int jj = numBots; jj < numPlayers; jj++)
@@ -1526,11 +1526,11 @@ public class GraphicalView extends JFrame
         Player result;
         if (diff.equals("Easy"))
         {
-            result = new EasyBot(former.getPlayerID(), 0, this.gameMap);
+            result = new MediumBot(former.getPlayerID(), 0, this.gameMap);
         }
         else if (diff.equals("Medium"))
         {
-            result = new MediumBot(former.getPlayerID(), 0, this.gameMap);
+            result = new EasyBot(former.getPlayerID(), 0, this.gameMap);
         }
         else if (diff.equals("Hard"))
         {

@@ -25,6 +25,11 @@ public class Dice
     {
         return luck.nextInt(6) + 1; // nextInt(6) returns 0 <= retVal <= 5
     }
+    
+    public int loadedRoll(int turns)
+    {
+        return Math.min(6, luck.nextInt(6) + 2);
+    }
 
     public int[] roll(int numDiceRolled)
     {
