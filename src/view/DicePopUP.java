@@ -165,7 +165,8 @@ public class DicePopUP extends JPanel {
     * the dice 10 times, every 100 milliseconds.
     */
    public void roll() {
-      if (timer != null)
+    playClick("dice");
+       if (timer != null)
          return;
       timer = new Timer(50, new ActionListener() {
          int frames = 1;
@@ -244,17 +245,29 @@ public class DicePopUP extends JPanel {
    public boolean isDone(){
        return rollDone;
    }
-   /*public static void main(String[] args){
-       JFrame window = new JFrame();
-       DicePopUP content = new DicePopUP();
-       window.setContentPane(content);
-       window.pack();
-       window.setLocation(100,150);
-       window.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-       window.setResizable(false);  // User can't change the window's size.
-       window.setVisible(true);
-    }
-    */
+   public static synchronized void playClick(String str1)
+   {
+       try
+       {
+           String str = str1;
+           File yourFile = new File("./images/" + str + ".wav");
+           AudioInputStream stream;
+           AudioFormat format;
+           DataLine.Info info;
+           Clip clip;
+
+           stream = AudioSystem.getAudioInputStream(yourFile);
+           format = stream.getFormat();
+           info = new DataLine.Info(Clip.class, format);
+           clip = (Clip) AudioSystem.getLine(info);
+           clip.open(stream);
+           clip.start();
+       }
+       catch (Exception e)
+       {
+           // whatevers
+       }
+   }
    public void openWindow(){
        JFrame window = new JFrame();
        DicePopUP content = this;

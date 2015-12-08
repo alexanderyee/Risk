@@ -106,9 +106,10 @@ public class GraphicalView extends JFrame implements Serializable
     private Deck deck;
     ////// Sount stuff
     private static Clip clip;
-    private CardSystemView cardView;
-    private boolean dicePop = true;
-    
+    private CardSystemView cardView = new CardSystemView();
+    private boolean dicePop=true;
+    private boolean cardPop=true;
+
     public GraphicalView()
     {
 
@@ -439,6 +440,7 @@ public class GraphicalView extends JFrame implements Serializable
         as9.setActionCommand("as9");
         as10.setActionCommand("as10");
         as11.setActionCommand("as11");
+        as12.setActionCommand("as12");
 
         ar1.setActionCommand("ar1");
         ar2.setActionCommand("ar2");
@@ -1335,13 +1337,15 @@ public class GraphicalView extends JFrame implements Serializable
 
     public void beginTurn()
     {
-
+        playClick("rock");
         currentPID = currentPID % numPlayers;
         curr = players.get(currentPID);
         bonus = curr.deploy();
         // bonus += map.exchangeCards(curr);
 
-        gameInfo.append(curr.getPlayerName() + ", it is your turn: \n");
+
+        gameInfo.setText(curr.getPlayerName() + ", it is your turn: \n");
+
         gameInfo.append("Your color is: " + curr.getColorString() + "\n");
         gameInfo.append(curr.getPlayerName()
                 + ", please select a territory to deploy a single army to. \n");
@@ -1358,9 +1362,15 @@ public class GraphicalView extends JFrame implements Serializable
         else
         {
             bonus += gameMap.exchangeCards(curr);
-            cardView = new CardSystemView(curr);
-            this.cardView.repaint();
+
+           
+            cardView.setUp(curr);
+            cardView.repaint();
+            if(cardPop){
+
             cardView.openWindow();
+           cardPop=false;
+            }
             deployFlag = true;
         }
     }

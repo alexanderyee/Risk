@@ -47,80 +47,87 @@ public class CardSystemView extends JPanel {
     private ArrayList<Integer> xs= new ArrayList<Integer>();
     
     private ArrayList<Card> cards;
-    public CardSystemView(Player p){
+    private Player p=null;
+    public CardSystemView(){
       setUpArray();
-      this.cards = p.getHand();
-     
-      try
-      {
-          artillery=ImageIO.read(new File("./images/artillery.png"));
-          riskLogo = ImageIO.read(new File("./images/riskLogo.png"));
-           calvary=ImageIO.read(new File("./images/calvary.png"));
-          infantry = ImageIO.read(new File("./images/infantry.png"));
-      }
-      catch (IOException e)
-      {
-          e.printStackTrace();
-      }
-      setSize(800,300);
-      setLayout(new BorderLayout(2,2));
-      setBackground(Color.BLUE);  // Will show through the gap in the BorderLayout.
-      setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
-      JPanel dicePanel = new JPanel() {
-          public void paintComponent(Graphics g) { 
-             super.paintComponent(g);  // fill with background color.
-             Graphics2D g2 = (Graphics2D) g;
-             
-            //the only thing that chages in the rectangle is the irst coordinate
-           //for RiskLogo it will be xs + 30
-             Shape card1 = new Rectangle2D.Double(10, 0, 140, 260);
-             int i=0;
-             g2.drawString(p.getPlayerName(), 250, 0);
-             for(Card c : cards){
-                card1 = new Rectangle2D.Double(xs.get(i), 0, 140, 260);
-               g2.draw(card1);
-               g2.setColor(p.getColor());
-               g2.fill(card1);
-               g2.drawImage(riskLogo, xs.get(i)+15, 10, 100, 70, null);
-              if(c.getCardType()==CardType.ARTILLERY){
-               g2.drawImage(artillery,xs.get(i)+11,90,null);
-              }else if(c.getCardType()==CardType.INFANTRY){
-                  g2.drawImage(infantry,xs.get(i)+40,90,null);
-                 }else{
-                     g2.drawImage(calvary,xs.get(i)+15,90,null);
-                 }
-              g2.setColor(Color.BLACK);
-              g2.setFont(new Font("default", Font.BOLD, 16));
-              g2.drawString(c.getCountry().toString(),
-                      xs.get(i)+5 ,250 );
-              i++;
-           
-             }
-            
-             
-             
-            
-             
-            // g.drawImage(artillery, 100, 100, null);
-
-         
-          }
-       };
-       dicePanel.setPreferredSize( new Dimension(780 ,300) );
-       dicePanel.setBackground( /*new Color(200,200,255)*/Color.WHITE );  // light blue
-      
-       add(dicePanel, BorderLayout.CENTER);
-     
-     
-      setVisible(true);
-   
-    
+  
   
   
   
   
   
   }
+    public void setUp(Player p){
+        this.p=p;
+        this.cards = p.getHand();
+        
+        try
+        {
+            artillery=ImageIO.read(new File("./images/artillery.png"));
+            riskLogo = ImageIO.read(new File("./images/riskLogo.png"));
+             calvary=ImageIO.read(new File("./images/calvary.png"));
+            infantry = ImageIO.read(new File("./images/infantry.png"));
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        setSize(800,300);
+        setLayout(new BorderLayout(2,2));
+        setBackground(Color.BLUE);  // Will show through the gap in the BorderLayout.
+        setBorder(BorderFactory.createLineBorder(Color.BLUE,2));
+        JPanel dicePanel = new JPanel() {
+            public void paintComponent(Graphics g) { 
+               super.paintComponent(g);  // fill with background color.
+               Graphics2D g2 = (Graphics2D) g;
+               
+              //the only thing that chages in the rectangle is the irst coordinate
+             //for RiskLogo it will be xs + 30
+               Shape card1 = new Rectangle2D.Double(10, 0, 140, 260);
+               int i=0;
+               g2.drawString(p.getPlayerName(), 250, 0);
+               for(Card c : cards){
+                  card1 = new Rectangle2D.Double(xs.get(i), 0, 140, 260);
+                 g2.draw(card1);
+                 g2.setColor(p.getColor());
+                 g2.fill(card1);
+                 g2.drawImage(riskLogo, xs.get(i)+15, 10, 100, 70, null);
+                if(c.getCardType()==CardType.ARTILLERY){
+                 g2.drawImage(artillery,xs.get(i)+11,90,null);
+                }else if(c.getCardType()==CardType.INFANTRY){
+                    g2.drawImage(infantry,xs.get(i)+40,90,null);
+                   }else{
+                       g2.drawImage(calvary,xs.get(i)+15,90,null);
+                   }
+                g2.setColor(Color.BLACK);
+                g2.setFont(new Font("default", Font.BOLD, 16));
+                g2.drawString(c.getCountry().toString(),
+                        xs.get(i)+5 ,250 );
+                i++;
+             
+               }
+              
+               
+               
+              
+               
+              // g.drawImage(artillery, 100, 100, null);
+
+           
+            }
+         };
+         dicePanel.setPreferredSize( new Dimension(780 ,300) );
+         dicePanel.setBackground( /*new Color(200,200,255)*/Color.WHITE );  // light blue
+        
+         add(dicePanel, BorderLayout.CENTER);
+       
+       
+        setVisible(true);
+     
+        
+        
+        
+    }
    public void setUpArray(){
        xs.add(10);
        xs.add(160);
