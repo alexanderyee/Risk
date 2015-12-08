@@ -35,6 +35,7 @@ import com.sun.javafx.collections.MappingChange.Map;
 import model.Card;
 import model.CardType;
 import model.Countries;
+import model.EasyBot;
 import model.Player;
 
 public class CardSystemView extends JPanel {
@@ -43,18 +44,13 @@ public class CardSystemView extends JPanel {
     private Image riskLogo;
     private Image calvary;
     private Image infantry;
-    Card a1 = new Card(CardType.INFANTRY, Countries.ALASKA);
-    Card a2 = new Card(CardType.ARTILLERY, Countries.NW_TERRITORY);
-    Card a3 = new Card(CardType.CALVARY, Countries.GREENLAND);
-    Card a4 = new Card(CardType.INFANTRY, Countries.ALBERTA);
-    Card a5 = new Card(CardType.CALVARY, Countries.ONTARIO);
-
     private ArrayList<Integer> xs= new ArrayList<Integer>();
-  
-    private ArrayList<Card> cards= new ArrayList<Card>();
-  public CardSystemView(){
-     setUpArray();
-      hand();
+    
+    private ArrayList<Card> cards;
+    public CardSystemView(Player p){
+      setUpArray();
+      this.cards = p.getHand();
+      
       try
       {
           artillery=ImageIO.read(new File("./images/artillery.png"));
@@ -78,32 +74,11 @@ public class CardSystemView extends JPanel {
             //the only thing that chages in the rectangle is the irst coordinate
            //for RiskLogo it will be xs + 30
              Shape card1 = new Rectangle2D.Double(10, 0, 140, 260);
-             /*g2.draw(card1);
-             g2.drawImage(riskLogo, 40, 10, 70, 70, null);
-             g2.drawImage(artillery,19,70,null);
-             
-             Shape card2 = new Rectangle2D.Double(160, 0, 140, 260);
-             g2.draw(card2);
-             g2.drawImage(riskLogo, 190, 10, 70, 70, null);
-             g2.drawImage(calvary,180,70,null);
-             
-             Shape card3 = new Rectangle2D.Double(310, 0, 140, 260);
-             g2.draw(card3);
-             g2.drawImage(riskLogo, 340, 10, 70, 70, null);
-             g2.drawImage(infantry, 359, 70, null);
-             
-             Shape card4 = new Rectangle2D.Double(460, 0, 140, 260);
-             g2.draw(card4);
-             g2.drawImage(riskLogo, 490, 10, 70, 70, null);
-            
-             Shape card5 = new Rectangle2D.Double(610, 0, 140, 260);
-             g2.draw(card5);
-             g2.drawImage(riskLogo, 640, 10, 70, 70, null);  */
              int i=0;
              for(Card c : cards){
                 card1 = new Rectangle2D.Double(xs.get(i), 0, 140, 260);
                g2.draw(card1);
-               g2.setColor(Color.GRAY);
+               g2.setColor(p.getColor());
                g2.fill(card1);
                g2.drawImage(riskLogo, xs.get(i)+15, 10, 100, 70, null);
               if(c.getCardType()==CardType.ARTILLERY){
@@ -152,13 +127,6 @@ public class CardSystemView extends JPanel {
        xs.add(460);
        xs.add(610);
    }
-   public void hand(){
-     cards.add(a1);
-     cards.add(a2);
-     cards.add(a3);
-     cards.add(a4);
-     cards.add(a5);
-   }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -182,8 +150,7 @@ public class CardSystemView extends JPanel {
     }
 
     public static void main(String[] args){
-        CardSystemView test= new CardSystemView();
-        test.openWindow();
+      
     }
     
 }

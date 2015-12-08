@@ -16,6 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -42,6 +43,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
+import model.Card;
+import model.Deck;
 import model.Dice;
 import model.EasyBot;
 import model.HardCpu;
@@ -51,7 +54,7 @@ import model.MediumBot;
 import model.Player;
 import model.Territory;
 
-public class GraphicalView extends JFrame
+public class GraphicalView extends JFrame implements Serializable
 {
 
     public static void main(String[] args)
@@ -64,13 +67,9 @@ public class GraphicalView extends JFrame
     private Image artillery;
     private Map gameMap;
     private MapPanel mapPanel;
-    private JButton addArmy = new JButton("addArmy");
-
-    private JButton attack = new JButton("Attack");
     private JTextArea gameInfo;
     private JTextField console;
     private boolean newGameFlag = false;
-    private int X, Y;
     private final int imgWidth = (int) (756 * 1.5);
     private final int imgHeight = (int) (554 * 1.5);
     private JMenuBar menuBar;
@@ -97,34 +96,35 @@ public class GraphicalView extends JFrame
     private int roundsPlayed;
     private boolean gameOver;
     private int handsReedemed = 0;
+    private int cardSetValue;
     private ArrayList<Player> players;
     private int currentPID;
     private JScrollPane scrollInfo;
-    JPanel d= new DicePopUP();
+    JPanel d = new DicePopUP();
+    private Deck deck;
+    ////// Sount stuff
+    private static Clip clip;
 
-    //////Sount stuff
-   private static Clip clip;
     public GraphicalView()
     {
-       
-        
-              playIntro(); 
+        deck = new Deck();
+        playIntro();
         buttons = new HashMap<>();
         gameMap = new Map();
         mainMenu();
         this.setVisible(false);
         menuBar = new JMenuBar();
         setNewGameWindow();
-
+        this.addWindowListener(new Save());
         gameMenu = new JMenu("Game");
         newGameOption = new JMenuItem("New Game");
         newGameOption.addActionListener(new ActionListener()
         {
-          
+
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-             
+
                 playClick("click");
                 newGameWindow.setVisible(true);
             }
@@ -163,6 +163,7 @@ public class GraphicalView extends JFrame
 
         });
         loadGameOption = new JMenuItem("Load Game");
+        loadGameOption.addActionListener(new LoadGameListener());
         settings = new JMenu("Settings");
         soundOption = new JRadioButtonMenuItem("Sound");
         setNameOption = new JMenuItem("Set current player name...");
@@ -177,7 +178,7 @@ public class GraphicalView extends JFrame
         this.setJMenuBar(menuBar);
         try
         {
-            artillery=ImageIO.read(new File("./images/artillery.png"));
+            artillery = ImageIO.read(new File("./images/artillery.png"));
             map = ImageIO.read(new File("./images/riskMap5.png"));
         }
         catch (IOException e)
@@ -199,33 +200,19 @@ public class GraphicalView extends JFrame
         gameInfo = new JTextArea();
         gameInfo.setSize(new Dimension(screensize.width - imgWidth, imgHeight));
         gameInfo.setLocation(imgWidth, 0);
-        scrollInfo = new JScrollPane (gameInfo, 
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        scrollInfo = new JScrollPane(gameInfo,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         console = new JTextField();
         console.setSize(new Dimension(screensize.width - imgWidth, 30));
         console.setLocation(imgWidth, imgHeight);
 
-        attack.setSize(new Dimension(100, 30));
-        attack.setLocation(100, 100);
-        attack.addActionListener(new ActionListener()
-
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-
-                repaint();
-                gameInfo.append("\n Attack updated");
-            }
-
-        });
         setMapButtons();
-       // this.add(addArmy);
+        // this.add(addArmy);
         this.add(mapPanel);
         this.add(gameInfo);
-        //this.add(console);
-        this.add(attack);
+        // this.add(console);
+
         this.add(scrollInfo);
         scrollInfo.updateUI();
         repaint();
@@ -587,30 +574,7 @@ public class GraphicalView extends JFrame
             }
         });
         JButton loadGame = new JButton("Load Game");
-        loadGame.addActionListener(new ActionListener()
-        {
-
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                { // this part would be a lot easier if we used Game
-                    playClick("click");
-                    FileInputStream fis = new FileInputStream("RiskSave");
-                    ObjectInputStream input = new ObjectInputStream(fis);
-                    gameMap = (Map) input.readObject();
-
-                    input.close();
-                    fis.close();
-                }
-                catch (IOException | ClassNotFoundException gdi)
-                {
-                    System.out.println("No save detected. Loading new game...");
-                    gdi.printStackTrace();
-                }
-            }
-
-        });
+        loadGame.addActionListener(new LoadGameListener());
         newGame.setLocation(500, 0);
         newGame.setSize(100, 40);
         loadGame.setLocation(500, 60);
@@ -735,6 +699,73 @@ public class GraphicalView extends JFrame
         startGame.setLocation(340, 420);
         startGame.addActionListener(new NewGameListener());
         newGameWindow.add(startGame);
+    }
+
+    private class LoadGameListener implements ActionListener
+    {
+
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            try
+            { // this part would be a lot easier if we used Game
+                playClick("click");
+                FileInputStream fis = new FileInputStream("RiskSave");
+                ObjectInputStream input = new ObjectInputStream(fis);
+                
+                GraphicalView g = (GraphicalView) input.readObject();
+                //  initializeMemberVariables(numPlayers - numHumans, numHumans);
+                turnsPlayed = 0;
+                roundsPlayed = 0;
+                gameOver = false;
+                gameMap = (Map) g.getGameMap();
+                
+                players = (ArrayList<Player>) g.getPlayers();
+                numPlayers = players.size();
+                numHumans = 0;
+                for (Player p: players){
+                    if (p.getClass() == Human.class)
+                        numHumans++;
+                }
+                //initializePlayers(numPlayers - numHumans, numHumans);
+              //  setupGame();
+                input.close();
+                fis.close();
+                repaint();
+                mainMenu.setVisible(false);
+                newGameWindow.setVisible(false);
+                beginTurn();
+            }
+            catch (IOException | ClassNotFoundException gdi)
+            {
+                System.out.println("No save detected. Loading new game...");
+                initializeMemberVariables(numPlayers - numHumans, numHumans);
+                initializePlayers(numPlayers - numHumans, numHumans);
+                setupGame();
+
+                newGameFlag = true;
+                for (Player player : getPlayers())
+                {
+                    while (player.getArmies() > 0)
+                    {
+                        for (int j = 1; j <= player.getTerritories()
+                                .size(); j++)
+                        {
+                            if (player.getArmies() == 0) break;
+                            player.addArmy(j);
+                        }
+                    }
+                }
+
+                repaint();
+                mainMenu.setVisible(false);
+                newGameWindow.setVisible(false);
+                beginTurn();
+                gdi.printStackTrace();
+            }
+
+        }
+
     }
 
     private class NewGameListener implements ActionListener
@@ -1070,7 +1101,7 @@ public class GraphicalView extends JFrame
                 {
                     FileOutputStream fos = new FileOutputStream("RiskSave");
                     ObjectOutputStream outFile = new ObjectOutputStream(fos);
-                    // outFile.writeObject(game);
+                    outFile.writeObject(this);
                     outFile.close();
                     fos.close();
                 }
@@ -1166,10 +1197,7 @@ public class GraphicalView extends JFrame
                     }
                 }
             }
-       
-        
-           
-        
+
         }
     }
 
@@ -1184,6 +1212,12 @@ public class GraphicalView extends JFrame
         gameMap = new Map();
         this.numPlayers = numBots + numHumans;
         players = new ArrayList<Player>();
+    }
+
+    public Map getGameMap()
+    {
+        // TODO Auto-generated method stub
+        return this.gameMap;
     }
 
     private void initializePlayers(int numBots, int numHumans)
@@ -1246,11 +1280,12 @@ public class GraphicalView extends JFrame
 
     public void beginTurn()
     {
-       
+
         currentPID = currentPID % numPlayers;
         curr = players.get(currentPID);
         bonus = curr.deploy();
         // bonus += map.exchangeCards(curr);
+
         gameInfo.append("Player " + currentPID + " it is your turn: \n");
         gameInfo.append("Your color is: " + curr.getColorString() + "\n");
         gameInfo.append(curr.getPlayerName()
@@ -1258,6 +1293,7 @@ public class GraphicalView extends JFrame
         scrollInfo.updateUI();
         if (curr.getClass() != Human.class)
         {
+            bonus += gameMap.exchangeCards(curr);
             curr.placeDeployedArmiesRand(bonus);
             attack(); // already takes care of fortify in here
             repaint();
@@ -1265,9 +1301,14 @@ public class GraphicalView extends JFrame
             beginTurn();
         }
         else
+        {
+            bonus += gameMap.exchangeCards(curr);
+            CardSystemView cardView = new CardSystemView(curr);
+            cardView.openWindow();
             deployFlag = true;
-
+        }
     }
+
     // TODO: check if curr fortifies here
 
     private void attack()
@@ -1392,6 +1433,7 @@ public class GraphicalView extends JFrame
                                                  // acquired territory
             attacking.addArmies(-1 * invadingArmies); // remove those troops
                                                       // from the attacking terr
+            attacker.drawCard();
             return true;
         }
         else if (attacking.getArmies() == 1)
@@ -1469,10 +1511,11 @@ public class GraphicalView extends JFrame
             defenderRollNumber = defender.defenseDice(atkPID, defStr, atkDice,
                     defending.getArmies());
         }
-        System.out.println(attackerRollNumber+"   >>>>   "+defenderRollNumber);
-        
+        System.out.println(
+                attackerRollNumber + "   >>>>   " + defenderRollNumber);
+
         ArrayList<Integer> defendersRolls;
-        ((DicePopUP) d).setDiceNumber(attackerRollNumber,defenderRollNumber);
+        ((DicePopUP) d).setDiceNumber(attackerRollNumber, defenderRollNumber);
         attackersRolls = dice.roll2(attackerRollNumber);
 
         defendersRolls = dice.roll2(defenderRollNumber);
@@ -1480,29 +1523,23 @@ public class GraphicalView extends JFrame
         Collections.sort(defendersRolls, Collections.reverseOrder());
         ((DicePopUP) d).setAttackersRolls(attackersRolls);
         ((DicePopUP) d).setDefendersRolls(defendersRolls);
-        
-        ((DicePopUP) d).setDiceNumber(attackerRollNumber,defenderRollNumber);
-        
+
+        ((DicePopUP) d).setDiceNumber(attackerRollNumber, defenderRollNumber);
+
         ((DicePopUP) d).openWindow();
         ((DicePopUP) d).roll();
-      
-        
+
         /*
          * int defenderRollNumber = defender.defenseDice(atkPID, defStr,
          * atkDice, defending.getArmies());
          */
-      
-      
-        
+
         int min = Math.min(attackerRollNumber, defenderRollNumber);
-       
-   
-     /*   
-       attackersRolls = dice.roll2(attackerRollNumber);
 
-        defendersRolls = dice.roll2(defenderRollNumber);*/
-
-        
+        /*
+         * attackersRolls = dice.roll2(attackerRollNumber); defendersRolls =
+         * dice.roll2(defenderRollNumber);
+         */
 
         for (int i = 0; i < min; i++)
         {
@@ -1539,6 +1576,8 @@ public class GraphicalView extends JFrame
             attacker.territoryObtained(defending);
             defending.addArmies(1);
             attacking.removeArmies(1);
+            attacker.drawCard();
+
             return true;
         }
         else if (attacking.getArmies() == 1)
@@ -1587,16 +1626,21 @@ public class GraphicalView extends JFrame
         result.swapPlayerInfo(former);
         players.remove(former);
         players.add(result);
+        gameInfo.append(
+                former.getPlayerName() + " is now " + result.getPlayerName());
         return result;
 
     }
-    public static synchronized void playIntro() {
-        try {
-            File yourFile=new File("./images/BecomeALegend.wav");
+
+    public static synchronized void playIntro()
+    {
+        try
+        {
+            File yourFile = new File("./images/BecomeALegend.wav");
             AudioInputStream stream;
             AudioFormat format;
             DataLine.Info info;
-           // Clip clip;
+            // Clip clip;
 
             stream = AudioSystem.getAudioInputStream(yourFile);
             format = stream.getFormat();
@@ -1605,32 +1649,39 @@ public class GraphicalView extends JFrame
             clip.open(stream);
             clip.start();
         }
-        catch (Exception e) {
-            //whatevers
+        catch (Exception e)
+        {
+            // whatevers
         }
-      }
-   public void stopIntro(){
-       clip.stop();
-       clip.close();
-   }
-   public static synchronized void playClick(String str1) {
-       try {
-           String str= str1;
-           File yourFile=new File("./images/"+str+".wav");
-           AudioInputStream stream;
-           AudioFormat format;
-           DataLine.Info info;
-           Clip clip;
+    }
 
-           stream = AudioSystem.getAudioInputStream(yourFile);
-           format = stream.getFormat();
-           info = new DataLine.Info(Clip.class, format);
-           clip = (Clip) AudioSystem.getLine(info);
-           clip.open(stream);
-           clip.start();
-       }
-       catch (Exception e) {
-           //whatevers
-       }
-     }
+    public void stopIntro()
+    {
+        clip.stop();
+        clip.close();
+    }
+
+    public static synchronized void playClick(String str1)
+    {
+        try
+        {
+            String str = str1;
+            File yourFile = new File("./images/" + str + ".wav");
+            AudioInputStream stream;
+            AudioFormat format;
+            DataLine.Info info;
+            Clip clip;
+
+            stream = AudioSystem.getAudioInputStream(yourFile);
+            format = stream.getFormat();
+            info = new DataLine.Info(Clip.class, format);
+            clip = (Clip) AudioSystem.getLine(info);
+            clip.open(stream);
+            clip.start();
+        }
+        catch (Exception e)
+        {
+            // whatevers
+        }
+    }
 }

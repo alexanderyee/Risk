@@ -70,6 +70,7 @@ public abstract class Player
         map = b;
         territories = new ArrayList<Territory>();
         setPlayerName("");
+        cards = new ArrayList<Card>();
     }
 
     public void setPlayerName(String name)
@@ -109,6 +110,11 @@ public abstract class Player
                 terrNAmer.add(t);
             else if (t.getContinent() == Continent.SAMERICA) terrSAmer.add(t);
         }
+    }
+
+    public ArrayList<Card> getHand()
+    {
+        return this.cards;
     }
 
     public void loseTerritory(Territory t)
@@ -308,7 +314,7 @@ public abstract class Player
     {
         // takes a card from Game's Board's Deck to add to this Player's hand of
         // cards
-        cards.add(map.drawCard());
+        if (!(cards.size() >= 5)) cards.add(map.drawCard());
     }
 
     public void setCards(ArrayList<Card> newHand)
@@ -445,6 +451,7 @@ public abstract class Player
     {
         this.totalArmies = former.getArmies();
         this.totalTerritories = former.getTotalTerritories();
+        this.cards = former.cards;
         for (Territory t : former.getTerritories())
         {
             this.addTerritory(t);
