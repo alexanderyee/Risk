@@ -19,7 +19,8 @@ public abstract class Player
     private int totalTerritories;
     private String playerName;
     protected ArrayList<Territory> territories; // this had to be changed
-
+    protected boolean limitedAttacks = false;
+    
     /*
      * Variables used to determine how many countries this player controls on
      * which continent
@@ -71,6 +72,9 @@ public abstract class Player
         territories = new ArrayList<Territory>();
         setPlayerName("");
         cards = new ArrayList<Card>();
+    }
+    public void limitAttacks() {
+        limitedAttacks = true;
     }
 
     public void setPlayerName(String name)

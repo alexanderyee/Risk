@@ -1297,6 +1297,7 @@ public class GraphicalView extends JFrame implements Serializable
 
             Player p = new MediumBot(ii, initArmies, gameMap);
             players.add(p);
+            p.limitAttacks();
         }
         for (int jj = numBots; jj < numPlayers; jj++)
         { // instantiate
@@ -1761,4 +1762,5 @@ public class GraphicalView extends JFrame implements Serializable
             // whatevers
         }
     }
+   
 }

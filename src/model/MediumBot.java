@@ -14,6 +14,7 @@ public class MediumBot extends Player
     private ArrayList<String> realThoughts = new ArrayList<String>();
     private ArrayList<Territory> validChoices = new ArrayList<Territory>();
     private int numTerrsAtBeginningOfTurn;
+    private int attacksThisTurn;
 
     /*
      * Represents the Intermediate AI bot in Risk, will choose a single
@@ -184,6 +185,17 @@ public class MediumBot extends Player
     @Override
     public boolean attackAgain()
     {
+        attacksThisTurn++;
+        if(attacksThisTurn >= 2 && this.limitedAttacks) //for GUI
+        {
+            attacksThisTurn = 0;
+            return false;
+        }
+        if(attacksThisTurn >= 10) //for run6bots
+        {
+            attacksThisTurn = 0;
+            return false;
+        }
         if (territories.size() == 42) // If you won, don't attack again
             return false;
         ArrayList<Territory> newValidChoices = new ArrayList<Territory>(); 

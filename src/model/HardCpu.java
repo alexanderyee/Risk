@@ -23,7 +23,7 @@ public class HardCpu extends Player
     private int at = 0;
     private int choice = 0;
     private int choice2 = 0;
-    private int numAtksThisTurn;
+    private int attacksThisTurn;
 
     // what have I conquered so far
     private boolean nAmer = false, sAmer = false, africa = false, austr = false,
@@ -255,10 +255,6 @@ public class HardCpu extends Player
     @Override
     public boolean willAttack()
     {
-        if (numAtksThisTurn == 2){
-            numAtksThisTurn = 0;
-            return false;
-        }
         if (territories.size() == 42) // I won!
             return false;
         ArrayList<Territory> newValidChoices = new ArrayList<Territory>();
@@ -284,7 +280,6 @@ public class HardCpu extends Player
         validChoices = newValidChoices;
         boolean canAttack = !validChoices.isEmpty();
         //numTerrsAtBeginningOfTurn = territories.size();
-        numAtksThisTurn++;
         return canAttack;
     }
 
@@ -480,8 +475,15 @@ public class HardCpu extends Player
     public boolean attackAgain() // prioritizes continent capture, looks for
     // double army advantage
     {
-        if (numAtksThisTurn == 2){
-            numAtksThisTurn = 0;
+        attacksThisTurn++;
+        if(attacksThisTurn >= 2 && this.limitedAttacks) //for GUI
+        {
+            attacksThisTurn = 0;
+            return false;
+        }
+        if(attacksThisTurn >= 3) //for run6bots
+        {
+            attacksThisTurn = 0;
             return false;
         }
         if (territories.size() == 42) // If you won, don't attack again
@@ -521,10 +523,7 @@ public class HardCpu extends Player
                     {
                         if (adj.getOccupier() != this
                                 && (adj.getArmies() * 2) < t.getArmies())
-                        {
-                            numAtksThisTurn++;
                             return true;
-                        }
                     }
                 }
             }
@@ -537,10 +536,7 @@ public class HardCpu extends Player
                 {
                     if (adj.getOccupier() != this
                             && (adj.getArmies() * 2) < t.getArmies())
-                    {
-                        numAtksThisTurn++;
                         return true;
-                    }
                 }
             }
         }
@@ -552,10 +548,7 @@ public class HardCpu extends Player
                 {
                     if (adj.getOccupier() != this
                             && (adj.getArmies() * 2) < t.getArmies())
-                    {
-                        numAtksThisTurn++;
                         return true;
-                    }
                 }
             }
         }
@@ -567,10 +560,7 @@ public class HardCpu extends Player
                 {
                     if (adj.getOccupier() != this
                             && (adj.getArmies() * 2) < t.getArmies())
-                    {
-                        numAtksThisTurn++;
                         return true;
-                    }
                 }
             }
         }
@@ -582,10 +572,7 @@ public class HardCpu extends Player
                 {
                     if (adj.getOccupier() != this
                             && (adj.getArmies() * 2) < t.getArmies())
-                    {
-                        numAtksThisTurn++;
                         return true;
-                    }
                 }
             }
         }
@@ -597,10 +584,7 @@ public class HardCpu extends Player
                 {
                     if (adj.getOccupier() != this
                             && (adj.getArmies() * 2) < t.getArmies())
-                    {
-                        numAtksThisTurn++;
                         return true;
-                    }
                 }
             }
         }

@@ -12,6 +12,8 @@ public class EasyBot extends Player
     private int pid;
     private ArrayList<String> realThoughts = new ArrayList<String>();
     private ArrayList<Territory> validChoices = new ArrayList<Territory>();
+    private int attacksThisTurn;
+    
     /*
      * Represents the Easy AI bot in Risk, will choose pseudo random decisions
      */
@@ -218,6 +220,17 @@ public class EasyBot extends Player
     @Override
     public boolean attackAgain() // always attacks again until it can't
     {
+        attacksThisTurn++;
+        if(attacksThisTurn >= 2 && this.limitedAttacks) //for GUI
+        {
+            attacksThisTurn = 0;
+            return false;
+        }
+        if(attacksThisTurn >= 10) //for run6bots
+        {
+            attacksThisTurn = 0;
+            return false;
+        }
         if (territories.size() == 42) // I won!
             return false;
         ArrayList<Territory> newValidChoices = new ArrayList<Territory>();
