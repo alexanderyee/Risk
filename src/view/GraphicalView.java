@@ -65,7 +65,7 @@ public class GraphicalView extends JFrame
     private Map gameMap;
     private MapPanel mapPanel;
     private JButton addArmy = new JButton("addArmy");
-
+    private boolean test=true;
     private JButton attack = new JButton("Attack");
     private JTextArea gameInfo;
     private JTextField console;
@@ -817,14 +817,14 @@ public class GraphicalView extends JFrame
                                 {
                                     attackFlag = true;
                                     gameInfo.append(curr.getPlayerName()
-                                            + ", please select a territory to attack from\n");
+                                            + ", select territory to attack from\n");
                                     scrollInfo.updateUI();
                                 }
                                 else if (n == 1)
                                 {
                                     fortifyFlag = true;
                                     gameInfo.append(
-                                            "Please select a territory to move armies from\n");
+                                            "select territory to move armies from\n");
                                     scrollInfo.updateUI();
                                 }
                                 else if (n == 2)
@@ -843,7 +843,7 @@ public class GraphicalView extends JFrame
                             if (!t.getOccupier().equals(curr))
                             {
                                 gameInfo.append(
-                                        "Please select a valid territory to attack from\n Your color is: "
+                                        "select a valid territory to attack from\n Your color is: "
                                                 + curr.getColorString() + "\n");
                                 scrollInfo.updateUI();
                             }
@@ -874,14 +874,13 @@ public class GraphicalView extends JFrame
                                 countryTo = t;
                                 int n = 0;
                                 boolean canAttack = true;
-                                while (n == 0)
-                                {
+                             
+                                
                                     canAttack = !resolveAttack(countryFrom,
                                             countryTo);
                                     repaint();
                                     JOptionPane jop = new JOptionPane();
-                                    if (canAttack)
-                                    {
+                                  
                                         String[] options = new String[] {
                                                 "Attack again", "Fortify",
                                                 "Skip turn" };
@@ -893,22 +892,21 @@ public class GraphicalView extends JFrame
                                                 JOptionPane.DEFAULT_OPTION,
                                                 JOptionPane.PLAIN_MESSAGE, null,
                                                 options, options[0]);
-                                    }
-                                    else
-                                    {
-                                        String[] options = new String[] {
-                                                "Fortify", "Skip turn" };
-
-                                        n = jop.showOptionDialog(null,
-                                                "Select your next move",
-                                                "Risk: Move for "
-                                                        + curr.getPlayerName(),
-                                                JOptionPane.DEFAULT_OPTION,
-                                                JOptionPane.PLAIN_MESSAGE, null,
-                                                options, options[0]) + 1;
-                                    }
+                                    
+                                    
+                                   
+                                if(n==0){
+                                    
+                                    countryFrom = null;
+                                    countryTo = null;
+                                    attackFlag = false;
+                                    fortifyFlag = false;
+                                    attackFlag = true;
+                                    gameInfo.append(curr.getPlayerName()
+                                            + ", select territory to attack from\n");
+                                    scrollInfo.updateUI();
                                 }
-                                if (n == 1)
+                                else if (n == 1)
                                 {
                                     countryFrom = null;
                                     countryTo = null;
@@ -923,6 +921,7 @@ public class GraphicalView extends JFrame
                                     countryFrom = null;
                                     countryTo = null;
                                     attackFlag = false;
+                                    fortifyFlag = false;
                                     currentPID++;
                                     beginTurn();
                                 }
@@ -1482,8 +1481,11 @@ public class GraphicalView extends JFrame
         ((DicePopUP) d).setDefendersRolls(defendersRolls);
         
         ((DicePopUP) d).setDiceNumber(attackerRollNumber,defenderRollNumber);
-        
+      
+      if(test){ 
         ((DicePopUP) d).openWindow();
+        test=false;
+         }
         ((DicePopUP) d).roll();
       
         
