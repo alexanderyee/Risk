@@ -171,10 +171,10 @@ public class MediumBot extends Player
     @Override
     public boolean willAttack()
     {
-        if (n == 2){
+       /* if (n == 2){
             n = 0;
             return false;
-        }
+        }*/
         if (territories.size() == 42) // I won!
             return false;
         ArrayList<Territory> newValidChoices = new ArrayList<Territory>();

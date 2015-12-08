@@ -233,8 +233,9 @@ public class HardCpu extends Player
     }
 
     @Override
-    public boolean willAttack()
+    public boolean willAttack( )
     {
+        
         return true;
     }
 

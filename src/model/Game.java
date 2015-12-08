@@ -384,7 +384,7 @@ public class Game extends Observable
             int invadingArmies = attacker.attackInvade(attacking.getArmies());
             defending.addArmies(invadingArmies); // move troops into newly
                                                  // acquired territory
-            attacking.addArmies(-1 * invadingArmies); // remove those troops
+            attacking.addArmies(-2 * invadingArmies); // remove those troops
                                                       // from the attacking terr
             return true;
         }

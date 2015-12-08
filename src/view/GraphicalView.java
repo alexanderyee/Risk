@@ -61,6 +61,7 @@ public class GraphicalView extends JFrame
     }
 
     private Image map;
+    private Image artillery;
     private Map gameMap;
     private MapPanel mapPanel;
     private JButton addArmy = new JButton("addArmy");
@@ -99,11 +100,15 @@ public class GraphicalView extends JFrame
     private ArrayList<Player> players;
     private int currentPID;
     private JScrollPane scrollInfo;
+    JPanel d= new DicePopUP();
+
     //////Sount stuff
    private static Clip clip;
     public GraphicalView()
     {
-        playIntro(); 
+       
+        
+              playIntro(); 
         buttons = new HashMap<>();
         gameMap = new Map();
         mainMenu();
@@ -119,7 +124,8 @@ public class GraphicalView extends JFrame
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                playClick();
+             
+                playClick("click");
                 newGameWindow.setVisible(true);
             }
         });
@@ -171,6 +177,7 @@ public class GraphicalView extends JFrame
         this.setJMenuBar(menuBar);
         try
         {
+            artillery=ImageIO.read(new File("./images/artillery.png"));
             map = ImageIO.read(new File("./images/riskMap5.png"));
         }
         catch (IOException e)
@@ -575,7 +582,7 @@ public class GraphicalView extends JFrame
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                playClick();
+                playClick("click");
                 newGameWindow.setVisible(true);
             }
         });
@@ -588,7 +595,7 @@ public class GraphicalView extends JFrame
             {
                 try
                 { // this part would be a lot easier if we used Game
-                    playClick();
+                    playClick("click");
                     FileInputStream fis = new FileInputStream("RiskSave");
                     ObjectInputStream input = new ObjectInputStream(fis);
                     gameMap = (Map) input.readObject();
@@ -735,6 +742,7 @@ public class GraphicalView extends JFrame
         @Override
         public void actionPerformed(ActionEvent arg0)
         {
+            playClick("click");
             initializeMemberVariables(numPlayers - numHumans, numHumans);
             initializePlayers(numPlayers - numHumans, numHumans);
             setupGame();
@@ -766,6 +774,7 @@ public class GraphicalView extends JFrame
         @Override
         public void actionPerformed(ActionEvent e)
         {
+            playClick("menu1");
             for (Territory t : gameMap.getTerritories())
             {
                 if (t.getCountry().getButtonTitle()
@@ -1157,6 +1166,10 @@ public class GraphicalView extends JFrame
                     }
                 }
             }
+       
+        
+           
+        
         }
     }
 
@@ -1456,19 +1469,40 @@ public class GraphicalView extends JFrame
             defenderRollNumber = defender.defenseDice(atkPID, defStr, atkDice,
                     defending.getArmies());
         }
+        System.out.println(attackerRollNumber+"   >>>>   "+defenderRollNumber);
+        
+        ArrayList<Integer> defendersRolls;
+        ((DicePopUP) d).setDiceNumber(attackerRollNumber,defenderRollNumber);
+        attackersRolls = dice.roll2(attackerRollNumber);
 
+        defendersRolls = dice.roll2(defenderRollNumber);
+        Collections.sort(attackersRolls, Collections.reverseOrder());
+        Collections.sort(defendersRolls, Collections.reverseOrder());
+        ((DicePopUP) d).setAttackersRolls(attackersRolls);
+        ((DicePopUP) d).setDefendersRolls(defendersRolls);
+        
+        ((DicePopUP) d).setDiceNumber(attackerRollNumber,defenderRollNumber);
+        
+        ((DicePopUP) d).openWindow();
+        ((DicePopUP) d).roll();
+      
+        
         /*
          * int defenderRollNumber = defender.defenseDice(atkPID, defStr,
          * atkDice, defending.getArmies());
          */
-        ArrayList<Integer> defendersRolls;
+      
+      
+        
         int min = Math.min(attackerRollNumber, defenderRollNumber);
-        attackersRolls = dice.roll2(attackerRollNumber);
+       
+   
+     /*   
+       attackersRolls = dice.roll2(attackerRollNumber);
 
-        defendersRolls = dice.roll2(defenderRollNumber);
+        defendersRolls = dice.roll2(defenderRollNumber);*/
 
-        Collections.sort(attackersRolls, Collections.reverseOrder());
-        Collections.sort(defendersRolls, Collections.reverseOrder());
+        
 
         for (int i = 0; i < min; i++)
         {
@@ -1579,9 +1613,10 @@ public class GraphicalView extends JFrame
        clip.stop();
        clip.close();
    }
-   public static synchronized void playClick() {
+   public static synchronized void playClick(String str1) {
        try {
-           File yourFile=new File("./images/click.wav");
+           String str= str1;
+           File yourFile=new File("./images/"+str+".wav");
            AudioInputStream stream;
            AudioFormat format;
            DataLine.Info info;
