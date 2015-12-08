@@ -13,7 +13,16 @@ public class HardCpu extends Player
     private int pid;
     private int atkFrom;
     private int atkTo;
+    private ArrayList<Territory> validChoices = new ArrayList<Territory>();
+    private int numTerrsAtBeginningOfTurn;
     private ArrayList<String> realThoughts = new ArrayList<String>();
+    
+    //factors to take into account, for attackChoice
+    private int maxDif = 0;
+    private int from = 0;
+    private int at = 0;
+    private int choice = 0;
+    private int choice2 = 0;
 
     // what have I conquered so far
     private boolean nAmer = false, sAmer = false, africa = false, austr = false,
@@ -52,12 +61,12 @@ public class HardCpu extends Player
     {
         ArrayList<Territory> borders = this.identifyBorders();
         HashMap<Territory, Integer> threatMap = this.determineThreats(borders);
-        
+
         System.out.println(borders.toString());
         System.out.println(threatMap.toString());
-        
-        
-        
+
+
+
         int redeployCount = 0;
 
         for (Territory i : this.territories)
@@ -87,7 +96,7 @@ public class HardCpu extends Player
 
                     threatenedTerritory.addArmies(1);
                     i.removeArmies(1);
-                    
+
                     threatMap.put(threatenedTerritory,
                             threatMap.get(threatenedTerritory) - 1);
                 }
@@ -118,14 +127,15 @@ public class HardCpu extends Player
      */
     public ArrayList<Territory> identifyBorders()
     {
+        System.out.println("Entered identify borders.");
         ArrayList<Territory> territoryList = super.getTerritories();
         ArrayList<Territory> adjList = new ArrayList<Territory>();
         ArrayList<Territory> borders = new ArrayList<Territory>();
 
-        borders.removeAll(borders);
+        //borders.removeAll(borders);
         for (Territory i : territoryList)
         {
-            adjList.removeAll(adjList);
+            //adjList.removeAll(adjList);
             adjList = (ArrayList<Territory>) i.getAdjacentTerritories();
             for (Territory j : adjList)
             {
@@ -135,6 +145,7 @@ public class HardCpu extends Player
                 }
             }
         }
+        System.out.println("Left identify borders.");
         return borders;
     }
 
@@ -146,12 +157,12 @@ public class HardCpu extends Player
         ArrayList<Territory> borders = identifyBorders();
         HashMap<Territory, Integer> deployMap = determineThreats(borders);
 
-        
+
         System.out.println(borders.toString());
         System.out.println(deployMap.toString());
-        
+
         for (int i = 0; i < armiesToDeployWith; i++) // find my territory that
-                                                     // is in the most danger
+            // is in the most danger
         {
             Territory smallest = ((ArrayList<Territory>) deployMap.keySet())
                     .get(0);
@@ -184,6 +195,7 @@ public class HardCpu extends Player
     private HashMap<Territory, Integer> determineThreats(
             ArrayList<Territory> borders)
     {
+        System.out.println("Entered determine threats.");
         ArrayList<Territory> threatList = new ArrayList<Territory>();
 
         HashMap<Territory, Integer> deployMap = new HashMap<Territory, Integer>();
@@ -201,7 +213,7 @@ public class HardCpu extends Player
         }
 
         System.out.println(deployMap.toString());
-        System.exit(0);
+        System.out.println("Left determine threats.");
         return deployMap;
     }
 
@@ -233,56 +245,102 @@ public class HardCpu extends Player
     }
 
     @Override
-    public boolean willAttack( )
+    public boolean willAttack()
     {
-        
-        return true;
+        if (territories.size() == 42) // I won!
+            return false;
+        ArrayList<Territory> newValidChoices = new ArrayList<Territory>();
+        ArrayList<Territory> adjList = null;
+        for (Territory terr : territories) // go through our territories
+        {
+            if (terr.getArmies() >= 2) // if one has at least 2 territories it
+                // can attack as long as...
+            {
+                adjList = (ArrayList<Territory>) terr.getAdjacentTerritories();
+                for (Territory enemy : adjList) // make sure you have a valid
+                    // enemy target from that
+                    // location
+                { // if(not attacking yourself
+                    if (enemy.getOccupier().getPlayerID() != pid)
+                    {
+                        newValidChoices.add(terr);
+                        break; // we only need to add it once
+                    }
+                }
+            }
+        }
+        validChoices = newValidChoices;
+        boolean canAttack = !validChoices.isEmpty();
+        numTerrsAtBeginningOfTurn = territories.size();
+        return canAttack;
     }
 
     @Override
     public int attackFrom()
     {
-        countTerritories();
-        int maxDif = 0;
-        int from = 0;
-        int at = 0;
-        int choice = 0;
-        int choice2 = 0;
-        if (!nAmer)
+        countTerritories(); //just to know if continents are captured
+        maxDif = 0; //reset our factors we consider
+        from = 0;
+        at = 0;
+        choice = 0;
+        choice2 = 0;
+        if (!terrNAmer.isEmpty() && !nAmer)
         {
             for (Territory t : terrNAmer)
                 attackChoice(t, maxDif, from, at, choice, choice2);
-            return atkFrom;
+            Territory fuckingFromHere = terrNAmer.get(atkFrom);
+            int fuckingFromIndex = territories.indexOf(fuckingFromHere);
+            return fuckingFromIndex;
+            //return atkFrom;
         }
-        else if (!sAmer)
+        else if (!terrSAmer.isEmpty() && !sAmer)
         {
             for (Territory t : terrSAmer)
                 attackChoice(t, maxDif, from, at, choice, choice2);
-            return atkFrom;
+            Territory fuckingFromHere = terrSAmer.get(atkFrom);
+            int fuckingFromIndex = territories.indexOf(fuckingFromHere);
+            return fuckingFromIndex;
+            //return atkFrom;
         }
-        else if (!africa)
+        else if (!terrAfrica.isEmpty() && !africa)
         {
             for (Territory t : terrAfrica)
                 attackChoice(t, maxDif, from, at, choice, choice2);
-            return atkFrom;
+            Territory fuckingFromHere = terrAfrica.get(atkFrom);
+            int fuckingFromIndex = territories.indexOf(fuckingFromHere);
+            return fuckingFromIndex;
+            //return atkFrom;
         }
-        else if (!austr)
+        else if (!terrAustr.isEmpty() && !austr)
         {
             for (Territory t : terrAustr)
                 attackChoice(t, maxDif, from, at, choice, choice2);
-            return atkFrom;
+            Territory fuckingFromHere = terrAustr.get(atkFrom);
+            int fuckingFromIndex = territories.indexOf(fuckingFromHere);
+            return fuckingFromIndex;
+            //return atkFrom;
         }
-        else if (!asia)
+        else if (!terrAsia.isEmpty() && !asia)
         {
             for (Territory t : terrAsia)
                 attackChoice(t, maxDif, from, at, choice, choice2);
-            return atkFrom;
+            Territory fuckingFromHere = terrAsia.get(atkFrom);
+            int fuckingFromIndex = territories.indexOf(fuckingFromHere);
+            return fuckingFromIndex;
+            //return atkFrom;
         } // end if(!asia)
         else
-        { // if(!euro)
+        {
+            if(!terrEuro.isEmpty() && !euro)
+            {
+                System.out.println("Huge error, HardCPU has no terr's and is being asked where to attack from");
+            }
             for (Territory t : terrEuro)
                 attackChoice(t, maxDif, from, at, choice, choice2);
-            return atkFrom;
+            Territory fuckingFromHere = terrEuro.get(atkFrom);
+            int fuckingFromIndex = territories.indexOf(fuckingFromHere);
+            return fuckingFromIndex;
+            //return atkFrom;
         }
     }
 
@@ -301,7 +359,7 @@ public class HardCpu extends Player
                     {
                         maxDif = from - at;
                         atkFrom = choice; // choose to attack where I have
-                                          // greatest advantage
+                        // greatest advantage
                         atkTo = choice2;
                     }
                 }
@@ -392,8 +450,35 @@ public class HardCpu extends Player
 
     @Override
     public boolean attackAgain() // prioritizes continent capture, looks for
-                                 // double army advantage
+    // double army advantage
     {
+        if (territories.size() == 42) // If you won, don't attack again
+            return false;
+        ArrayList<Territory> newValidChoices = new ArrayList<Territory>(); 
+        // otherwise check if I CAN attack
+        ArrayList<Territory> adjList = null;
+        for (Territory terr : territories) // go through our territories
+        {
+            if (terr.getArmies() >= 2)
+                // if one has at least 2 territories it can attack as long as...
+            {
+                adjList = (ArrayList<Territory>) terr.getAdjacentTerritories();
+                for (Territory enemy : adjList) 
+                    // make sure you have a valid enemy target from that location if (not attacking yourself)
+                {
+                    if (enemy.getOccupier().getPlayerID() != pid)
+                    {
+                        newValidChoices.add(terr);
+                        break; // we only need to add it once
+                    }
+                }
+            }
+        }
+
+        validChoices = newValidChoices;
+        boolean canAttack = !validChoices.isEmpty();
+        if(!canAttack)
+            return false;
         if (terrNAmer.size() < 9)
         {
             for (Territory t : terrNAmer)
@@ -488,11 +573,11 @@ public class HardCpu extends Player
 
     @Override
     public int defenseDice(int atkPID, String defStr, int atkDice, int armies) // errs
-                                                                               // on
-                                                                               // the
-                                                                               // side
-                                                                               // of
-                                                                               // caution
+    // on
+    // the
+    // side
+    // of
+    // caution
     {
         if (armies <= 6)
             return 3;
@@ -519,7 +604,7 @@ public class HardCpu extends Player
         {
             choices.add(i);
             for (int j = 0; j < cards.size(); j++) // compare the other cards to
-                                                   // i
+                // i
             {
                 if (i != j && cards.get(i).getCardType() == cards.get(j)
                         .getCardType())

@@ -13,7 +13,6 @@ public class EasyBot extends Player
     private int atkTo;
     private ArrayList<String> realThoughts = new ArrayList<String>();
     private ArrayList<Territory> validChoices = new ArrayList<Territory>();
-    private boolean firstTurn = true;
     private int numTerrsAtBeginningOfTurn;
 
     /*
@@ -200,7 +199,7 @@ public class EasyBot extends Player
                                                                            // CAN
                                                                            // attack
         ArrayList<Territory> adjList = null;
-        for (Territory terr : validChoices) // go through our territories
+        for (Territory terr : territories) // go through our territories
         {
             if (terr.getArmies() >= 2) // if one has at least 2 territories it
                                        // can attack as long as...
